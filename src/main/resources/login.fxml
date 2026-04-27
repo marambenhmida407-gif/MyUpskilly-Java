@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.LoginController"
+      stylesheets="@css/style.css"
+      prefWidth="900" prefHeight="550">
+
+    <!-- Côté gauche - Branding -->
+    <VBox alignment="CENTER" prefWidth="400"
+          style="-fx-background-color: linear-gradient(to bottom, #2c3e50, #3498db);">
+        <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+
+        <Label text="MyUpskilly"
+               style="-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        <Label text="Gestion Médicale"
+               style="-fx-font-size: 18px; -fx-text-fill: rgba(255,255,255,0.8); -fx-padding: 5 0 20 0;"/>
+
+        <Label text="&#9876;" style="-fx-font-size: 80px; -fx-text-fill: rgba(255,255,255,0.3);"/>
+
+        <Label text="Plateforme de gestion des consultations et pathologies médicales"
+               wrapText="true" alignment="CENTER"
+               style="-fx-font-size: 13px; -fx-text-fill: rgba(255,255,255,0.7); -fx-padding: 20 0 30 0; -fx-text-alignment: center;"/>
+
+        <Button text="Créer un compte" onAction="#handleGoToRegister"
+                style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 20; -fx-cursor: hand; -fx-border-color: rgba(255,255,255,0.4); -fx-border-radius: 20;">
+            <VBox.margin><Insets top="20"/></VBox.margin>
+        </Button>
+    </VBox>
+
+    <!-- Côté droit - Formulaire Login -->
+    <VBox alignment="CENTER" HBox.hgrow="ALWAYS"
+          style="-fx-background-color: #f5f6fa;">
+        <padding><Insets top="40" right="60" bottom="40" left="60"/></padding>
+
+        <Label text="Connexion"
+               style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+        <Label text="Connectez-vous à votre compte"
+               style="-fx-font-size: 13px; -fx-text-fill: #95a5a6; -fx-padding: 5 0 30 0;"/>
+
+        <Label fx:id="lblError" wrapText="true"
+               style="-fx-text-fill: #e74c3c; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 0 0 10 0;"/>
+
+        <Label text="Adresse email" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+        <TextField fx:id="tfEmail" promptText="exemple@email.com"
+                   style="-fx-pref-height: 40; -fx-font-size: 14; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1; -fx-padding: 8;">
+            <VBox.margin><Insets top="5" bottom="15"/></VBox.margin>
+        </TextField>
+
+        <Label text="Mot de passe" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+        <PasswordField fx:id="pfPassword" promptText="Entrez votre mot de passe"
+                       style="-fx-pref-height: 40; -fx-font-size: 14; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1; -fx-padding: 8;">
+            <VBox.margin><Insets top="5" bottom="10"/></VBox.margin>
+        </PasswordField>
+
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <CheckBox fx:id="chkRemember" text="Se souvenir de moi"
+                      style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d;"/>
+        </HBox>
+
+        <Button text="Se connecter" onAction="#handleLogin" maxWidth="1.7976931348623157E308"
+                style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-pref-height: 45; -fx-background-radius: 6; -fx-cursor: hand;">
+            <VBox.margin><Insets top="20" bottom="10"/></VBox.margin>
+        </Button>
+
+        <Button text="Effacer" onAction="#handleClear" maxWidth="1.7976931348623157E308"
+                style="-fx-background-color: transparent; -fx-text-fill: #95a5a6; -fx-font-size: 12px; -fx-cursor: hand; -fx-border-color: #dcdde1; -fx-border-radius: 6; -fx-pref-height: 35;"/>
+
+        <Hyperlink text="Pas encore de compte ? S'inscrire" onAction="#handleGoToRegister"
+                   style="-fx-font-size: 12px; -fx-text-fill: #3498db; -fx-padding: 10 0 0 0;"/>
+    </VBox>
+</HBox>

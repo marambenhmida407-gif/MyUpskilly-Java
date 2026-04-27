@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.AiAssistantController"
+      prefWidth="800" prefHeight="620"
+      style="-fx-background-color: #f5f6fa;">
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="15"
+          style="-fx-background-color: linear-gradient(to right, #8e44ad, #3498db); -fx-padding: 15 25;">
+        <Label text="🤖" style="-fx-font-size: 28px;"/>
+        <VBox>
+            <Label text="Assistant IA - MyUpskilly"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Powered by Groq AI • Assistant médical éducatif"
+                   style="-fx-font-size: 11px; -fx-text-fill: rgba(255,255,255,0.8);"/>
+        </VBox>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <Button text="← Retour" onAction="#handleBack"
+                style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white;
+                       -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 6 16;"/>
+        <Button text="🗑 Effacer" onAction="#handleClear"
+                style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white;
+                       -fx-background-radius: 20; -fx-cursor: hand; -fx-padding: 6 16;"/>
+    </HBox>
+
+    <!-- Quick suggestion buttons -->
+    <HBox spacing="8" style="-fx-padding: 10 20 5 20; -fx-background-color: #ecf0f1;">
+        <Label text="Suggestions rapides:" style="-fx-font-size: 11px; -fx-text-fill: #7f8c8d; -fx-padding: 5 0;"/>
+        <Button text="💊 Médicaments" onAction="#handleSuggestion1"
+                style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-background-radius: 15;
+                       -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 12;"/>
+        <Button text="🫀 Cardiologie" onAction="#handleSuggestion2"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-background-radius: 15;
+                       -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 12;"/>
+        <Button text="🧠 Neurologie" onAction="#handleSuggestion3"
+                style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-background-radius: 15;
+                       -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 12;"/>
+        <Button text="📋 Symptômes" onAction="#handleSuggestion4"
+                style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-background-radius: 15;
+                       -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 12;"/>
+        <Button text="🎓 Formation" onAction="#handleSuggestion5"
+                style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-background-radius: 15;
+                       -fx-font-size: 11px; -fx-cursor: hand; -fx-padding: 4 12;"/>
+    </HBox>
+
+    <!-- Chat area -->
+    <ScrollPane fx:id="scrollPane" fitToWidth="true" VBox.vgrow="ALWAYS"
+                style="-fx-background-color: #f5f6fa; -fx-border-color: transparent;">
+        <VBox fx:id="chatBox" spacing="12" style="-fx-padding: 20; -fx-background-color: #f5f6fa;"/>
+    </ScrollPane>
+
+    <!-- Typing indicator -->
+    <HBox fx:id="typingIndicator" alignment="CENTER_LEFT" spacing="8"
+          style="-fx-padding: 5 25; -fx-background-color: #f5f6fa;" visible="false" managed="false">
+        <Label text="🤖" style="-fx-font-size: 14px;"/>
+        <Label text="L'assistant réfléchit..."
+               style="-fx-font-size: 12px; -fx-text-fill: #8e44ad; -fx-font-style: italic;"/>
+        <ProgressIndicator prefWidth="16" prefHeight="16"/>
+    </HBox>
+
+    <!-- Input area -->
+    <HBox spacing="10" style="-fx-padding: 15 20; -fx-background-color: white;
+                               -fx-border-color: #dcdde1; -fx-border-width: 1 0 0 0;">
+        <TextArea fx:id="tfInput" promptText="Posez votre question médicale ou éducative..."
+                  wrapText="true" prefRowCount="2" HBox.hgrow="ALWAYS"
+                  style="-fx-font-size: 13px; -fx-background-radius: 10; -fx-border-radius: 10;
+                         -fx-border-color: #dcdde1; -fx-padding: 8;"/>
+        <VBox spacing="6" alignment="CENTER">
+            <Button text="Envoyer ➤" onAction="#handleSend"
+                    style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-font-size: 13px;
+                           -fx-font-weight: bold; -fx-pref-height: 40; -fx-pref-width: 110;
+                           -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Label fx:id="lblStatus" text="Prêt"
+                   style="-fx-font-size: 10px; -fx-text-fill: #95a5a6;"/>
+        </VBox>
+    </HBox>
+</VBox>

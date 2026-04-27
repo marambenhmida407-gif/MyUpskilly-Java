@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.Setup2FAController"
+      alignment="CENTER" spacing="15"
+      prefWidth="450" prefHeight="550"
+      style="-fx-background-color: #f5f6fa; -fx-padding: 40;">
+
+    <Label text="Configuration 2FA"
+           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    <Label text="Scannez ce QR code avec Google Authenticator"
+           style="-fx-font-size: 13px; -fx-text-fill: #7f8c8d;" wrapText="true"/>
+
+    <ImageView fx:id="qrImageView" fitWidth="200" fitHeight="200" preserveRatio="true"/>
+
+    <Label text="Ou entrez ce code manuellement :"
+           style="-fx-font-size: 11px; -fx-text-fill: #95a5a6;"/>
+    <Label fx:id="lblSecretKey"
+           style="-fx-font-size: 13px; -fx-font-weight: bold; -fx-text-fill: #8e44ad;
+                  -fx-background-color: #ecf0f1; -fx-padding: 8 15; -fx-background-radius: 6;"/>
+
+    <Separator/>
+
+    <Label text="Entrez le code à 6 chiffres pour confirmer"
+           style="-fx-font-size: 12px; -fx-text-fill: #2c3e50; -fx-font-weight: bold;"/>
+    <TextField fx:id="tfCode" promptText="000000" maxWidth="150"
+               style="-fx-font-size: 20px; -fx-alignment: center; -fx-pref-height: 45;
+                      -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;"/>
+
+    <Label fx:id="lblError" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;"/>
+
+    <Button text="Activer la 2FA" onAction="#handleVerify" maxWidth="250"
+            style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-font-size: 14px;
+                   -fx-font-weight: bold; -fx-pref-height: 42; -fx-background-radius: 6; -fx-cursor: hand;"/>
+</VBox>
