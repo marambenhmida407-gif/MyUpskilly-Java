@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.UserController"
+      stylesheets="@css/style.css" spacing="10">
+
+    <padding><Insets top="12" right="16" bottom="12" left="16"/></padding>
+
+    <HBox alignment="CENTER_LEFT">
+        <Label text="Gestion des Utilisateurs"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #16a085;"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="Home / Utilisateurs" style="-fx-text-fill: #95a5a6; -fx-font-size: 12px;"/>
+    </HBox>
+
+    <!-- Stat Cards -->
+    <HBox spacing="12">
+        <VBox styleClass="stat-card,stat-card-teal" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblTotal" text="0" styleClass="stat-number"/>
+            <Label text="Total" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-green" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblVerifies" text="0" styleClass="stat-number"/>
+            <Label text="Vérifiés" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-blue" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblActifs" text="0" styleClass="stat-number"/>
+            <Label text="Actifs" styleClass="stat-label"/>
+        </VBox>
+    </HBox>
+
+    <!-- Charts -->
+    <HBox spacing="12">
+        <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+            <PieChart fx:id="pieRoles" prefHeight="200" labelsVisible="true"/>
+        </VBox>
+        <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+            <BarChart fx:id="barSpecialites" prefHeight="200">
+                <xAxis><CategoryAxis label="Spécialité"/></xAxis>
+                <yAxis><NumberAxis label="Nombre"/></yAxis>
+            </BarChart>
+        </VBox>
+    </HBox>
+
+    <!-- Action bar -->
+    <!-- Action bar -->
+    <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 6; -fx-border-color: #dcdde1; -fx-border-radius: 6;">
+        <Button text="+ Nouvel utilisateur" onAction="#handleAdd" styleClass="btn-add"/>
+        <Button text="Modifier" onAction="#handleUpdate" styleClass="btn-edit"/>
+        <Button text="Supprimer" onAction="#handleDelete" styleClass="btn-delete"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="tfRecherche" promptText="Rechercher nom/prénom/email..." prefWidth="220"/>
+        <ComboBox fx:id="cbFiltreRole" prefWidth="140"/>
+        <ComboBox fx:id="cbFiltreEtat" prefWidth="120"/>
+        <Button text="Réinitialiser" onAction="#handleResetFilters" styleClass="btn-reset"/>
+        <Button text="🤖 Assistant IA" onAction="#handleAiAssistant"
+                style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-font-weight: bold;
+                   -fx-padding: 8 16; -fx-background-radius: 5; -fx-cursor: hand;"/>
+        <Button text="Déconnexion" onAction="#handleLogout"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold;
+                   -fx-padding: 8 20; -fx-background-radius: 5; -fx-cursor: hand;"/>
+    </HBox>
+    <!-- Table -->
+    <TableView fx:id="tableUsers" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="40"/>
+            <TableColumn fx:id="colNom" text="Nom" prefWidth="120"/>
+            <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="120"/>
+            <TableColumn fx:id="colEmail" text="Email" prefWidth="200"/>
+            <TableColumn fx:id="colRole" text="Rôle" prefWidth="130"/>
+            <TableColumn fx:id="colSpecialite" text="Spécialité" prefWidth="130"/>
+            <TableColumn fx:id="colVerifie" text="Vérifié" prefWidth="70"/>
+            <TableColumn fx:id="colEtat" text="État" prefWidth="70"/>
+        </columns>
+    </TableView>
+</VBox>

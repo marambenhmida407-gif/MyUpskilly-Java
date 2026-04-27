@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.Verify2FAController"
+      alignment="CENTER" spacing="18"
+      prefWidth="400" prefHeight="400"
+      style="-fx-background-color: #f5f6fa; -fx-padding: 50;">
+
+    <Label text="Vérification 2FA"
+           style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    <Label text="Entrez le code de votre application Google Authenticator"
+           wrapText="true" style="-fx-font-size: 12px; -fx-text-fill: #7f8c8d; -fx-text-alignment: center;"/>
+
+    <Label text="&#128274;" style="-fx-font-size: 50px;"/>
+
+    <TextField fx:id="tfCode" promptText="000000" maxWidth="160"
+               style="-fx-font-size: 22px; -fx-alignment: center; -fx-pref-height: 48;
+                      -fx-background-radius: 8; -fx-border-radius: 8; -fx-border-color: #8e44ad;"/>
+
+    <Label fx:id="lblError" style="-fx-text-fill: #e74c3c; -fx-font-weight: bold;"/>
+
+    <Button text="Vérifier" onAction="#handleVerify" maxWidth="200"
+            style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-font-size: 14px;
+                   -fx-font-weight: bold; -fx-pref-height: 42; -fx-background-radius: 6; -fx-cursor: hand;"/>
+
+    <Button text="Retour" onAction="#handleBack"
+            style="-fx-background-color: transparent; -fx-text-fill: #3498db; -fx-font-size: 12px; -fx-cursor: hand;"/>
+</VBox>
