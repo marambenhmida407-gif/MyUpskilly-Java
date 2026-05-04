@@ -24,4 +24,24 @@ public class FeedbackService {
             System.err.println("Erreur feedback: " + e.getMessage());
         }
     }
+    public void reportFeedback(int feedbackId, int reporterId, String raison) {
+        System.out.println("=== REPORT FEEDBACK CALLED ===");
+        System.out.println("feedbackId: " + feedbackId);
+        System.out.println("reporterId: " + reporterId);
+        System.out.println("raison: " + raison);
+
+        String sql = "INSERT INTO reports (question_id, feedback_id, reporter_id, raison, type) " +
+                "VALUES (NULL, ?, ?, ?, 'feedback')";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, feedbackId);
+            ps.setInt(2, reporterId);
+            ps.setString(3, raison);
+            int rows = ps.executeUpdate();
+            System.out.println("✅ Rows inserted: " + rows);
+        } catch (SQLException e) {
+            System.err.println("❌ reportFeedback error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }
