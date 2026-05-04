@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controller.DetailConsultationController"
+            stylesheets="@css/style.css" fitToWidth="true">
+
+    <VBox spacing="14">
+        <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <VBox>
+                <Label fx:id="lblTitle" text="Détails de la Consultation" styleClass="page-title"/>
+                <Label text="Informations complètes" style="-fx-text-fill: #64748b; -fx-font-size: 12px;"/>
+            </VBox>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Label text="Consultations / Détails" styleClass="breadcrumb"/>
+        </HBox>
+
+        <!-- Action Buttons -->
+        <HBox spacing="8" alignment="CENTER_LEFT" styleClass="action-bar">
+            <Label fx:id="lblConsultId" style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #0f2b46;"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Rappel" onAction="#handleRappel" styleClass="btn-email"/>
+            <Button text="Google Calendar" onAction="#handleGoogleCalendar" style="-fx-background-color: linear-gradient(to right, #16a34a, #15803d); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 14; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button text="iCal" onAction="#handleDownloadICal" style="-fx-background-color: linear-gradient(to right, #0891b2, #0e7490); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 14; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button text="Sauver QR" onAction="#handleSaveQRCode" style="-fx-background-color: linear-gradient(to right, #334155, #1e293b); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 14; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button text="Modifier" onAction="#handleModifier" styleClass="btn-edit"/>
+            <Button text="SMS Rappel" onAction="#handleSMS" style="-fx-background-color: linear-gradient(to right, #8b5cf6, #7c3aed); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 14; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button text="Payer" onAction="#handlePayer" style="-fx-background-color: linear-gradient(to right, #7c3aed, #6d28d9); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 14; -fx-background-radius: 8; -fx-cursor: hand;"/>
+            <Button text="Retour" onAction="#handleRetour" styleClass="btn-clear"/>
+
+        </HBox>
+
+        <!-- Main content -->
+        <HBox spacing="16">
+            <!-- Left -->
+            <VBox spacing="16" HBox.hgrow="ALWAYS">
+                <!-- Infos générales -->
+                <VBox spacing="0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #e2e8f0; -fx-border-radius: 12;">
+                    <HBox style="-fx-background-color: #0f2b46; -fx-background-radius: 12 12 0 0; -fx-padding: 12 16;">
+                        <Label text="Informations générales" style="-fx-text-fill: #e2e8f0; -fx-font-weight: bold; -fx-font-size: 14;"/>
+                    </HBox>
+                    <VBox spacing="0">
+                        <HBox style="-fx-padding: 14 16; -fx-border-color: transparent transparent #f1f5f9 transparent;">
+                            <Label text="Date de consultation" prefWidth="200" style="-fx-font-weight: bold; -fx-text-fill: #334155;"/>
+                            <Label fx:id="lblDate" style="-fx-text-fill: #475569;"/>
+                        </HBox>
+                        <HBox style="-fx-padding: 14 16; -fx-border-color: transparent transparent #f1f5f9 transparent; -fx-background-color: #f8fafc;">
+                            <Label text="Statut" prefWidth="200" style="-fx-font-weight: bold; -fx-text-fill: #334155;"/>
+                            <Label fx:id="lblStatut"/>
+                        </HBox>
+                        <HBox style="-fx-padding: 14 16; -fx-border-color: transparent transparent #f1f5f9 transparent;">
+                            <Label text="Patient" prefWidth="200" style="-fx-font-weight: bold; -fx-text-fill: #334155;"/>
+                            <Label fx:id="lblPatient" style="-fx-text-fill: #475569;"/>
+                        </HBox>
+                        <HBox style="-fx-padding: 14 16;">
+                            <Label text="Pathologie associée" prefWidth="200" style="-fx-font-weight: bold; -fx-text-fill: #334155;"/>
+                            <Label fx:id="lblPathologie"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- Motif -->
+                <VBox spacing="0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #e2e8f0; -fx-border-radius: 12;">
+                    <HBox style="-fx-background-color: #0f2b46; -fx-background-radius: 12 12 0 0; -fx-padding: 12 16;">
+                        <Label text="Motif" style="-fx-text-fill: #e2e8f0; -fx-font-weight: bold; -fx-font-size: 14;"/>
+                    </HBox>
+                    <VBox style="-fx-padding: 16;">
+                        <Label fx:id="lblMotif" wrapText="true" style="-fx-text-fill: #334155; -fx-font-size: 14; -fx-border-color: #e2e8f0; -fx-border-width: 0 0 0 3; -fx-padding: 8 16;"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+
+            <!-- Right: QR Code -->
+            <VBox spacing="0" prefWidth="260" alignment="TOP_CENTER" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #e2e8f0; -fx-border-radius: 12;">
+                <HBox style="-fx-background-color: #0f2b46; -fx-background-radius: 12 12 0 0; -fx-padding: 12 16;" alignment="CENTER">
+                    <Label text="QR Code" style="-fx-text-fill: #e2e8f0; -fx-font-weight: bold; -fx-font-size: 14;"/>
+                </HBox>
+                <VBox style="-fx-padding: 20;" alignment="CENTER" spacing="10">
+                    <ImageView fx:id="imgQRCode" fitWidth="200" fitHeight="200" preserveRatio="true"/>
+                    <Label text="Scannez pour voir les détails" style="-fx-text-fill: #94a3b8; -fx-font-size: 11;"/>
+                </VBox>
+            </VBox>
+        </HBox>
+
+        <!-- Diagnostic -->
+        <VBox spacing="0" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #e2e8f0; -fx-border-radius: 12;">
+            <HBox style="-fx-background-color: #0f2b46; -fx-background-radius: 12 12 0 0; -fx-padding: 12 16;">
+                <Label text="Diagnostic" style="-fx-text-fill: #e2e8f0; -fx-font-weight: bold; -fx-font-size: 14;"/>
+            </HBox>
+            <VBox style="-fx-padding: 16;">
+                <Label fx:id="lblDiagnostic" wrapText="true" style="-fx-text-fill: #334155; -fx-font-size: 14; -fx-border-color: #f59e0b; -fx-border-width: 0 0 0 3; -fx-padding: 8 16; -fx-background-color: #fefce8;"/>
+            </VBox>
+        </VBox>
+
+        <!-- Observations + Ordonnance -->
+        <HBox spacing="16">
+            <VBox spacing="0" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #e2e8f0; -fx-border-radius: 12;">
+                <HBox style="-fx-background-color: #0f2b46; -fx-background-radius: 12 12 0 0; -fx-padding: 12 16;">
+                    <Label text="Observations" style="-fx-text-fill: #e2e8f0; -fx-font-weight: bold; -fx-font-size: 14;"/>
+                </HBox>
+                <VBox style="-fx-padding: 16;">
+                    <Label fx:id="lblObservations" wrapText="true" style="-fx-text-fill: #475569; -fx-font-size: 13; -fx-border-color: #3b82f6; -fx-border-width: 0 0 0 3; -fx-padding: 8 16;"/>
+                </VBox>
+            </VBox>
+            <VBox spacing="0" HBox.hgrow="ALWAYS" style="-fx-background-color: white; -fx-background-radius: 12; -fx-border-color: #e2e8f0; -fx-border-radius: 12;">
+                <HBox style="-fx-background-color: #0f2b46; -fx-background-radius: 12 12 0 0; -fx-padding: 12 16;">
+                    <Label text="Ordonnance" style="-fx-text-fill: #e2e8f0; -fx-font-weight: bold; -fx-font-size: 14;"/>
+                </HBox>
+                <VBox style="-fx-padding: 16;">
+                    <Label fx:id="lblOrdonnance" wrapText="true" style="-fx-text-fill: #475569; -fx-font-size: 13; -fx-border-color: #10b981; -fx-border-width: 0 0 0 3; -fx-padding: 8 16;"/>
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>

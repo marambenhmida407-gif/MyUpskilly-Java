@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.PathologieController"
+      stylesheets="@css/style.css" spacing="12">
+
+    <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <VBox>
+            <Label text="PATHOLOGIE" styleClass="page-title-purple"/>
+            <Label text="Laboratory &amp; Diagnostic Management" style="-fx-text-fill: #64748b; -fx-font-size: 12px;"/>
+        </VBox>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="Home / Pathologies" styleClass="breadcrumb"/>
+    </HBox>
+
+    <!-- Stat Cards -->
+    <HBox spacing="14">
+        <VBox styleClass="stat-card,stat-card-purple" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblTotal" text="0" styleClass="stat-number"/>
+            <Label text="Total Pathologies" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-green" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblFaible" text="0" styleClass="stat-number"/>
+            <Label text="Faibles" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-orange" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblModeree" text="0" styleClass="stat-number"/>
+            <Label text="Modérées" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-red" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblCritique" text="0" styleClass="stat-number"/>
+            <Label text="Critiques" styleClass="stat-label"/>
+        </VBox>
+    </HBox>
+
+    <!-- Charts -->
+    <HBox spacing="14">
+        <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+            <Label text="Répartition par gravité" style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #0f2b46; -fx-padding: 0 0 6 0;"/>
+            <PieChart fx:id="pieGravite" prefHeight="180" labelsVisible="true"/>
+        </VBox>
+        <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+            <Label text="Distribution par type" style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #0f2b46; -fx-padding: 0 0 6 0;"/>
+            <BarChart fx:id="barType" prefHeight="180">
+                <xAxis><CategoryAxis label="Type"/></xAxis>
+                <yAxis><NumberAxis label="Nombre"/></yAxis>
+            </BarChart>
+        </VBox>
+    </HBox>
+
+    <!-- Action Bar -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="action-bar">
+        <Button text="+ Nouvelle Pathologie" onAction="#handleAdd" styleClass="btn-add"/>
+        <Button text="Modifier" onAction="#handleUpdate" styleClass="btn-edit"/>
+        <Button text="Supprimer" onAction="#handleDelete" styleClass="btn-delete"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="Médicaments FDA" onAction="#handleSearchFDA" style="-fx-background-color: linear-gradient(to right, #0891b2, #0e7490); -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 14; -fx-background-radius: 8; -fx-cursor: hand;"/>
+        <Button text="Export Excel" onAction="#handleExportExcel" styleClass="btn-export"/>
+    </HBox>
+
+    <!-- Filters -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="filter-bar">
+        <Label text="Filtres :" style="-fx-font-weight: bold; -fx-text-fill: #475569;"/>
+        <TextField fx:id="tfRecherche" promptText="Rechercher une pathologie..." prefWidth="240"/>
+        <ComboBox fx:id="cbFiltreType" promptText="Type" prefWidth="150"/>
+        <ComboBox fx:id="cbFiltreGravite" promptText="Gravité" prefWidth="150"/>
+        <Button text="Réinitialiser" onAction="#handleResetFilters" styleClass="btn-reset"/>
+    </HBox>
+
+    <!-- Table -->
+    <TableView fx:id="tablePathologies" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="#" prefWidth="50"/>
+            <TableColumn fx:id="colNom" text="Nom" prefWidth="190"/>
+            <TableColumn fx:id="colDescription" text="Description" prefWidth="310"/>
+            <TableColumn fx:id="colType" text="Type" prefWidth="145"/>
+            <TableColumn fx:id="colGravite" text="Gravité" prefWidth="125"/>
+        </columns>
+    </TableView>
+</VBox>
