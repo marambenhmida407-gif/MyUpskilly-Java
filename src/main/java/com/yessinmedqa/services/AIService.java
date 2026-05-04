@@ -18,13 +18,13 @@ import java.util.concurrent.TimeUnit;
 public class AIService {
 
     // ── GROQ — text, suggestions, moderation, similar cases ──
-    private static final String GROQ_API_KEY   = "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";
+    private static final String groqApiKey = System.getenv("GROQ_API_KEY");
     private static final String GROQ_URL       = "https://api.groq.com/openai/v1/chat/completions";
     private static final String GROQ_MODEL     = "llama-3.3-70b-versatile";
 
     // ── CLOUDFLARE — image analysis ──────────────────────────
     private static final String CF_ACCOUNT_ID  = "fc991d0c2f4a14d6a80e8d412781b85c";
-    private static final String CF_API_TOKEN   = "cfut_Da0VxjeLpWa7SvV0P4pVgliBBxFmStppt1VnK9888f43dec7";
+    private static final String cloudflareToken = System.getenv("CLOUDFLARE_TOKEN");
     private static final String CF_IMAGE_MODEL = "@cf/llava-1.5-7b-hf";
 
     private static final OkHttpClient client = new OkHttpClient.Builder()
