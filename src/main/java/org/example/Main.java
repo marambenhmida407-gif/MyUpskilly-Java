@@ -21,12 +21,10 @@ public class Main extends Application {
         stage.show();
     }
 
-
     @Override
     public void stop() {
         // No shutdown needed with plain JDBC
     }
-
 
     public static void main(String[] args) {
         launch(args);

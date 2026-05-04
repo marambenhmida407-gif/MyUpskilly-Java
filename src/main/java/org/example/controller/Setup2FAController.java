@@ -1,5 +1,3 @@
-package org.example.controller;
-
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,12 +9,10 @@ import javafx.stage.Stage;
 import org.example.service.UserService;
 import org.example.model.User;
 import org.example.util.TotpUtil;
-
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter;
-
 import java.awt.image.BufferedImage;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -36,53 +32,3 @@ public class Setup2FAController implements Initializable {
         this.currentUser = user;
         this.secret = TotpUtil.generateSecret();
         lblSecretKey.setText(secret);
-        generateQrCode();
-    }
-
-    private void generateQrCode() {
-        try {
-            String otpUrl = TotpUtil.getQrUrl(currentUser.getEmail(), secret);
-            QRCodeWriter qrWriter = new QRCodeWriter();
-            BitMatrix matrix = qrWriter.encode(otpUrl, BarcodeFormat.QR_CODE, 200, 200);
-            BufferedImage buffered = MatrixToImageWriter.toBufferedImage(matrix);
-            qrImageView.setImage(SwingFXUtils.toFXImage(buffered, null));
-        } catch (Exception e) {
-            lblError.setText("Erreur génération QR: " + e.getMessage());
-        }
-    }
-
-    @FXML
-    private void handleVerify() {
-        lblError.setText("");
-        String codeText = tfCode.getText().trim();
-        if (codeText.isEmpty() || !codeText.matches("\\d{6}")) {
-            lblError.setText("Entrez un code à 6 chiffres.");
-            return;
-        }
-        int code = Integer.parseInt(codeText);
-        if (TotpUtil.verifyCode(secret, code)) {
-            currentUser.setGoogleAuthenticatorSecret(secret);
-            userService.update(currentUser);
-            navigateToMain();
-        } else {
-            lblError.setText("Code incorrect. Réessayez.");
-            tfCode.clear();
-        }
-    }
-
-    private void navigateToMain() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/user.fxml"));
-            javafx.scene.layout.Pane root = loader.load();
-            Stage stage = (Stage) tfCode.getScene().getWindow();
-            stage.setScene(new Scene(root, 1100, 650));
-            stage.setTitle("MyUpskilly - Dashboard");
-            stage.setResizable(true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {}
-}

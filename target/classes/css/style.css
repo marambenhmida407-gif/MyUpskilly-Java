@@ -26,6 +26,7 @@
     -fx-cursor: hand;
     -fx-border-color: transparent;
     -fx-border-width: 0 0 0 3;
+    -fx-background-radius: 0;
 }
 
 .sidebar-btn:hover {
@@ -41,26 +42,6 @@
     -fx-font-weight: bold;
 }
 
-/* ===== MENU BAR ===== */
-.menu-bar {
-    -fx-background-color: #2c3e50;
-    -fx-padding: 10;
-}
-
-.menu-btn {
-    -fx-background-color: #16a085;
-    -fx-text-fill: white;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-padding: 8 20;
-    -fx-background-radius: 5;
-    -fx-cursor: hand;
-}
-
-.menu-btn:hover {
-    -fx-background-color: #1abc9c;
-}
-
 /* ===== STAT CARDS ===== */
 .stat-card {
     -fx-background-radius: 12;
@@ -70,12 +51,29 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 6, 0, 0, 2);
 }
 
-.stat-card-purple { -fx-background-color: linear-gradient(to right, #7c3aed, #6d28d9); }
-.stat-card-green { -fx-background-color: linear-gradient(to right, #059669, #047857); }
-.stat-card-orange { -fx-background-color: linear-gradient(to right, #d97706, #b45309); }
-.stat-card-blue { -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8); }
-.stat-card-red { -fx-background-color: linear-gradient(to right, #dc2626, #b91c1c); }
-.stat-card-teal { -fx-background-color: linear-gradient(to right, #0d9488, #0f766e); }
+.stat-card-purple {
+    -fx-background-color: linear-gradient(to right, #7c3aed, #6d28d9);
+}
+
+.stat-card-green {
+    -fx-background-color: linear-gradient(to right, #059669, #047857);
+}
+
+.stat-card-orange {
+    -fx-background-color: linear-gradient(to right, #d97706, #b45309);
+}
+
+.stat-card-blue {
+    -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
+}
+
+.stat-card-red {
+    -fx-background-color: linear-gradient(to right, #dc2626, #b91c1c);
+}
+
+.stat-card-teal {
+    -fx-background-color: linear-gradient(to right, #0d9488, #0f766e);
+}
 
 .stat-number {
     -fx-font-size: 28px;
@@ -89,7 +87,7 @@
     -fx-font-weight: bold;
 }
 
-/* ===== TABLE ===== */
+/* ===== TABLEAU ===== */
 .table-view {
     -fx-background-color: white;
     -fx-border-color: #e2e8f0;
@@ -131,7 +129,7 @@
     -fx-background-color: #fafbfc;
 }
 
-/* ===== FORM FIELDS ===== */
+/* ===== FORMULAIRE ===== */
 .text-field, .text-area, .combo-box, .date-picker, .password-field {
     -fx-background-color: white;
     -fx-border-color: #cbd5e1;
@@ -167,7 +165,7 @@
     -fx-font-size: 12px;
 }
 
-/* ===== BUTTONS ===== */
+/* ===== BOUTONS ===== */
 .btn-add {
     -fx-background-color: linear-gradient(to right, #059669, #047857);
     -fx-text-fill: white;
@@ -176,9 +174,12 @@
     -fx-background-radius: 8;
     -fx-cursor: hand;
     -fx-font-size: 12px;
+    -fx-effect: dropshadow(three-pass-box, rgba(5,150,105,0.3), 4, 0, 0, 1);
 }
 
-.btn-add:hover { -fx-background-color: linear-gradient(to right, #047857, #065f46); }
+.btn-add:hover {
+    -fx-background-color: linear-gradient(to right, #047857, #065f46);
+}
 
 .btn-edit {
     -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
@@ -187,9 +188,13 @@
     -fx-padding: 10 20;
     -fx-background-radius: 8;
     -fx-cursor: hand;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(three-pass-box, rgba(37,99,235,0.3), 4, 0, 0, 1);
 }
 
-.btn-edit:hover { -fx-background-color: linear-gradient(to right, #1d4ed8, #1e40af); }
+.btn-edit:hover {
+    -fx-background-color: linear-gradient(to right, #1d4ed8, #1e40af);
+}
 
 .btn-delete {
     -fx-background-color: linear-gradient(to right, #dc2626, #b91c1c);
@@ -198,9 +203,13 @@
     -fx-padding: 10 20;
     -fx-background-radius: 8;
     -fx-cursor: hand;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(three-pass-box, rgba(220,38,38,0.3), 4, 0, 0, 1);
 }
 
-.btn-delete:hover { -fx-background-color: linear-gradient(to right, #b91c1c, #991b1b); }
+.btn-delete:hover {
+    -fx-background-color: linear-gradient(to right, #b91c1c, #991b1b);
+}
 
 .btn-clear {
     -fx-background-color: #e2e8f0;
@@ -209,11 +218,78 @@
     -fx-padding: 10 20;
     -fx-background-radius: 8;
     -fx-cursor: hand;
+    -fx-font-size: 12px;
 }
 
-.btn-clear:hover { -fx-background-color: #cbd5e1; }
+.btn-clear:hover {
+    -fx-background-color: #cbd5e1;
+}
 
-/* ===== CHARTS ===== */
+.btn-reset {
+    -fx-background-color: #e2e8f0;
+    -fx-text-fill: #475569;
+    -fx-padding: 8 16;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.btn-reset:hover {
+    -fx-background-color: #cbd5e1;
+}
+
+.btn-export {
+    -fx-background-color: linear-gradient(to right, #16a34a, #15803d);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 18;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(22,163,74,0.3), 4, 0, 0, 1);
+}
+
+.btn-export:hover {
+    -fx-background-color: linear-gradient(to right, #15803d, #166534);
+}
+
+.btn-email {
+    -fx-background-color: linear-gradient(to right, #ea580c, #c2410c);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 18;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(234,88,12,0.3), 4, 0, 0, 1);
+}
+
+.btn-email:hover {
+    -fx-background-color: linear-gradient(to right, #c2410c, #9a3412);
+}
+
+.btn-rappel {
+    -fx-background-color: linear-gradient(to right, #d97706, #b45309);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10 18;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(217,119,6,0.3), 4, 0, 0, 1);
+}
+
+/* ===== PANNEAU DÉTAILS ===== */
+.detail-panel {
+    -fx-background-color: white;
+    -fx-border-color: #e2e8f0;
+    -fx-border-width: 0 0 0 1;
+}
+
+.detail-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0f2b46;
+}
+
+/* ===== GRAPHIQUES ===== */
 .chart {
     -fx-background-color: white;
     -fx-padding: 8;
@@ -225,6 +301,10 @@
     -fx-text-fill: #0f2b46;
 }
 
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
 .chart-card {
     -fx-background-color: white;
     -fx-border-color: #e2e8f0;
@@ -234,14 +314,67 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 4, 0, 0, 1);
 }
 
-/* ===== TITLES ===== */
+/* ===== TITRES ===== */
 .page-title {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
     -fx-text-fill: #0f2b46;
 }
 
-/* ===== LOGIN ===== */
+.page-title-purple {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6d28d9;
+}
+
+.breadcrumb {
+    -fx-text-fill: #94a3b8;
+    -fx-font-size: 12px;
+}
+
+/* ===== ACTION BAR ===== */
+.action-bar {
+    -fx-background-color: white;
+    -fx-padding: 12;
+    -fx-background-radius: 12;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.04), 3, 0, 0, 1);
+}
+
+/* ===== FILTER BAR ===== */
+.filter-bar {
+    -fx-background-color: white;
+    -fx-padding: 10 14;
+    -fx-background-radius: 10;
+    -fx-border-color: #e2e8f0;
+    -fx-border-radius: 10;
+}
+
+/* ===== SCROLL PANE ===== */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ===== SECTION HEADER ===== */
+.section-header {
+    -fx-background-color: #0f2b46;
+    -fx-padding: 8 16;
+    -fx-background-radius: 8 8 0 0;
+}
+
+.section-header-text {
+    -fx-text-fill: #e2e8f0;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+/* ===== LOGIN & REGISTER ===== */
 .login-input {
     -fx-pref-height: 42;
     -fx-font-size: 14;
@@ -253,15 +386,18 @@
 
 .login-input:focused {
     -fx-border-color: #3b82f6;
+    -fx-effect: dropshadow(three-pass-box, rgba(59,130,246,0.3), 6, 0, 0, 0);
 }
 
 .login-btn {
     -fx-background-color: linear-gradient(to right, #2563eb, #1d4ed8);
     -fx-text-fill: white;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-pref-height: 45;
     -fx-background-radius: 8;
     -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(37,99,235,0.3), 4, 0, 0, 1);
 }
 
 .login-btn:hover {
@@ -271,6 +407,7 @@
 .register-btn {
     -fx-background-color: linear-gradient(to right, #7c3aed, #6d28d9);
     -fx-text-fill: white;
+    -fx-font-size: 15px;
     -fx-font-weight: bold;
     -fx-pref-height: 45;
     -fx-background-radius: 8;

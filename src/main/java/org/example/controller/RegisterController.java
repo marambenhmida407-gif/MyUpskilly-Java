@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
 import org.example.service.UserService;
 import org.example.model.User;
 
@@ -45,6 +46,7 @@ public class RegisterController implements Initializable {
 
         StringBuilder errors = new StringBuilder();
 
+        // Nom
         if (tfNom.getText() == null || tfNom.getText().trim().isEmpty()) {
             errors.append("• Nom obligatoire\n");
             tfNom.getStyleClass().add("field-error");
@@ -53,6 +55,7 @@ public class RegisterController implements Initializable {
             tfNom.getStyleClass().add("field-error");
         }
 
+        // Prénom
         if (tfPrenom.getText() == null || tfPrenom.getText().trim().isEmpty()) {
             errors.append("• Prénom obligatoire\n");
             tfPrenom.getStyleClass().add("field-error");
@@ -61,6 +64,7 @@ public class RegisterController implements Initializable {
             tfPrenom.getStyleClass().add("field-error");
         }
 
+        // Email
         String email = tfEmail.getText();
         if (email == null || email.trim().isEmpty()) {
             errors.append("• Email obligatoire\n");
@@ -73,6 +77,7 @@ public class RegisterController implements Initializable {
             tfEmail.getStyleClass().add("field-error");
         }
 
+        // Mot de passe
         String password = pfPassword.getText();
         if (password == null || password.trim().isEmpty()) {
             errors.append("• Mot de passe obligatoire\n");
@@ -82,12 +87,14 @@ public class RegisterController implements Initializable {
             pfPassword.getStyleClass().add("field-error");
         }
 
+        // Confirmation
         String confirmPassword = pfConfirmPassword.getText();
         if (confirmPassword == null || !confirmPassword.equals(password)) {
             errors.append("• Les mots de passe ne correspondent pas\n");
             pfConfirmPassword.getStyleClass().add("field-error");
         }
 
+        // Rôle
         if (cbRole.getValue() == null) {
             errors.append("• Rôle obligatoire\n");
             cbRole.getStyleClass().add("field-error");
@@ -98,6 +105,7 @@ public class RegisterController implements Initializable {
             return;
         }
 
+        // Create user
         User user = new User();
         user.setNom(tfNom.getText().trim());
         user.setPrenom(tfPrenom.getText().trim());
@@ -112,10 +120,10 @@ public class RegisterController implements Initializable {
 
         try {
             userService.save(user);
-            lblSuccess.setText("Compte créé avec succès ! Vous pouvez maintenant vous connecter.");
+            lblSuccess.setText("Compte créé avec succès !");
             clearForm();
         } catch (Exception e) {
-            lblError.setText("Erreur lors de la création : " + e.getMessage());
+            lblError.setText("Erreur : " + e.getMessage());
         }
     }
 
