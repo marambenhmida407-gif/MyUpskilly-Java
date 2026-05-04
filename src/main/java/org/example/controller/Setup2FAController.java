@@ -9,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.example.service.UserService;
-import org.example.entity.User;
+import org.example.model.User;
 import org.example.util.TotpUtil;
 
 import com.google.zxing.BarcodeFormat;

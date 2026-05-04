@@ -6,7 +6,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.example.entity.User;
+import org.example.model.User;
 import org.example.util.TotpUtil;
 
 public class Verify2FAController {

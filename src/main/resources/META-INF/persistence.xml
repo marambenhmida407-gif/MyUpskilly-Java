@@ -6,7 +6,7 @@
              version="3.1">
 
     <persistence-unit name="myUpskilly" transaction-type="RESOURCE_LOCAL">
-        <class>org.example.entity.User</class>
+        <class>org.example.model.User</class>
         <properties>
             <property name="jakarta.persistence.jdbc.url"
                       value="jdbc:mysql://localhost:3306/santer?useSSL=false&amp;serverTimezone=UTC"/>

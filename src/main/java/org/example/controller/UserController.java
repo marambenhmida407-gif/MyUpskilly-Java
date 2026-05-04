@@ -19,7 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import org.example.service.UserService;
-import org.example.entity.User;
+import org.example.model.User;
 
 import java.net.URL;
 import java.util.Map;
