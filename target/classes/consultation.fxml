@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.ConsultationController"
+      stylesheets="@css/style.css" spacing="12">
+
+    <padding><Insets top="16" right="20" bottom="16" left="20"/></padding>
+
+    <!-- Header -->
+    <HBox alignment="CENTER_LEFT" spacing="12">
+        <VBox>
+            <Label text="CONSULTATION" styleClass="page-title"/>
+            <Label text="Visit &amp; Clinical Management" style="-fx-text-fill: #64748b; -fx-font-size: 12px;"/>
+        </VBox>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Label text="Home / Consultations" styleClass="breadcrumb"/>
+    </HBox>
+
+    <!-- Stat Cards -->
+    <HBox spacing="14">
+        <VBox styleClass="stat-card,stat-card-purple" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblTotal" text="0" styleClass="stat-number"/>
+            <Label text="Total Consultations" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-green" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblAujourdhui" text="0" styleClass="stat-number"/>
+            <Label text="Aujourd'hui" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-orange" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblProgrammees" text="0" styleClass="stat-number"/>
+            <Label text="Programmées" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-blue" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblEnCours" text="0" styleClass="stat-number"/>
+            <Label text="En Cours" styleClass="stat-label"/>
+        </VBox>
+        <VBox styleClass="stat-card,stat-card-red" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblAnnulees" text="0" styleClass="stat-number"/>
+            <Label text="Annulées" styleClass="stat-label"/>
+        </VBox>
+    </HBox>
+
+    <!-- Charts -->
+    <HBox spacing="14">
+        <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+            <Label text="Répartition par statut" style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #0f2b46; -fx-padding: 0 0 6 0;"/>
+            <PieChart fx:id="pieStatut" prefHeight="180" labelsVisible="true"/>
+        </VBox>
+        <VBox styleClass="chart-card" HBox.hgrow="ALWAYS">
+            <Label text="Évolution mensuelle" style="-fx-font-weight: bold; -fx-font-size: 13; -fx-text-fill: #0f2b46; -fx-padding: 0 0 6 0;"/>
+            <BarChart fx:id="barMensuel" prefHeight="180">
+                <xAxis><CategoryAxis label="Mois"/></xAxis>
+                <yAxis><NumberAxis label="Nombre"/></yAxis>
+            </BarChart>
+        </VBox>
+    </HBox>
+
+    <!-- Action Bar -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="action-bar">
+        <Button text="+ Nouvelle Consultation" onAction="#handleAdd" styleClass="btn-add"/>
+        <Button text="Modifier" onAction="#handleUpdate" styleClass="btn-edit"/>
+        <Button text="Supprimer" onAction="#handleDelete" styleClass="btn-delete"/>
+        <Pane HBox.hgrow="ALWAYS"/>
+        <Button text="Export Excel" onAction="#handleExportExcel" styleClass="btn-export"/>
+        <Button text="Email" onAction="#handleSendEmail" styleClass="btn-email"/>
+        <Button text="Rappel" onAction="#handleSendRappel" styleClass="btn-rappel"/>
+    </HBox>
+
+    <!-- Filters -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="filter-bar">
+        <Label text="Filtres :" style="-fx-font-weight: bold; -fx-text-fill: #475569;"/>
+        <TextField fx:id="tfRecherche" promptText="Rechercher motif / diagnostic..." prefWidth="240"/>
+        <ComboBox fx:id="cbFiltreStatut" promptText="Statut" prefWidth="150"/>
+        <DatePicker fx:id="dpFiltreDate" promptText="Date" prefWidth="150"/>
+        <Button text="Réinitialiser" onAction="#handleResetFilters" styleClass="btn-reset"/>
+    </HBox>
+
+    <!-- Table -->
+    <TableView fx:id="tableConsultations" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="#" prefWidth="45"/>
+            <TableColumn fx:id="colPatient" text="Patient" prefWidth="155"/>
+            <TableColumn fx:id="colDate" text="Date" prefWidth="155"/>
+            <TableColumn fx:id="colMotif" text="Motif" prefWidth="160"/>
+            <TableColumn fx:id="colDiagnostic" text="Diagnostic" prefWidth="180"/>
+            <TableColumn fx:id="colStatut" text="Statut" prefWidth="105"/>
+            <TableColumn fx:id="colPathologie" text="Pathologie" prefWidth="130"/>
+        </columns>
+    </TableView>
+</VBox>
