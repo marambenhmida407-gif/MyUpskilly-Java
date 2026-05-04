@@ -1,4 +1,6 @@
-package org.example.dao;
+package org.example.service;
+
+
 
 import org.example.entity.User;
 import org.example.util.DBConnection;
@@ -7,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO {
+public class UserService  {
 
     // CREATE
     public void save(User user) {

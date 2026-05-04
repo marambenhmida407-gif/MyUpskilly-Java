@@ -18,7 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.example.dao.UserDAO;
+import org.example.service.UserService;
 import org.example.entity.User;
 
 import java.net.URL;
@@ -49,7 +49,7 @@ public class UserController implements Initializable {
     @FXML private PieChart pieRoles;
     @FXML private BarChart<String, Number> barSpecialites;
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserService userService = new UserService();
     private ObservableList<User> userList;
 
     @Override
@@ -90,7 +90,7 @@ public class UserController implements Initializable {
     }
 
     private void loadData() {
-        userList = FXCollections.observableArrayList(userDAO.getAll());
+        userList = FXCollections.observableArrayList(userService.getAll());
         tableUsers.setItems(userList);
         updateStats();
         updateCharts();
@@ -195,7 +195,7 @@ public class UserController implements Initializable {
             String email = tfEmail.getText().trim();
             if (email.isEmpty()) errors.append("• Email obligatoire\n");
             else if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) errors.append("• Email invalide\n");
-            else if (userDAO.emailExists(email, existing != null ? existing.getId() : 0)) errors.append("• Email déjà utilisé\n");
+            else if (userService.emailExists(email, existing != null ? existing.getId() : 0)) errors.append("• Email déjà utilisé\n");
             if (existing == null && pfPassword.getText().trim().isEmpty()) errors.append("• Mot de passe obligatoire\n");
             if (cbRole.getValue() == null) errors.append("• Rôle obligatoire\n");
 
@@ -228,10 +228,10 @@ public class UserController implements Initializable {
         Optional<User> result = dialog.showAndWait();
         result.ifPresent(u -> {
             if (existing == null) {
-                userDAO.save(u);
+                userService.save(u);
                 showSuccess("Utilisateur ajouté !");
             } else {
-                userDAO.update(u);
+                userService.update(u);
                 showSuccess("Utilisateur modifié !");
             }
             loadData();
@@ -251,7 +251,7 @@ public class UserController implements Initializable {
         if (selected == null) { showAlert("Sélectionnez un utilisateur."); return; }
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer " + selected.getEmail() + " ?");
         confirm.showAndWait().ifPresent(r -> {
-            if (r == ButtonType.OK) { userDAO.delete(selected.getId()); loadData(); showSuccess("Supprimé !"); }
+            if (r == ButtonType.OK) { userService.delete(selected.getId()); loadData(); showSuccess("Supprimé !"); }
         });
     }
 
@@ -299,14 +299,13 @@ public class UserController implements Initializable {
         });
         tableUsers.setItems(filtered);
     }
+
     @FXML
     private void handleAiAssistant() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/ai_assistant.fxml"));
             Pane root = loader.load();
             AiAssistantController ctrl = loader.getController();
-            // Pass the logged-in user if you have a session - optional
-            // ctrl.setUser(currentUser);
             Stage stage = (Stage) tableUsers.getScene().getWindow();
             stage.setScene(new Scene(root, 800, 620));
             stage.setTitle("MyUpskilly - Assistant IA");
@@ -315,6 +314,7 @@ public class UserController implements Initializable {
             e.printStackTrace();
         }
     }
+
     private void showAlert(String msg) { new Alert(Alert.AlertType.WARNING, msg).showAndWait(); }
     private void showSuccess(String msg) { new Alert(Alert.AlertType.INFORMATION, msg).showAndWait(); }
 }

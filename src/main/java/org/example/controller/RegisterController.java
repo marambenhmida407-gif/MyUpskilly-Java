@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.example.dao.UserDAO;
+import org.example.service.UserService;
 import org.example.entity.User;
 
 import java.net.URL;
@@ -27,7 +27,7 @@ public class RegisterController implements Initializable {
     @FXML private Label lblError;
     @FXML private Label lblSuccess;
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserService userService = new UserService();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -45,7 +45,6 @@ public class RegisterController implements Initializable {
 
         StringBuilder errors = new StringBuilder();
 
-        // Nom
         if (tfNom.getText() == null || tfNom.getText().trim().isEmpty()) {
             errors.append("• Nom obligatoire\n");
             tfNom.getStyleClass().add("field-error");
@@ -54,7 +53,6 @@ public class RegisterController implements Initializable {
             tfNom.getStyleClass().add("field-error");
         }
 
-        // Prénom
         if (tfPrenom.getText() == null || tfPrenom.getText().trim().isEmpty()) {
             errors.append("• Prénom obligatoire\n");
             tfPrenom.getStyleClass().add("field-error");
@@ -63,7 +61,6 @@ public class RegisterController implements Initializable {
             tfPrenom.getStyleClass().add("field-error");
         }
 
-        // Email
         String email = tfEmail.getText();
         if (email == null || email.trim().isEmpty()) {
             errors.append("• Email obligatoire\n");
@@ -71,12 +68,11 @@ public class RegisterController implements Initializable {
         } else if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             errors.append("• Format email invalide\n");
             tfEmail.getStyleClass().add("field-error");
-        } else if (userDAO.emailExists(email.trim(), 0)) {
+        } else if (userService.emailExists(email.trim(), 0)) {
             errors.append("• Cet email est déjà utilisé\n");
             tfEmail.getStyleClass().add("field-error");
         }
 
-        // Mot de passe
         String password = pfPassword.getText();
         if (password == null || password.trim().isEmpty()) {
             errors.append("• Mot de passe obligatoire\n");
@@ -86,14 +82,12 @@ public class RegisterController implements Initializable {
             pfPassword.getStyleClass().add("field-error");
         }
 
-        // Confirmation mot de passe
         String confirmPassword = pfConfirmPassword.getText();
         if (confirmPassword == null || !confirmPassword.equals(password)) {
             errors.append("• Les mots de passe ne correspondent pas\n");
             pfConfirmPassword.getStyleClass().add("field-error");
         }
 
-        // Rôle
         if (cbRole.getValue() == null) {
             errors.append("• Rôle obligatoire\n");
             cbRole.getStyleClass().add("field-error");
@@ -104,7 +98,6 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        // Créer l'utilisateur
         User user = new User();
         user.setNom(tfNom.getText().trim());
         user.setPrenom(tfPrenom.getText().trim());
@@ -118,7 +111,7 @@ public class RegisterController implements Initializable {
         user.setEtat(true);
 
         try {
-            userDAO.save(user);
+            userService.save(user);
             lblSuccess.setText("Compte créé avec succès ! Vous pouvez maintenant vous connecter.");
             clearForm();
         } catch (Exception e) {

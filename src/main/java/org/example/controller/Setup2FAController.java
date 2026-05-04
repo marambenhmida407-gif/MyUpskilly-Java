@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import org.example.dao.UserDAO;
+import org.example.service.UserService;
 import org.example.entity.User;
 import org.example.util.TotpUtil;
 
@@ -30,7 +30,7 @@ public class Setup2FAController implements Initializable {
 
     private User currentUser;
     private String secret;
-    private final UserDAO userDAO = new UserDAO();
+    private final UserService userService = new UserService();
 
     public void setUser(User user) {
         this.currentUser = user;
@@ -61,11 +61,8 @@ public class Setup2FAController implements Initializable {
         }
         int code = Integer.parseInt(codeText);
         if (TotpUtil.verifyCode(secret, code)) {
-            // Save secret to DB
             currentUser.setGoogleAuthenticatorSecret(secret);
-            userDAO.update(currentUser);
-
-            // Go to main app
+            userService.update(currentUser);
             navigateToMain();
         } else {
             lblError.setText("Code incorrect. Réessayez.");
