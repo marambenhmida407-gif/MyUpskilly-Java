@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controller.RegisterController"
+      stylesheets="@css/style.css"
+      prefWidth="950" prefHeight="650">
+
+    <!-- Côté gauche - Branding -->
+    <VBox alignment="CENTER" prefWidth="350"
+          style="-fx-background-color: linear-gradient(to bottom, #8e44ad, #3498db);">
+        <padding><Insets top="40" right="40" bottom="40" left="40"/></padding>
+
+        <Label text="MyUpskilly"
+               style="-fx-font-size: 34px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+        <Label text="Gestion Médicale"
+               style="-fx-font-size: 16px; -fx-text-fill: rgba(255,255,255,0.8); -fx-padding: 5 0 20 0;"/>
+
+        <Label text="&#9998;" style="-fx-font-size: 70px; -fx-text-fill: rgba(255,255,255,0.3);"/>
+
+        <Label text="Créez votre compte pour accéder à la plateforme de gestion médicale"
+               wrapText="true" alignment="CENTER"
+               style="-fx-font-size: 13px; -fx-text-fill: rgba(255,255,255,0.7); -fx-padding: 20 0 30 0; -fx-text-alignment: center;"/>
+
+        <Button text="Déjà un compte ? Se connecter" onAction="#handleGoToLogin"
+                style="-fx-background-color: rgba(255,255,255,0.2); -fx-text-fill: white; -fx-font-size: 13px; -fx-padding: 10 20; -fx-background-radius: 20; -fx-cursor: hand; -fx-border-color: rgba(255,255,255,0.4); -fx-border-radius: 20;"/>
+    </VBox>
+
+    <!-- Côté droit - Formulaire -->
+    <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS"
+                style="-fx-background-color: #f5f6fa; -fx-border-color: transparent;">
+        <VBox alignment="TOP_CENTER" style="-fx-background-color: #f5f6fa;">
+            <padding><Insets top="30" right="50" bottom="30" left="50"/></padding>
+
+            <Label text="Créer un compte"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+            <Label text="Remplissez les informations ci-dessous"
+                   style="-fx-font-size: 12px; -fx-text-fill: #95a5a6; -fx-padding: 3 0 15 0;"/>
+
+            <!-- Messages -->
+            <Label fx:id="lblError" wrapText="true"
+                   style="-fx-text-fill: #e74c3c; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Label fx:id="lblSuccess" wrapText="true"
+                   style="-fx-text-fill: #27ae60; -fx-font-size: 12px; -fx-font-weight: bold; -fx-padding: 0 0 5 0;"/>
+
+            <!-- Nom + Prénom sur la même ligne -->
+            <HBox spacing="15">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Nom *" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+                    <TextField fx:id="tfNom" promptText="Nom"
+                               style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;">
+                        <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+                    </TextField>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Prénom *" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+                    <TextField fx:id="tfPrenom" promptText="Prénom"
+                               style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;">
+                        <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+                    </TextField>
+                </VBox>
+            </HBox>
+
+            <!-- Email -->
+            <Label text="Email *" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+            <TextField fx:id="tfEmail" promptText="exemple@email.com"
+                       style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;">
+                <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+            </TextField>
+
+            <!-- Username -->
+            <Label text="Nom d'utilisateur" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+            <TextField fx:id="tfUserName" promptText="Username (optionnel)"
+                       style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;">
+                <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+            </TextField>
+
+            <!-- Mot de passe + Confirmation -->
+            <HBox spacing="15">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Mot de passe *" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+                    <PasswordField fx:id="pfPassword" promptText="Min 6 caractères"
+                                   style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;">
+                        <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+                    </PasswordField>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Confirmer *" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+                    <PasswordField fx:id="pfConfirmPassword" promptText="Confirmez"
+                                   style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;">
+                        <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+                    </PasswordField>
+                </VBox>
+            </HBox>
+
+            <!-- Rôle + Spécialité -->
+            <HBox spacing="15">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Rôle *" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+                    <ComboBox fx:id="cbRole" maxWidth="1.7976931348623157E308"
+                              style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6;">
+                        <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+                    </ComboBox>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Spécialité" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+                    <TextField fx:id="tfSpecialite" promptText="Ex: Cardiologie"
+                               style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;">
+                        <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+                    </TextField>
+                </VBox>
+            </HBox>
+
+            <!-- Adresse -->
+            <Label text="Adresse" style="-fx-font-weight: bold; -fx-text-fill: #2c3e50; -fx-font-size: 12px;"/>
+            <TextField fx:id="tfAdresse" promptText="Adresse (optionnel)"
+                       style="-fx-pref-height: 38; -fx-font-size: 13; -fx-background-radius: 6; -fx-border-radius: 6; -fx-border-color: #dcdde1;">
+                <VBox.margin><Insets top="3" bottom="10"/></VBox.margin>
+            </TextField>
+
+            <!-- Bouton Register -->
+            <Button text="Créer mon compte" onAction="#handleRegister" maxWidth="1.7976931348623157E308"
+                    style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-font-size: 15px; -fx-font-weight: bold; -fx-pref-height: 45; -fx-background-radius: 6; -fx-cursor: hand;">
+                <VBox.margin><Insets top="10" bottom="10"/></VBox.margin>
+            </Button>
+
+            <Hyperlink text="Déjà inscrit ? Se connecter" onAction="#handleGoToLogin"
+                       style="-fx-font-size: 12px; -fx-text-fill: #3498db;"/>
+        </VBox>
+    </ScrollPane>
+</HBox>
