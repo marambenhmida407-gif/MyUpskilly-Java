@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="$CONTROLLER_NAME$"
-            prefHeight="400.0" prefWidth="600.0" >
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.yessinmedqa.controllers.LoginController"
+           style="-fx-background-color: #0a5f7a;">
 
-</AnchorPane>
+    <VBox alignment="CENTER" spacing="0"
+          style="-fx-max-width: 420; -fx-max-height: 560;">
+
+        <!-- LOGO CARD -->
+        <VBox alignment="CENTER" spacing="8"
+              style="-fx-background-color: #0a5f7a; -fx-padding: 35 40 25 40;">
+            <Label text="🏥"
+                   style="-fx-font-size: 52px;"/>
+            <Label text="MedicalQA"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold;
+                          -fx-text-fill: white;"/>
+            <Label text="Plateforme médicale de questions et réponses"
+                   style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;
+                          -fx-text-alignment: center; -fx-wrap-text: true;"/>
+        </VBox>
+
+        <!-- FORM CARD -->
+        <VBox spacing="16"
+              style="-fx-background-color: white; -fx-padding: 35 40 35 40;
+                     -fx-background-radius: 0 0 16 16;
+                     -fx-effect: dropshadow(gaussian, #073d4f, 15, 0, 0, 5);">
+
+            <Label text="Connexion"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold;
+                          -fx-text-fill: #0a5f7a;"/>
+
+            <!-- Email -->
+            <VBox spacing="6">
+                <Label text="Adresse email"
+                       style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a;
+                              -fx-font-size: 12px;"/>
+                <TextField fx:id="emailField"
+                           promptText="votre@email.com"
+                           style="-fx-pref-height: 40; -fx-background-radius: 8;
+                                  -fx-border-color: #c8eaed; -fx-border-radius: 8;
+                                  -fx-font-size: 13px; -fx-padding: 5 12 5 12;"/>
+                <Label fx:id="emailError"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+            </VBox>
+
+            <!-- Password -->
+            <VBox spacing="6">
+                <Label text="Mot de passe"
+                       style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a;
+                              -fx-font-size: 12px;"/>
+                <PasswordField fx:id="passwordField"
+                               promptText="••••••••"
+                               style="-fx-pref-height: 40; -fx-background-radius: 8;
+                                      -fx-border-color: #c8eaed; -fx-border-radius: 8;
+                                      -fx-font-size: 13px; -fx-padding: 5 12 5 12;"/>
+                <Label fx:id="passwordError"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+            </VBox>
+
+            <!-- Error general -->
+            <Label fx:id="loginError"
+                   style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;
+                          -fx-font-weight: bold;"/>
+
+            <!-- Login button -->
+            <Button text="Se connecter" onAction="#seConnecter"
+                    style="-fx-background-color: #1aaa8a; -fx-text-fill: white;
+                           -fx-font-weight: bold; -fx-pref-height: 44;
+                           -fx-pref-width: 340; -fx-background-radius: 10;
+                           -fx-font-size: 14px;
+                           -fx-effect: dropshadow(gaussian, #0a7a60, 6, 0, 0, 2);"/>
+
+            <Separator/>
+
+        </VBox>
+    </VBox>
+</StackPane>

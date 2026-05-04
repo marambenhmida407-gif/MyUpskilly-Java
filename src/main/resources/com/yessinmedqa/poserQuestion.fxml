@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.yessinmedqa.controllers.PoseQuestionController"
+            style="-fx-background-color: #f4f7fb; -fx-background: #f4f7fb;">
+
+    <VBox spacing="20" style="-fx-background-color: #f4f7fb; -fx-padding: 0 0 40 0;">
+
+        <!-- ═══════════════════════════════════════════════════ -->
+        <!-- TOP NAV BAR                                         -->
+        <!-- ═══════════════════════════════════════════════════ -->
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-background-color: #0a3d5c;
+                     -fx-padding: 14 28 14 28;
+                     -fx-effect: dropshadow(gaussian, #00000033, 8, 0, 0, 3);">
+
+            <!-- Logo + App name -->
+            <Label text="⚕"
+                   style="-fx-font-size: 26px; -fx-text-fill: #4dd9ac;"/>
+            <VBox spacing="0">
+                <Label text="MedQA"
+                       style="-fx-font-size: 16px; -fx-font-weight: bold;
+                              -fx-text-fill: white;"/>
+                <Label text="Plateforme Médicale"
+                       style="-fx-font-size: 9px; -fx-text-fill: #7ecfef;"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="userWelcome"
+                   style="-fx-text-fill: #a8d8ea; -fx-font-size: 12px;"/>
+
+            <Button text="👁  Mes Réponses" onAction="#voirReponses"
+                    style="-fx-background-color: #1a6e8f; -fx-text-fill: white;
+                           -fx-font-size: 11px; -fx-font-weight: bold;
+                           -fx-background-radius: 20; -fx-pref-height: 32;
+                           -fx-padding: 0 14 0 14;"/>
+
+            <Button text="⏻  Déconnexion" onAction="#seDeconnecter"
+                    style="-fx-background-color: #c0392b; -fx-text-fill: white;
+                           -fx-font-size: 11px; -fx-font-weight: bold;
+                           -fx-background-radius: 20; -fx-pref-height: 32;
+                           -fx-padding: 0 14 0 14;"/>
+        </HBox>
+
+        <VBox spacing="20" style="-fx-padding: 0 40 0 40;">
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- HERO HEADER                                     -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <VBox spacing="6"
+                  style="-fx-background-color: linear-gradient(to right, #0a3d5c, #1a7a9a);
+                         -fx-padding: 30 35 30 35; -fx-background-radius: 16;">
+                <HBox spacing="14" alignment="CENTER_LEFT">
+                    <Label text="🏥"
+                           style="-fx-font-size: 36px;"/>
+                    <VBox spacing="4">
+                        <Label text="Posez votre Question Médicale"
+                               style="-fx-font-size: 24px; -fx-font-weight: bold;
+                                      -fx-text-fill: white;"/>
+                        <Label text="Un médecin spécialisé vous répondra dans les plus brefs délais"
+                               style="-fx-text-fill: #a8d8ea; -fx-font-size: 13px;"/>
+                    </VBox>
+                </HBox>
+
+                <!-- Info pills -->
+                <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+                    <Label text="🔒  Confidentiel"
+                           style="-fx-background-color: #ffffff22; -fx-text-fill: white;
+                                  -fx-font-size: 11px; -fx-padding: 4 12 4 12;
+                                  -fx-background-radius: 20;"/>
+                    <Label text="👨‍⚕️  Médecins certifiés"
+                           style="-fx-background-color: #ffffff22; -fx-text-fill: white;
+                                  -fx-font-size: 11px; -fx-padding: 4 12 4 12;
+                                  -fx-background-radius: 20;"/>
+                    <Label text="⚡  Réponse rapide"
+                           style="-fx-background-color: #ffffff22; -fx-text-fill: white;
+                                  -fx-font-size: 11px; -fx-padding: 4 12 4 12;
+                                  -fx-background-radius: 20;"/>
+                </HBox>
+            </VBox>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- MAIN FORM CARD                                  -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <VBox spacing="0"
+                  style="-fx-background-color: white; -fx-background-radius: 16;
+                         -fx-effect: dropshadow(gaussian, #00000018, 12, 0, 0, 4);">
+
+                <!-- Card Header -->
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      style="-fx-background-color: #f0f7ff; -fx-padding: 16 24 16 24;
+                             -fx-background-radius: 16 16 0 0;
+                             -fx-border-color: #e0eef8; -fx-border-width: 0 0 1 0;">
+                    <Label text="📋"  style="-fx-font-size: 18px;"/>
+                    <Label text="Détails de votre question"
+                           style="-fx-font-size: 15px; -fx-font-weight: bold;
+                                  -fx-text-fill: #0a3d5c;"/>
+                </HBox>
+
+                <VBox spacing="18" style="-fx-padding: 24;">
+
+                    <!-- Titre -->
+                    <VBox spacing="6">
+                        <Label text="✏️  Titre de la question"
+                               style="-fx-font-size: 12px; -fx-font-weight: bold;
+                                      -fx-text-fill: #0a3d5c;"/>
+                        <TextField fx:id="titreField"
+                                   promptText="Décrivez votre problème en quelques mots..."
+                                   style="-fx-pref-height: 42; -fx-background-radius: 10;
+                                          -fx-border-color: #d0e8f5; -fx-border-radius: 10;
+                                          -fx-font-size: 13px; -fx-padding: 0 14 0 14;
+                                          -fx-border-width: 1.5;"/>
+                        <Label fx:id="titreError"
+                               style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+                    </VBox>
+
+                    <!-- Categorie -->
+                    <VBox spacing="6">
+                        <Label text="🏷️  Spécialité médicale"
+                               style="-fx-font-size: 12px; -fx-font-weight: bold;
+                                      -fx-text-fill: #0a3d5c;"/>
+                        <ComboBox fx:id="categorieCombo"
+                                  promptText="Sélectionner une spécialité..."
+                                  style="-fx-pref-width: 360; -fx-pref-height: 42;
+                                         -fx-background-radius: 10; -fx-font-size: 13px;
+                                         -fx-border-color: #d0e8f5; -fx-border-radius: 10;
+                                         -fx-border-width: 1.5;"/>
+                        <Label fx:id="categorieError"
+                               style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+                    </VBox>
+
+                    <!-- Description -->
+                    <VBox spacing="6">
+                        <Label text="📝  Description détaillée"
+                               style="-fx-font-size: 12px; -fx-font-weight: bold;
+                                      -fx-text-fill: #0a3d5c;"/>
+                        <TextArea fx:id="descriptionField"
+                                  promptText="Décrivez vos symptômes, depuis quand, intensité..."
+                                  style="-fx-pref-height: 100; -fx-background-radius: 10;
+                                         -fx-border-color: #d0e8f5; -fx-border-radius: 10;
+                                         -fx-font-size: 13px; -fx-border-width: 1.5;"/>
+                        <Label fx:id="descriptionError"
+                               style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+                    </VBox>
+
+                    <!-- Taille & Poids -->
+                    <HBox spacing="20">
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="📏  Taille (cm)"
+                                   style="-fx-font-size: 12px; -fx-font-weight: bold;
+                                          -fx-text-fill: #0a3d5c;"/>
+                            <TextField fx:id="tailleField" promptText="ex: 175"
+                                       style="-fx-pref-height: 42; -fx-background-radius: 10;
+                                              -fx-border-color: #d0e8f5; -fx-border-radius: 10;
+                                              -fx-font-size: 13px; -fx-padding: 0 14 0 14;
+                                              -fx-border-width: 1.5;"/>
+                            <Label fx:id="tailleError"
+                                   style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+                        </VBox>
+                        <VBox spacing="6" HBox.hgrow="ALWAYS">
+                            <Label text="⚖️  Poids (kg)"
+                                   style="-fx-font-size: 12px; -fx-font-weight: bold;
+                                          -fx-text-fill: #0a3d5c;"/>
+                            <TextField fx:id="poidsField" promptText="ex: 70"
+                                       style="-fx-pref-height: 42; -fx-background-radius: 10;
+                                              -fx-border-color: #d0e8f5; -fx-border-radius: 10;
+                                              -fx-font-size: 13px; -fx-padding: 0 14 0 14;
+                                              -fx-border-width: 1.5;"/>
+                            <Label fx:id="poidsError"
+                                   style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+                        </VBox>
+                    </HBox>
+
+                </VBox>
+            </VBox>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- SIMILAR CASES PANEL                             -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <VBox fx:id="similarBox" spacing="10" managed="false" visible="false"
+                  style="-fx-background-color: #eaf6ff; -fx-padding: 18;
+                         -fx-background-radius: 16;
+                         -fx-border-color: #1a7a9a; -fx-border-radius: 16;
+                         -fx-border-width: 1.5;
+                         -fx-effect: dropshadow(gaussian, #1a7a9a33, 8, 0, 0, 2);">
+
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="🔍"  style="-fx-font-size: 18px;"/>
+                    <VBox spacing="2">
+                        <Label text="Cas similaires déjà répondus"
+                               style="-fx-font-size: 13px; -fx-font-weight: bold;
+                                      -fx-text-fill: #0a3d5c;"/>
+                        <Label text="Votre réponse est peut-être déjà disponible !"
+                               style="-fx-font-size: 11px; -fx-text-fill: #5a9fc0;"/>
+                    </VBox>
+                </HBox>
+
+                <Label fx:id="similarLoading"
+                       style="-fx-text-fill: #888; -fx-font-size: 11px;"/>
+                <VBox fx:id="similarContainer" spacing="8"/>
+            </VBox>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- MEDICAL INFO CARD                               -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <VBox spacing="0"
+                  style="-fx-background-color: white; -fx-background-radius: 16;
+                         -fx-effect: dropshadow(gaussian, #00000018, 12, 0, 0, 4);">
+
+                <!-- Card Header -->
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      style="-fx-background-color: #f0f7ff; -fx-padding: 16 24 16 24;
+                             -fx-background-radius: 16 16 0 0;
+                             -fx-border-color: #e0eef8; -fx-border-width: 0 0 1 0;">
+                    <Label text="🩺"  style="-fx-font-size: 18px;"/>
+                    <Label text="Informations médicales importantes"
+                           style="-fx-font-size: 15px; -fx-font-weight: bold;
+                                  -fx-text-fill: #0a3d5c;"/>
+                </HBox>
+
+                <VBox spacing="16" style="-fx-padding: 24;">
+
+                    <!-- Traitement -->
+                    <VBox spacing="10"
+                          style="-fx-background-color: #f8fbff; -fx-padding: 16;
+                                 -fx-background-radius: 12;
+                                 -fx-border-color: #d0e8f5; -fx-border-radius: 12;
+                                 -fx-border-width: 1;">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="💊" style="-fx-font-size: 16px;"/>
+                            <Label text="Êtes-vous sous traitement médical ?"
+                                   style="-fx-font-weight: bold; -fx-text-fill: #0a3d5c;
+                                          -fx-font-size: 13px;"/>
+                        </HBox>
+                        <HBox spacing="20">
+                            <RadioButton fx:id="traitementOui" text="✅  Oui"
+                                         style="-fx-font-size: 13px; -fx-text-fill: #0a3d5c;"/>
+                            <RadioButton fx:id="traitementNon" text="❌  Non"
+                                         style="-fx-font-size: 13px; -fx-text-fill: #0a3d5c;"/>
+                        </HBox>
+                        <Label fx:id="traitementError"
+                               style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+                        <VBox fx:id="traitementDetails" spacing="8"
+                              managed="false" visible="false"
+                              style="-fx-background-color: #e0f0ff; -fx-padding: 12;
+                                     -fx-background-radius: 8;">
+                            <Label text="📋  Précisez votre traitement :"
+                                   style="-fx-font-weight: bold; -fx-text-fill: #0a3d5c;
+                                          -fx-font-size: 12px;"/>
+                            <TextArea fx:id="descTraitementField"
+                                      promptText="Nom du médicament, dosage, durée..."
+                                      style="-fx-pref-height: 70; -fx-background-radius: 8;
+                                             -fx-font-size: 12px;"/>
+                        </VBox>
+                    </VBox>
+
+                    <!-- Allergies -->
+                    <VBox spacing="10"
+                          style="-fx-background-color: #f8fbff; -fx-padding: 16;
+                                 -fx-background-radius: 12;
+                                 -fx-border-color: #d0e8f5; -fx-border-radius: 12;
+                                 -fx-border-width: 1;">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="⚠️" style="-fx-font-size: 16px;"/>
+                            <Label text="Avez-vous des allergies ?"
+                                   style="-fx-font-weight: bold; -fx-text-fill: #0a3d5c;
+                                          -fx-font-size: 13px;"/>
+                        </HBox>
+                        <HBox spacing="20">
+                            <RadioButton fx:id="allergiesOui" text="✅  Oui"
+                                         style="-fx-font-size: 13px; -fx-text-fill: #0a3d5c;"/>
+                            <RadioButton fx:id="allergiesNon" text="❌  Non"
+                                         style="-fx-font-size: 13px; -fx-text-fill: #0a3d5c;"/>
+                        </HBox>
+                        <Label fx:id="allergiesError"
+                               style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+                        <VBox fx:id="allergiesDetails" spacing="8"
+                              managed="false" visible="false"
+                              style="-fx-background-color: #fff3e0; -fx-padding: 12;
+                                     -fx-background-radius: 8;">
+                            <Label text="📋  Précisez vos allergies :"
+                                   style="-fx-font-weight: bold; -fx-text-fill: #0a3d5c;
+                                          -fx-font-size: 12px;"/>
+                            <TextArea fx:id="descAllergiesField"
+                                      promptText="Médicaments, aliments, substances..."
+                                      style="-fx-pref-height: 70; -fx-background-radius: 8;
+                                             -fx-font-size: 12px;"/>
+                        </VBox>
+                    </VBox>
+
+                </VBox>
+            </VBox>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- FILE UPLOAD CARD                                -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <VBox spacing="0"
+                  style="-fx-background-color: white; -fx-background-radius: 16;
+                         -fx-effect: dropshadow(gaussian, #00000018, 12, 0, 0, 4);">
+
+                <HBox spacing="10" alignment="CENTER_LEFT"
+                      style="-fx-background-color: #f0f7ff; -fx-padding: 16 24 16 24;
+                             -fx-background-radius: 16 16 0 0;
+                             -fx-border-color: #e0eef8; -fx-border-width: 0 0 1 0;">
+                    <Label text="📎"  style="-fx-font-size: 18px;"/>
+                    <Label text="Document joint"
+                           style="-fx-font-size: 15px; -fx-font-weight: bold;
+                                  -fx-text-fill: #0a3d5c;"/>
+                    <Label text="(image ou PDF, max 2MB)"
+                           style="-fx-font-size: 11px; -fx-text-fill: #888;"/>
+                </HBox>
+
+                <VBox spacing="12" style="-fx-padding: 20;">
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <Button text="📁  Choisir un fichier" onAction="#choisirFichier"
+                                style="-fx-background-color: #1a7a9a; -fx-text-fill: white;
+                                       -fx-font-weight: bold; -fx-pref-height: 40;
+                                       -fx-background-radius: 10; -fx-font-size: 12px;
+                                       -fx-padding: 0 18 0 18;"/>
+                        <Label fx:id="fichierLabel" text="Aucun fichier sélectionné"
+                               style="-fx-text-fill: #888; -fx-font-size: 12px;
+                                      -fx-font-style: italic;"/>
+                    </HBox>
+                    <Label fx:id="fichierError"
+                           style="-fx-text-fill: #e74c3c; -fx-font-size: 11px;"/>
+
+                    <!-- AI image analysis box -->
+                    <VBox fx:id="imageAnalysisBox" spacing="8"
+                          managed="false" visible="false"
+                          style="-fx-background-color: #fff8e8; -fx-padding: 14;
+                                 -fx-background-radius: 10;
+                                 -fx-border-color: #f0a500; -fx-border-radius: 10;
+                                 -fx-border-width: 1;">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="🖼️" style="-fx-font-size: 16px;"/>
+                            <Label text="Analyse IA de votre image"
+                                   style="-fx-font-weight: bold; -fx-text-fill: #b07000;
+                                          -fx-font-size: 12px;"/>
+                        </HBox>
+                        <Label fx:id="imageAnalysisLabel"
+                               style="-fx-wrap-text: true; -fx-font-size: 12px;
+                                      -fx-text-fill: #555;"/>
+                    </VBox>
+                </VBox>
+            </VBox>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- AI QUESTION ANALYSIS BOX                        -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <VBox fx:id="aiAnalysisBox" spacing="10" managed="false" visible="false"
+                  style="-fx-background-color: #eaf3ff; -fx-padding: 18;
+                         -fx-background-radius: 16;
+                         -fx-border-color: #0a3d5c; -fx-border-radius: 16;
+                         -fx-border-width: 1.5;
+                         -fx-effect: dropshadow(gaussian, #0a3d5c22, 8, 0, 0, 2);">
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="🤖" style="-fx-font-size: 20px;"/>
+                    <VBox spacing="2">
+                        <Label text="Analyse IA de votre question"
+                               style="-fx-font-size: 13px; -fx-font-weight: bold;
+                                      -fx-text-fill: #0a3d5c;"/>
+                        <Label text="Suggestions en attendant la réponse du médecin"
+                               style="-fx-font-size: 11px; -fx-text-fill: #5a7fa0;"/>
+                    </VBox>
+                </HBox>
+
+                <Label fx:id="aiAnalysisLoading"
+                       style="-fx-text-fill: #888; -fx-font-size: 11px;
+                              -fx-font-style: italic;"/>
+                <Label fx:id="aiAnalysisLabel"
+                       style="-fx-wrap-text: true; -fx-font-size: 12px;
+                              -fx-text-fill: #333; -fx-line-spacing: 3;"/>
+            </VBox>
+
+            <!-- ═══════════════════════════════════════════════ -->
+            <!-- SUBMIT BUTTONS                                  -->
+            <!-- ═══════════════════════════════════════════════ -->
+            <HBox spacing="14" alignment="CENTER_LEFT">
+                <Button text="🚀  Poster ma question" onAction="#posterQuestion"
+                        style="-fx-background-color: linear-gradient(to right, #1a7a9a, #0a5f7a);
+                               -fx-text-fill: white; -fx-font-weight: bold;
+                               -fx-pref-height: 48; -fx-pref-width: 220;
+                               -fx-background-radius: 12; -fx-font-size: 14px;
+                               -fx-effect: dropshadow(gaussian, #0a5f7a66, 8, 0, 0, 3);"/>
+                <Button text="👁  Voir les réponses" onAction="#voirReponses"
+                        style="-fx-background-color: white;
+                               -fx-text-fill: #0a3d5c; -fx-font-weight: bold;
+                               -fx-pref-height: 48; -fx-pref-width: 190;
+                               -fx-background-radius: 12; -fx-font-size: 13px;
+                               -fx-border-color: #0a3d5c; -fx-border-radius: 12;
+                               -fx-border-width: 2;"/>
+            </HBox>
+
+            <!-- Success message -->
+            <HBox fx:id="successBox" spacing="10" alignment="CENTER_LEFT"
+                  managed="false" visible="false"
+                  style="-fx-background-color: #e8f8f0; -fx-padding: 14 18 14 18;
+                         -fx-background-radius: 10; -fx-border-color: #1aaa8a;
+                         -fx-border-radius: 10; -fx-border-width: 1;">
+                <Label text="✅" style="-fx-font-size: 18px;"/>
+                <Label fx:id="successLabel"
+                       style="-fx-text-fill: #0a7a50; -fx-font-weight: bold;
+                              -fx-font-size: 13px;"/>
+            </HBox>
+
+            <!-- fallback success label (kept for controller compatibility) -->
+            <Label fx:id="successLabel"
+                   style="-fx-text-fill: #1aaa8a; -fx-font-weight: bold;
+                          -fx-font-size: 13px;"/>
+
+        </VBox>
+    </VBox>
+</ScrollPane>
