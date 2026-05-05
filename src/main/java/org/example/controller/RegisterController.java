@@ -7,8 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.example.dao.UserDAO;
-import org.example.entity.User;
+
+import org.example.service.UserService;
+import org.example.model.User;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -27,7 +28,7 @@ public class RegisterController implements Initializable {
     @FXML private Label lblError;
     @FXML private Label lblSuccess;
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserService userService = new UserService();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -71,7 +72,7 @@ public class RegisterController implements Initializable {
         } else if (!email.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")) {
             errors.append("• Format email invalide\n");
             tfEmail.getStyleClass().add("field-error");
-        } else if (userDAO.emailExists(email.trim(), 0)) {
+        } else if (userService.emailExists(email.trim(), 0)) {
             errors.append("• Cet email est déjà utilisé\n");
             tfEmail.getStyleClass().add("field-error");
         }
@@ -86,7 +87,7 @@ public class RegisterController implements Initializable {
             pfPassword.getStyleClass().add("field-error");
         }
 
-        // Confirmation mot de passe
+        // Confirmation
         String confirmPassword = pfConfirmPassword.getText();
         if (confirmPassword == null || !confirmPassword.equals(password)) {
             errors.append("• Les mots de passe ne correspondent pas\n");
@@ -104,7 +105,7 @@ public class RegisterController implements Initializable {
             return;
         }
 
-        // Créer l'utilisateur
+        // Create user
         User user = new User();
         user.setNom(tfNom.getText().trim());
         user.setPrenom(tfPrenom.getText().trim());
@@ -118,11 +119,11 @@ public class RegisterController implements Initializable {
         user.setEtat(true);
 
         try {
-            userDAO.save(user);
-            lblSuccess.setText("Compte créé avec succès ! Vous pouvez maintenant vous connecter.");
+            userService.save(user);
+            lblSuccess.setText("Compte créé avec succès !");
             clearForm();
         } catch (Exception e) {
-            lblError.setText("Erreur lors de la création : " + e.getMessage());
+            lblError.setText("Erreur : " + e.getMessage());
         }
     }
 

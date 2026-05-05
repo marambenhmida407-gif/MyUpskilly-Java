@@ -7,11 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.example.dao.UserDAO;
-import org.example.entity.User;
-
+import org.example.service.UserService;
+import org.example.model.User;
 import java.net.URL;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
@@ -21,7 +19,7 @@ public class LoginController implements Initializable {
     @FXML private Label lblError;
     @FXML private CheckBox chkRemember;
 
-    private final UserDAO userDAO = new UserDAO();
+    private final UserService userService = new UserService();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -39,7 +37,7 @@ public class LoginController implements Initializable {
             return;
         }
 
-        User user = userDAO.findByEmail(email);
+        User user = userService.findByEmail(email);
 
         if (user == null || !user.getPassword().equals(password)) {
             lblError.setText("Email ou mot de passe incorrect.");
@@ -47,10 +45,8 @@ public class LoginController implements Initializable {
         }
 
         try {
-            // Has 2FA already set up?
             if (user.getGoogleAuthenticatorSecret() != null
                     && !user.getGoogleAuthenticatorSecret().isEmpty()) {
-                // → Go to verification screen
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/verify_2fa.fxml"));
                 Pane root = loader.load();
                 Verify2FAController ctrl = loader.getController();
@@ -59,7 +55,6 @@ public class LoginController implements Initializable {
                 stage.setScene(new Scene(root, 400, 400));
                 stage.setTitle("MyUpskilly - Vérification 2FA");
             } else {
-                // → First login: set up 2FA
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/setup_2fa.fxml"));
                 Pane root = loader.load();
                 Setup2FAController ctrl = loader.getController();

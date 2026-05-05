@@ -6,7 +6,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import org.example.entity.User;
+
+import org.example.model.User;
 import org.example.util.TotpUtil;
 
 public class Verify2FAController {
@@ -23,22 +24,29 @@ public class Verify2FAController {
     @FXML
     private void handleVerify() {
         lblError.setText("");
+
         String codeText = tfCode.getText().trim();
+
         if (codeText.isEmpty() || !codeText.matches("\\d{6}")) {
             lblError.setText("Entrez un code à 6 chiffres.");
             return;
         }
+
         int code = Integer.parseInt(codeText);
+
         if (TotpUtil.verifyCode(currentUser.getGoogleAuthenticatorSecret(), code)) {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/user.fxml"));
                 Pane root = loader.load();
+
                 Stage stage = (Stage) tfCode.getScene().getWindow();
                 stage.setScene(new Scene(root, 1100, 650));
                 stage.setTitle("MyUpskilly - Dashboard");
                 stage.setResizable(true);
+
             } catch (Exception e) {
                 e.printStackTrace();
+                lblError.setText("Erreur lors du chargement du dashboard.");
             }
         } else {
             lblError.setText("Code incorrect. Réessayez.");
@@ -51,9 +59,11 @@ public class Verify2FAController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
             Pane root = loader.load();
+
             Stage stage = (Stage) tfCode.getScene().getWindow();
             stage.setScene(new Scene(root, 900, 550));
             stage.setTitle("MyUpskilly - Connexion");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
