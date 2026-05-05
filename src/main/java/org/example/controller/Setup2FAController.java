@@ -1,3 +1,5 @@
+package org.example.controller;
+
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,3 +34,4 @@ public class Setup2FAController implements Initializable {
         this.currentUser = user;
         this.secret = TotpUtil.generateSecret();
         lblSecretKey.setText(secret);
+}
