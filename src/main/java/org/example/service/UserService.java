@@ -1,11 +1,13 @@
 package org.example.service;
 
 import org.example.model.User;
+import org.example.repository.UserRepositoryImpl;
 import org.example.util.DBConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class UserService {
 
@@ -38,25 +40,18 @@ public class UserService {
     }
 
     // READ ALL
-    public List<User> getAll() {
-        List<User> users = new ArrayList<>();
-        String sql = "SELECT * FROM user";
-
-        try (Connection conn = DBConnection.getConnection();
-             Statement st = conn.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-
-            while (rs.next()) {
-                users.add(mapRow(rs));
-            }
-
-        } catch (SQLException e) {
-            throw new RuntimeException("Erreur getAll", e);
+    public List<Map<String, Object>> getAllAsMap() {
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (User u : new UserRepositoryImpl().findAll()) {
+            Map<String, Object> map = new java.util.HashMap<>();
+            map.put("id",     u.getId());
+            map.put("nom",    u.getNom());
+            map.put("prenom", u.getPrenom());
+            map.put("email",  u.getEmail());
+            result.add(map);
         }
-
-        return users;
+        return result;
     }
-
     // FIND BY EMAIL
     public User findByEmail(String email) {
         String sql = "SELECT * FROM user WHERE email = ?";

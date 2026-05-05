@@ -108,7 +108,9 @@ public class PathologieController implements Initializable {
 
         ComboBox<String> cbUser = new ComboBox<>();
         cbUser.setPrefWidth(380);
-        List<Map<String, Object>> users = userService.getAll();
+
+        // ✅ Fixed: use getAllAsMap() instead of getAll()
+        List<Map<String, Object>> users = userService.getAllAsMap();
         users.forEach(u -> cbUser.getItems().add(u.get("id") + " - " + u.get("prenom") + " " + u.get("nom")));
 
         TextField tfNom = new TextField(); tfNom.setPromptText("Nom de la pathologie"); tfNom.setPrefWidth(380);
@@ -232,6 +234,7 @@ public class PathologieController implements Initializable {
         types.forEach((t, c) -> series.getData().add(new XYChart.Data<>(t, c)));
         barType.getData().clear(); barType.getData().add(series); barType.setTitle("Par Type");
     }
+
     @FXML
     private void handleSearchFDA() {
         Pathologie selected = tablePathologies.getSelectionModel().getSelectedItem();
@@ -241,14 +244,13 @@ public class PathologieController implements Initializable {
         }
 
         OpenFDAService fdaService = new OpenFDAService();
-        java.util.List<String> medicaments = fdaService.searchMedicaments(selected.getNom());
+        List<String> medicaments = fdaService.searchMedicaments(selected.getNom());
 
         if (medicaments.isEmpty()) {
             showAlert("Aucun médicament trouvé pour \"" + selected.getNom() + "\" dans OpenFDA.");
             return;
         }
 
-        // Afficher les résultats dans un dialog
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Médicaments FDA — " + selected.getNom());
         dialog.setHeaderText("Médicaments trouvés pour : " + selected.getNom());
@@ -259,7 +261,6 @@ public class PathologieController implements Initializable {
         listView.getItems().addAll(medicaments);
         listView.setPrefHeight(300);
 
-        // Double-clic pour voir les détails
         listView.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2 && listView.getSelectionModel().getSelectedItem() != null) {
                 String medName = listView.getSelectionModel().getSelectedItem();

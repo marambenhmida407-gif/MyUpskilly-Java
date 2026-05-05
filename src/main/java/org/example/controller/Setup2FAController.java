@@ -35,3 +35,10 @@ public class Setup2FAController implements Initializable {
         this.secret = TotpUtil.generateSecret();
         lblSecretKey.setText(secret);
 }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
+    }
+}
+

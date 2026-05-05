@@ -19,6 +19,7 @@ import javafx.stage.FileChooser;
 import org.example.model.Consultation;
 import org.example.model.Pathologie;
 import org.example.service.*;
+import org.example.model.User;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -135,7 +136,7 @@ public class ConsultationController implements Initializable {
 
         ComboBox<String> cbPatient = new ComboBox<>();
         cbPatient.setPrefWidth(400);
-        List<Map<String, Object>> users = userService.getAll();
+        List<Map<String, Object>> users = userService.getAllAsMap();
         users.forEach(u -> cbPatient.getItems().add(u.get("id") + " - " + u.get("prenom") + " " + u.get("nom") + " (" + u.get("email") + ")"));
 
         DatePicker dpDate = new DatePicker(); dpDate.setPrefWidth(400);

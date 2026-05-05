@@ -5,13 +5,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.*;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
-import org.example.service.UserService;
+import org.example.repository.UserRepositoryImpl;
 import org.example.model.User;
 
 import java.net.URL;
@@ -40,7 +38,7 @@ public class UserController implements Initializable {
     @FXML private PieChart pieRoles;
     @FXML private BarChart<String, Number> barSpecialites;
 
-    private final UserService userService = new UserService();
+    private final UserRepositoryImpl userRepository = new UserRepositoryImpl();
     private ObservableList<User> userList;
 
     @Override
@@ -82,7 +80,7 @@ public class UserController implements Initializable {
     }
 
     private void loadData() {
-        userList = FXCollections.observableArrayList(userService.getAll());
+        userList = FXCollections.observableArrayList(userRepository.findAll());
         tableUsers.setItems(userList);
         updateStats();
         updateCharts();
@@ -143,11 +141,11 @@ public class UserController implements Initializable {
             cbRole.setValue(parseRole(existing.getRoles()));
         }
 
-        grid.add(new Label("Nom"), 0, 0); grid.add(tfNom, 1, 0);
-        grid.add(new Label("Prénom"), 0, 1); grid.add(tfPrenom, 1, 1);
-        grid.add(new Label("Email"), 0, 2); grid.add(tfEmail, 1, 2);
+        grid.add(new Label("Nom"), 0, 0);       grid.add(tfNom, 1, 0);
+        grid.add(new Label("Prénom"), 0, 1);    grid.add(tfPrenom, 1, 1);
+        grid.add(new Label("Email"), 0, 2);     grid.add(tfEmail, 1, 2);
         grid.add(new Label("Mot de passe"), 0, 3); grid.add(pfPassword, 1, 3);
-        grid.add(new Label("Rôle"), 0, 4); grid.add(cbRole, 1, 4);
+        grid.add(new Label("Rôle"), 0, 4);      grid.add(cbRole, 1, 4);
 
         dialog.getDialogPane().setContent(grid);
 
@@ -166,10 +164,10 @@ public class UserController implements Initializable {
 
         dialog.showAndWait().ifPresent(u -> {
             if (existing == null) {
-                userService.save(u);
+                userRepository.save(u);
                 showSuccess("Ajouté !");
             } else {
-                userService.update(u);
+                userRepository.update(u);
                 showSuccess("Modifié !");
             }
             loadData();
@@ -181,17 +179,26 @@ public class UserController implements Initializable {
     @FXML private void handleDelete() {
         User selected = tableUsers.getSelectionModel().getSelectedItem();
         if (selected != null) {
-            userService.delete(selected.getId());
+            userRepository.delete(selected.getId());
             loadData();
         }
     }
 
     private void applyFilters() {
         String keyword = tfRecherche.getText();
-        tableUsers.setItems(userList.filtered(u ->
-                keyword == null || keyword.isEmpty() ||
-                u.getNom().toLowerCase().contains(keyword.toLowerCase())
-        ));
+        String role = cbFiltreRole.getValue();
+        String etat = cbFiltreEtat.getValue();
+        tableUsers.setItems(userList.filtered(u -> {
+            boolean matchKw = keyword == null || keyword.isEmpty() ||
+                    (u.getNom() != null && u.getNom().toLowerCase().contains(keyword.toLowerCase())) ||
+                    (u.getEmail() != null && u.getEmail().toLowerCase().contains(keyword.toLowerCase()));
+            boolean matchRole = role == null || role.equals("Tous") ||
+                    parseRole(u.getRoles()).equals(role);
+            boolean matchEtat = etat == null || etat.equals("Tous") ||
+                    (etat.equals("Actif") && Boolean.TRUE.equals(u.getEtat())) ||
+                    (etat.equals("Inactif") && !Boolean.TRUE.equals(u.getEtat()));
+            return matchKw && matchRole && matchEtat;
+        }));
     }
 
     private void showSuccess(String msg) {
