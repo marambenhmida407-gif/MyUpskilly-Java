@@ -1,0 +1,191 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes Questions{% endblock %}
+{% block page_title %}❓ Poser une Question{% endblock %}
+
+{% block body %}
+<div class="row g-4">
+    <!-- Form colonne gauche -->
+    <div class="col-md-6">
+        <div class="card-stat">
+            <h6 class="fw-bold mb-3" style="color:#0a5f7a;">📝 Nouvelle Question Médicale</h6>
+
+            {% if success %}<div class="alert alert-success">{{ success }}</div>{% endif %}
+            {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+
+            <form method="post" id="question-form">
+                <!-- Catégorie obligatoire -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold small" style="color:#0a5f7a;">Catégorie *</label>
+                    <select name="categorie" id="categorie" class="form-select" required>
+                        <option value="">Sélectionner une spécialité...</option>
+                        {% for cat in categories %}
+                        <option value="{{ cat }}">{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Titre -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold small" style="color:#0a5f7a;">Titre *</label>
+                    <input type="text" name="titre" id="titre" class="form-control"
+                           placeholder="Résumez votre question en quelques mots..." required>
+                </div>
+
+                <!-- Description + déclencheur IA -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold small" style="color:#0a5f7a;">Description *</label>
+                    <textarea name="description" id="description" class="form-control" rows="4"
+                              placeholder="Décrivez votre problème en détail..." required
+                              onblur="triggerAI()"></textarea>
+                </div>
+
+                <!-- ✅ Panel IA pré-analyse patient -->
+                <div id="ai-analysis-box" class="mb-3" style="display:none;">
+                    <div class="rounded p-3" style="background:#f0f8ff; border:1px solid #1a7a9a;">
+                        <div class="d-flex align-items-center gap-2 mb-2">
+                            <span>🤖</span>
+                            <span class="fw-bold small" style="color:#0a3d5c;">Analyse IA (indicatif uniquement)</span>
+                            <div id="ai-spinner" class="spinner-border spinner-border-sm ms-auto" role="status" style="display:none;"></div>
+                        </div>
+                        <div id="ai-analysis-content" class="small" style="color:#333; white-space:pre-wrap;"></div>
+                    </div>
+                </div>
+
+                <!-- ✅ Panel cas similaires -->
+                <div id="similar-box" class="mb-3" style="display:none;">
+                    <div class="rounded p-3" style="background:#fff8f0; border:1px solid #f0a500;">
+                        <div class="fw-bold small mb-2" style="color:#b07000;">📚 Cas similaires déjà répondus</div>
+                        <div id="similar-content"></div>
+                    </div>
+                </div>
+
+                <!-- Taille / Poids -->
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <label class="form-label small">Taille (cm)</label>
+                        <input type="number" name="taille" class="form-control" placeholder="Ex: 175" min="50" max="250" step="0.1">
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label small">Poids (kg)</label>
+                        <input type="number" name="poids" class="form-control" placeholder="Ex: 70" min="2" max="300" step="0.1">
+                    </div>
+                </div>
+
+                <!-- Traitement / Allergies -->
+                <div class="row g-2 mb-3">
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input type="checkbox" name="sous_traitement" id="st" class="form-check-input">
+                            <label for="st" class="form-check-label small">Sous traitement</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-check">
+                            <input type="checkbox" name="a_des_allergies" id="al" class="form-check-input">
+                            <label for="al" class="form-check-label small">A des allergies</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 fw-bold py-2">
+                    📤 Soumettre la question
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Mes questions colonne droite -->
+    <div class="col-md-6">
+        <div class="card-stat">
+            <h6 class="fw-bold mb-3" style="color:#0a5f7a;">Mes Questions ({{ mes_questions|length }})</h6>
+            {% for q in mes_questions %}
+            <div class="border rounded p-3 mb-2">
+                <div class="d-flex justify-content-between align-items-start">
+                    <div class="fw-bold small">{{ q.titre }}</div>
+                    <span class="badge {{ q.statut == 'repondu' ? 'badge-green' : 'badge-orange' }} ms-2">
+                        {{ q.statut == 'repondu' ? '✅ Répondu' : '⏳ En attente' }}
+                    </span>
+                </div>
+                <div class="text-muted" style="font-size:11px;">
+                    📂 {{ q.categorie ?? 'Général' }}
+                    {% if q.createdAt %} | {{ q.createdAt|date('d/m/Y') }}{% endif %}
+                </div>
+                <div class="d-flex gap-2 mt-2">
+                    {% if q.statut == 'repondu' %}
+                    <a href="{{ path('app_questions_repondues') }}" class="btn btn-sm btn-outline-primary">
+                        💬 Voir réponse
+                    </a>
+                    {% endif %}
+                    <form method="post" action="{{ path('app_patient_delete_question', {id: attribute(q, 'id')}) }}"
+                          class="d-inline" onsubmit="return confirm('Supprimer cette question ?')">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">🗑</button>
+                    </form>
+                </div>
+            </div>
+            {% else %}
+            <p class="text-muted text-center py-3">Aucune question soumise pour l'instant.</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+let aiTriggered = false;
+
+function triggerAI() {
+    const titre     = document.getElementById('titre').value.trim();
+    const desc      = document.getElementById('description').value.trim();
+    const categorie = document.getElementById('categorie').value;
+
+    if (aiTriggered || titre.length < 3 || desc.length < 10) return;
+    aiTriggered = true;
+
+    // Panel IA
+    document.getElementById('ai-analysis-box').style.display = 'block';
+    document.getElementById('ai-spinner').style.display = 'inline-block';
+    document.getElementById('ai-analysis-content').textContent = '⏳ Analyse en cours...';
+
+    // Appel IA pré-analyse
+    fetch('{{ path("app_patient_ai_analyze") }}', {
+        method: 'POST',
+        body: new URLSearchParams({ titre, description: desc, categorie })
+    })
+    .then(r => r.json())
+    .then(data => {
+        document.getElementById('ai-spinner').style.display = 'none';
+        document.getElementById('ai-analysis-content').textContent =
+            data.analysis ?? 'Analyse indisponible.';
+    })
+    .catch(() => {
+        document.getElementById('ai-spinner').style.display = 'none';
+        document.getElementById('ai-analysis-content').textContent = 'Service IA indisponible.';
+    });
+
+    // Cas similaires
+    fetch('{{ path("app_patient_ai_similar") }}', {
+        method: 'POST',
+        body: new URLSearchParams({ query: titre + ' ' + desc })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.similar && data.similar.length > 0) {
+            document.getElementById('similar-box').style.display = 'block';
+            const html = data.similar.map(q => `
+                <div class="mb-2 p-2 rounded" style="background:white; border:1px solid #f0e0a0;">
+                    <div class="fw-bold small" style="color:#0a3d5c;">❓ ${q.titre}</div>
+                    <div class="text-muted" style="font-size:11px;">${(q.contenu ?? '').substring(0, 120)}...</div>
+                </div>
+            `).join('');
+            document.getElementById('similar-content').innerHTML = html;
+        }
+    })
+    .catch(() => {});
+}
+
+// Reset IA trigger si le user change le titre ou catégorie
+document.getElementById('titre').addEventListener('change', () => { aiTriggered = false; });
+document.getElementById('categorie').addEventListener('change', () => { aiTriggered = false; });
+</script>
+{% endblock %}

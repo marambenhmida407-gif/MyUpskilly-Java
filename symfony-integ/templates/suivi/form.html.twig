@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}{% block title %}Suivi{% endblock %}{% block page_title %}Suivi Thérapeutique{% endblock %}
+{% block body %}
+<div class="card-stat" style="max-width:560px;"><form method="post"><div class="row g-3">
+    <div class="col-12"><label class="form-label fw-bold small">Patient *</label><select name="patient_id" class="form-select" required><option value="">Sélectionner...</option>{% for p in patients %}<option value="{{ attribute(p, 'id') }}" {{ suivi and suivi.patientId == attribute(p, 'id') ? 'selected' }}>{{ p.prenom }} {{ p.nom }}</option>{% endfor %}</select></div>
+    <div class="col-6"><label class="form-label fw-bold small">Date début *</label><input type="datetime-local" name="date_debut" class="form-control" value="{{ suivi ? suivi.dateDebut|date('Y-m-d\\TH:i') }}" required></div>
+    <div class="col-6"><label class="form-label fw-bold small">Date fin</label><input type="datetime-local" name="date_fin" class="form-control" value="{{ suivi and suivi.dateFin ? suivi.dateFin|date('Y-m-d\\TH:i') }}"></div>
+    <div class="col-12"><label class="form-label fw-bold small">Type de suivi *</label><input type="text" name="type_suivi" class="form-control" value="{{ suivi ? suivi.typeSuivi }}" required></div>
+    <div class="col-12"><label class="form-label fw-bold small">Objectif thérapeutique *</label><input type="text" name="objectif_therapeutique" class="form-control" value="{{ suivi ? suivi.objectifTherapeutique }}" required></div>
+    <div class="col-12"><label class="form-label fw-bold small">Statut *</label><select name="statut" class="form-select" required>{% for s in statuts %}<option {{ suivi and suivi.statut == s ? 'selected' }}>{{ s }}</option>{% endfor %}</select></div>
+</div><hr><div class="d-flex gap-2"><button type="submit" class="btn btn-primary">Enregistrer</button><a href="{{ path('app_suivis') }}" class="btn btn-outline-secondary">Annuler</a></div></form></div>
+{% endblock %}

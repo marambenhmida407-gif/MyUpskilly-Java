@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block title %}Signalements{% endblock %}
+{% block page_title %}🚩 Signalements{% endblock %}
+{% block body %}
+{% for r in reports %}
+<div class="card-stat mb-2" style="border-left:3px solid #e74c3c;">
+    <div class="fw-bold small" style="color:#e74c3c;">{{ r.type == 'feedback' ? '💬 Commentaire' : '❓ Question' }}</div>
+    <div class="fw-bold">{{ r.question_titre ?? r.feedback_commentaire ?? 'N/A' }}</div>
+    <div class="text-muted small">⚠️ {{ r.raison }}</div>
+    <div class="text-muted" style="font-size:11px;">Statut: {{ r.statut }} | {{ r.created_at ? r.created_at|slice(0,10) }}</div>
+</div>
+{% else %}
+<div class="card-stat text-muted">Aucun signalement.</div>
+{% endfor %}
+{% endblock %}

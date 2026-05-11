@@ -1,0 +1,241 @@
+{% extends 'base.html.twig' %}
+{% block title %}Espace Médecin{% endblock %}
+{% block page_title %}💬 Questions Patients{% endblock %}
+
+{% block body %}
+<div class="row g-4">
+
+    <!-- Questions list (gauche) -->
+    <div class="col-md-6" style="max-height:85vh; overflow-y:auto;">
+
+        {% if mes_questions|length > 0 %}
+        <h6 class="fw-bold mb-2" style="color:#0a5f7a;">
+            ✅ Dans votre spécialité ({{ mes_questions|length }})
+        </h6>
+        {% for q in mes_questions %}
+        <div class="card-stat mb-3 question-card"
+             data-id="{{ attribute(q, 'id') }}"
+             data-titre="{{ q.titre|e('html_attr') }}"
+             data-desc="{{ q.description|e('html_attr') }}"
+             data-cat="{{ q.categorie|e('html_attr') }}"
+             style="border-left:3px solid #1aaa8a; cursor:pointer;"
+             onclick="selectQuestion(this)">
+            {% if q.categorie %}
+            <span class="badge badge-blue mb-1">📂 {{ q.categorie }}</span>
+            {% endif %}
+            <div class="fw-bold" style="color:#0a3d5c;">{{ q.titre }}</div>
+            <div class="text-muted small">{{ q.description|slice(0,150) }}{% if q.description|length > 150 %}...{% endif %}</div>
+            <div class="d-flex gap-3 mt-2 text-muted" style="font-size:11px;">
+                <span>💊 {{ q.isSousTraitement() ? '✅ Traitement' : '❌ Pas de traitement' }}</span>
+                <span>⚠️ {{ q.isADesAllergies() ? '✅ Allergies' : '❌ Pas d\'allergies' }}</span>
+                {% if q.taille %}<span>📏 {{ q.taille }}cm</span>{% endif %}
+                {% if q.poids %}<span>⚖️ {{ q.poids }}kg</span>{% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if autres_questions|length > 0 %}
+        <h6 class="fw-bold mb-2 mt-3" style="color:#e67e22;">
+            ⚠️ Hors spécialité ({{ autres_questions|length }})
+        </h6>
+        {% for q in autres_questions %}
+        <div class="card-stat mb-2" style="border-left:3px solid #e67e22; opacity:0.75;">
+            {% if q.categorie %}
+            <span class="badge bg-warning text-dark mb-1">📂 {{ q.categorie }}</span>
+            {% endif %}
+            <div class="fw-bold small">{{ q.titre }}</div>
+            <div class="text-muted small">{{ q.description|slice(0,100) }}...</div>
+            <div class="text-muted" style="font-size:11px;">
+                🔍 Spécialité requise :
+                {{ category_map[q.categorie] ?? q.categorie }}
+            </div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% if mes_questions|length == 0 and autres_questions|length == 0 %}
+        <div class="card-stat text-center text-muted py-5">
+            ✅ Aucune question en attente pour le moment !
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Panneau réponse + IA (droite) -->
+    <div class="col-md-6">
+
+        <!-- État initial (rien sélectionné) -->
+        <div id="no-selection" class="card-stat text-center py-5" style="color:#aaa;">
+            👆 Cliquez sur une question pour répondre
+        </div>
+
+        <!-- Panneau actif après sélection -->
+        <div id="reply-panel" style="display:none;">
+
+            <!-- Question sélectionnée -->
+            <div class="card-stat mb-3" style="border-left:3px solid #0a5f7a;">
+                <div class="fw-bold small text-muted mb-1">Question sélectionnée :</div>
+                <div id="selected-title" class="fw-bold" style="color:#0a5f7a;"></div>
+                <div id="selected-desc" class="text-muted small mt-1"></div>
+            </div>
+
+            <!-- ✅ Panel IA suggestions médecin -->
+            <div id="ai-box" class="card-stat mb-3" style="background:#f4f7fb; border:1px solid #d0e8f5; display:none;">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span>🤖</span>
+                    <span class="fw-bold small" style="color:#0a3d5c;">Suggestions IA pour le médecin</span>
+                    <span class="badge bg-warning text-dark ms-auto" style="font-size:9px;">Indicatif uniquement</span>
+                </div>
+                <div id="ai-loading" class="text-muted small">⏳ Analyse en cours...</div>
+                <div id="ai-content" class="small" style="white-space:pre-wrap; display:none;"></div>
+                <div class="mt-2" id="ai-buttons" style="display:none;">
+                    <button class="btn btn-sm btn-outline-primary" onclick="showFullAI()">🔍 Voir complet</button>
+                    <button class="btn btn-sm btn-outline-secondary ms-1" onclick="copyAI()">📋 Copier</button>
+                </div>
+            </div>
+
+            <!-- Formulaire réponse -->
+            <div class="card-stat">
+                <h6 class="fw-bold mb-2" style="color:#0a5f7a;">✍️ Votre réponse</h6>
+                <form id="reply-form">
+                    <input type="hidden" id="question-id" name="question_id">
+                    <textarea name="contenu" id="reply-content" class="form-control mb-2" rows="6"
+                              placeholder="Rédigez votre réponse médicale... (min 10 caractères)"></textarea>
+                    <div id="reply-error" class="text-danger small mb-2"></div>
+                    <button type="button" onclick="submitReply()"
+                            class="btn btn-primary w-100 fw-bold">
+                        ✅ Soumettre la réponse
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal IA complet -->
+<div class="modal fade" id="aiModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#0a5f7a; color:white;">
+                <h5 class="modal-title">🤖 Analyse IA Complète</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning py-2 small">
+                    ⚠️ Ces suggestions sont indicatives. Vous restez seul décisionnaire.
+                </div>
+                <pre id="ai-full-content" class="small" style="white-space:pre-wrap; max-height:400px; overflow-y:auto;"></pre>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary" onclick="copyAI()">📋 Copier</button>
+                <button class="btn btn-primary" data-bs-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+let fullAIText = '';
+
+function selectQuestion(card) {
+    // Reset style toutes les cartes
+    document.querySelectorAll('.question-card').forEach(c => {
+        c.style.borderLeftColor = '#1aaa8a';
+        c.style.background = 'white';
+    });
+
+    // Highlight la carte sélectionnée
+    card.style.borderLeftColor = '#0a5f7a';
+    card.style.background = '#eaf6ff';
+
+    const id     = card.dataset.id;
+    const titre  = card.dataset.titre;
+    const desc   = card.dataset.desc;
+    const cat    = card.dataset.cat;
+
+    document.getElementById('question-id').value  = id;
+    document.getElementById('selected-title').textContent = titre;
+    document.getElementById('selected-desc').textContent  = desc.substring(0, 200) + (desc.length > 200 ? '...' : '');
+    document.getElementById('reply-content').value = '';
+    document.getElementById('reply-error').textContent = '';
+
+    document.getElementById('no-selection').style.display = 'none';
+    document.getElementById('reply-panel').style.display  = 'block';
+
+    // Lancer l'IA
+    loadAI(titre, desc, cat);
+}
+
+function loadAI(titre, desc, cat) {
+    const box     = document.getElementById('ai-box');
+    const loading = document.getElementById('ai-loading');
+    const content = document.getElementById('ai-content');
+    const buttons = document.getElementById('ai-buttons');
+
+    box.style.display     = 'block';
+    loading.style.display = 'block';
+    content.style.display = 'none';
+    buttons.style.display = 'none';
+    fullAIText = '';
+
+    fetch('{{ path("app_medecin_ai") }}', {
+        method: 'POST',
+        body: new URLSearchParams({ titre, description: desc, categorie: cat })
+    })
+    .then(r => r.json())
+    .then(data => {
+        loading.style.display = 'none';
+        fullAIText = data.suggestions ?? 'Analyse indisponible.';
+        const preview = fullAIText.length > 200 ? fullAIText.substring(0, 200) + '...' : fullAIText;
+        content.textContent   = preview;
+        content.style.display = 'block';
+        buttons.style.display = fullAIText.length > 200 ? 'block' : 'none';
+        document.getElementById('ai-full-content').textContent = fullAIText;
+    })
+    .catch(() => {
+        loading.textContent = 'Service IA indisponible.';
+    });
+}
+
+function showFullAI() {
+    new bootstrap.Modal(document.getElementById('aiModal')).show();
+}
+
+function copyAI() {
+    navigator.clipboard.writeText(fullAIText).then(() => alert('✅ Copié !'));
+}
+
+function submitReply() {
+    const contenu = document.getElementById('reply-content').value.trim();
+    const errorEl = document.getElementById('reply-error');
+
+    if (contenu.length < 10) {
+        errorEl.textContent = 'Réponse trop courte (min 10 caractères).';
+        return;
+    }
+    errorEl.textContent = '';
+
+    fetch('{{ path("app_medecin_repondre") }}', {
+        method: 'POST',
+        body: new URLSearchParams({
+            question_id: document.getElementById('question-id').value,
+            contenu
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            alert('✅ Réponse soumise avec succès !');
+            window.location.reload();
+        } else {
+            errorEl.textContent = data.error ?? 'Erreur lors de la soumission.';
+        }
+    })
+    .catch(() => {
+        errorEl.textContent = 'Erreur réseau. Réessayez.';
+    });
+}
+</script>
+{% endblock %}

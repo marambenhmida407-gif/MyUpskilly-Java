@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.web.*?>
+
+<VBox spacing="0"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.PharmacyMapController"
+      style="-fx-background-color: #F8FAFC;">
+
+    <!-- TOOLBAR -->
+    <HBox spacing="10" alignment="CENTER_LEFT"
+          style="-fx-padding: 14 24 14 24;
+                 -fx-background-color: white;
+                 -fx-border-color: transparent transparent #E2E8F0 transparent;
+                 -fx-border-width: 0 0 1 0;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 2);">
+
+        <!-- Icon + title -->
+        <VBox spacing="1" style="-fx-padding: 0 12 0 0;">
+            <Label text="🗺️ Carte des Pharmacies"
+                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1E293B;"/>
+            <Label text="OpenStreetMap · Overpass API"
+                   style="-fx-font-size: 10px; -fx-text-fill: #94A3B8;"/>
+        </VBox>
+
+        <Separator orientation="VERTICAL" style="-fx-padding: 0 4;"/>
+
+        <!-- Search -->
+        <TextField fx:id="tfCity"
+                   promptText="🔍  Rechercher une ville..."
+                   prefWidth="220"
+                   styleClass="search-field"
+                   onAction="#searchCity"/>
+        <Button text="Rechercher" onAction="#searchCity"
+                styleClass="btn btn-add"/>
+
+        <Separator orientation="VERTICAL" style="-fx-padding: 0 4;"/>
+
+        <!-- Quick city buttons -->
+        <Label text="Raccourcis :" style="-fx-font-size: 11px; -fx-text-fill: #94A3B8;"/>
+        <Button text="🏙 Tunis"    onAction="#searchTunis"    styleClass="btn btn-filter"/>
+        <Button text="🏙 Sfax"     onAction="#searchSfax"     styleClass="btn btn-filter"/>
+        <Button text="🏙 Sousse"   onAction="#searchSousse"   styleClass="btn btn-filter"/>
+        <Button text="🏙 Monastir" onAction="#searchMonastir" styleClass="btn btn-filter"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- Status label -->
+        <HBox alignment="CENTER_LEFT" spacing="6"
+              style="-fx-background-color: #F0FDF4; -fx-background-radius: 8;
+                     -fx-border-color: #A7F3D0; -fx-border-width: 1;
+                     -fx-border-radius: 8; -fx-padding: 6 12;">
+            <Label text="📍" style="-fx-font-size: 12px;"/>
+            <Label fx:id="lblStatus" text="Tunis — par défaut"
+                   style="-fx-font-size: 11px; -fx-text-fill: #065F46; -fx-font-weight: bold;"/>
+        </HBox>
+    </HBox>
+
+    <!-- MAP -->
+    <WebView fx:id="webView"
+             prefHeight="540"
+             VBox.vgrow="ALWAYS"/>
+
+</VBox>

@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}{% block title %}Pathologie{% endblock %}{% block page_title %}Pathologie{% endblock %}
+{% block body %}
+<div class="card-stat" style="max-width:580px;">
+<form method="post">
+    <div class="row g-3">
+        <div class="col-12"><label class="form-label fw-bold small">Patient *</label><select name="user_id" class="form-select" required><option value="">Sélectionner...</option>{% for p in patients %}<option value="{{ attribute(p, 'id') }}" {{ patologie and patologie.userId == attribute(p, 'id') ? 'selected' }}>{{ p.prenom }} {{ p.nom }}</option>{% endfor %}</select></div>
+        <div class="col-12"><label class="form-label fw-bold small">Nom *</label><input type="text" name="nom" class="form-control" value="{{ patologie ? patologie.nom }}" required></div>
+        <div class="col-12"><label class="form-label fw-bold small">Description</label><textarea name="description" class="form-control" rows="3">{{ patologie ? patologie.description }}</textarea></div>
+        <div class="col-6"><label class="form-label fw-bold small">Type *</label><select name="type" class="form-select" required>{% for t in types %}<option value="{{ t }}" {{ patologie and patologie.type == t ? 'selected' }}>{{ t }}</option>{% endfor %}</select></div>
+        <div class="col-6"><label class="form-label fw-bold small">Gravité *</label><select name="gravite" class="form-select" required>{% for g in gravites %}<option value="{{ g }}" {{ patologie and patologie.gravite == g ? 'selected' }}>{{ g }}</option>{% endfor %}</select></div>
+    </div>
+    <hr><div class="d-flex gap-2"><button type="submit" class="btn btn-primary">Enregistrer</button><a href="{{ path('app_patologies') }}" class="btn btn-outline-secondary">Annuler</a></div>
+</form>
+</div>
+{% endblock %}

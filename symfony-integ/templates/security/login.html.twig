@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connexion — Esprit Médical{% endblock %}
+
+{% block body_noauth %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center" style="background:#0a5f7a;">
+    <div class="card shadow-lg" style="width:420px; border-radius:16px; overflow:hidden; border:none;">
+        <div class="text-center p-4" style="background:#0a5f7a;">
+            <div style="font-size:52px;">🏥</div>
+            <h2 class="text-white mb-1">MedicalQA</h2>
+            <p class="text-white-50 small">Plateforme médicale de questions et réponses</p>
+        </div>
+        <div class="card-body p-4">
+            <h5 class="mb-3" style="color:#0a5f7a;">Connexion</h5>
+
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-bold small" style="color:#0a5f7a;">Adresse email</label>
+                    <input type="email" name="email" class="form-control" value="{{ last_username }}" placeholder="votre@email.com" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold small" style="color:#0a5f7a;">Mot de passe</label>
+                    <input type="password" name="password" class="form-control" placeholder="••••••••" required>
+                </div>
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <div class="d-flex align-items-center mb-3">
+                    <input type="checkbox" name="_remember_me" id="remember" class="form-check-input me-2">
+                    <label for="remember" class="form-check-label small">Se souvenir de moi</label>
+                </div>
+                <button type="submit" class="btn w-100 text-white fw-bold py-2" style="background:#1aaa8a; border-radius:10px;">
+                    Se connecter
+                </button>
+            </form>
+            <hr>
+            <div class="text-center">
+                <span class="text-muted small">Pas encore de compte ?</span>
+                <a href="{{ path('app_register') }}" class="fw-bold small ms-1" style="color:#0a5f7a;">S'inscrire</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

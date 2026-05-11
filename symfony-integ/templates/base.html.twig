@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Esprit Médical{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root { --primary: #0a5f7a; --secondary: #1aaa8a; --accent: #073d4f; }
+        body { background: #f4f8fa; font-family: 'Segoe UI', sans-serif; }
+        .sidebar { background: var(--accent); min-height: 100vh; width: 240px; position: fixed; top:0; left:0; z-index:100; padding-top:20px; }
+        .sidebar .brand { color:white; font-size:1.2rem; font-weight:bold; padding:16px 20px; border-bottom:1px solid rgba(255,255,255,0.1); }
+        .sidebar .nav-link { color: rgba(255,255,255,0.8); padding:10px 20px; display:flex; align-items:center; gap:10px; transition:all 0.2s; }
+        .sidebar .nav-link:hover, .sidebar .nav-link.active { background:rgba(255,255,255,0.1); color:white; }
+        .sidebar .nav-section { color:rgba(255,255,255,0.4); font-size:0.7rem; text-transform:uppercase; padding:16px 20px 4px; letter-spacing:1px; }
+        .main-content { margin-left:240px; padding:0; }
+        .topbar { background:white; padding:12px 24px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid #e0e0e0; position:sticky; top:0; z-index:99; }
+        .topbar h5 { margin:0; color:var(--primary); font-weight:600; }
+        .content-area { padding:24px; }
+        .card-stat { background:white; border-radius:12px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,0.06); }
+        .btn-primary { background:var(--secondary); border:none; }
+        .btn-primary:hover { background:var(--primary); }
+        .badge-green  { background:#d1fae5; color:#065f46; }
+        .badge-orange { background:#fef3c7; color:#92400e; }
+        .badge-blue   { background:#dbeafe; color:#1e40af; }
+        .badge-dark   { background:#f3f4f6; color:#374151; }
+        .alert-flash  { border-radius:8px; }
+    </style>
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+{% if app.user %}
+<div class="sidebar">
+    <div class="brand">🏥 Esprit Médical</div>
+
+    {% if is_granted('ROLE_DOCTOR') %}
+    <div class="nav-section">Votre Espace</div>
+    <a href="{{ path('app_dashboard') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_dashboard' ? 'active' }}"><i class="fas fa-tachometer-alt"></i> Tableau de bord</a>
+    <a href="{{ path('app_suivis') }}" class="nav-link {{ app.request.attributes.get('_route') starts with 'app_suivi' ? 'active' }}"><i class="fas fa-heartbeat"></i> Suivi Thérapeutique</a>
+    <a href="{{ path('app_prescriptions') }}" class="nav-link {{ app.request.attributes.get('_route') starts with 'app_prescription' ? 'active' }}"><i class="fas fa-prescription"></i> Prescriptions</a>
+    <div class="nav-section">Modules Médicaux</div>
+    <a href="{{ path('app_medecin_espace') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_medecin_espace' ? 'active' }}"><i class="fas fa-comments"></i> Questions Patients</a>
+    <a href="{{ path('app_questions_repondues') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_questions_repondues' ? 'active' }}"><i class="fas fa-check-circle"></i> Questions Répondues</a>
+    <a href="{{ path('app_consultations') }}" class="nav-link {{ app.request.attributes.get('_route') starts with 'app_consultation' ? 'active' }}"><i class="fas fa-stethoscope"></i> Consultations</a>
+    <a href="{{ path('app_patologies') }}" class="nav-link {{ app.request.attributes.get('_route') starts with 'app_patologie' ? 'active' }}"><i class="fas fa-virus"></i> Pathologies</a>
+    <a href="{{ path('app_pharmacies') }}" class="nav-link"><i class="fas fa-map-marker-alt"></i> Pharmacies</a>
+<a href="{{ path('app_stock') }}" class="nav-link"><i class="fas fa-pills"></i> Stock Médicaments</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_PATIENT') %}
+    <div class="nav-section">Mon Espace</div>
+    <a href="{{ path('app_patient_questions') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_patient_questions' ? 'active' }}"><i class="fas fa-question-circle"></i> Mes Questions</a>
+    <a href="{{ path('app_questions_repondues') }}" class="nav-link"><i class="fas fa-comments"></i> Réponses</a>
+    {% endif %}
+
+    {% if is_granted('ROLE_ADMIN') %}
+    <div class="nav-section">Administration</div>
+    <a href="{{ path('app_admin') }}" class="nav-link {{ app.request.attributes.get('_route') == 'app_admin' ? 'active' }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+    <a href="{{ path('app_admin_users') }}" class="nav-link {{ app.request.attributes.get('_route') starts with 'app_admin_user' ? 'active' }}"><i class="fas fa-users"></i> Utilisateurs</a>
+    <a href="{{ path('app_admin_questions') }}" class="nav-link"><i class="fas fa-question"></i> Questions</a>
+    <a href="{{ path('app_admin_reports') }}" class="nav-link"><i class="fas fa-flag"></i> Signalements</a>
+    {% endif %}
+</div>
+
+<div class="main-content">
+    <div class="topbar">
+        <h5>{% block page_title %}Tableau de bord{% endblock %}</h5>
+        <div class="d-flex align-items-center gap-3">
+            <span class="text-muted small">
+                {% if is_granted('ROLE_DOCTOR') %}👨‍⚕️ Dr {% endif %}
+                {{ app.user.prenom }} {{ app.user.nom }}
+            </span>
+            <a href="{{ path('app_logout') }}" class="btn btn-sm btn-outline-danger">
+                <i class="fas fa-sign-out-alt"></i> Déconnexion
+            </a>
+        </div>
+    </div>
+    <div class="content-area">
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ type == 'success' ? 'success' : 'danger' }} alert-flash alert-dismissible fade show">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endfor %}
+        {% block body %}{% endblock %}
+    </div>
+</div>
+{% else %}
+    {% block body_noauth %}{% endblock %}
+{% endif %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+{% block javascripts %}{% endblock %}
+</body>
+</html>

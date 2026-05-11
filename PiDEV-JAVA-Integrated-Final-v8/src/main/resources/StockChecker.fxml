@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="0"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.StockCheckerController"
+      stylesheets="@style.css"
+      style="-fx-background-color: #F8FAFC;">
+
+    <!-- ── TOOLBAR ────────────────────────────────────────────────────── -->
+    <HBox spacing="12" alignment="CENTER_LEFT"
+          style="-fx-padding: 14 24; -fx-background-color: white;
+                 -fx-border-color: transparent transparent #E2E8F0 transparent;
+                 -fx-border-width: 0 0 1 0;
+                 -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.04), 8, 0, 0, 2);">
+
+        <VBox spacing="1">
+            <Label text="💊 Vérificateur de Stock"
+                   style="-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #1E293B;"/>
+            <Label text="Stock local · Open FDA API"
+                   style="-fx-font-size: 10px; -fx-text-fill: #94A3B8;"/>
+        </VBox>
+
+        <Separator orientation="VERTICAL" style="-fx-padding: 0 6;"/>
+
+        <!-- Search field -->
+        <TextField fx:id="tfSearch"
+                   promptText="🔍  Rechercher un médicament (ex: Doliprane, Amoxicilline...)"
+                   prefWidth="340"
+                   styleClass="search-field"/>
+
+        <Button fx:id="btnSearch" text="Vérifier le stock"
+                onAction="#handleSearch"
+                styleClass="btn btn-add"/>
+
+        <ProgressIndicator fx:id="spinner"
+                           prefWidth="22" prefHeight="22"
+                           style="-fx-progress-color: #10B981;"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- Info badge -->
+        <HBox alignment="CENTER_LEFT" spacing="6"
+              style="-fx-background-color: #F0FDF4; -fx-background-radius: 8;
+                     -fx-border-color: #A7F3D0; -fx-border-width: 1;
+                     -fx-border-radius: 8; -fx-padding: 6 12;">
+            <Label text="🔬" style="-fx-font-size: 12px;"/>
+            <VBox spacing="1">
+                <Label text="FDA + Stock local"
+                       style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #065F46;"/>
+                <Label text="Double vérification"
+                       style="-fx-font-size: 9px; -fx-text-fill: #6EE7B7;"/>
+            </VBox>
+        </HBox>
+    </HBox>
+
+    <!-- ── STATUS BAR ─────────────────────────────────────────────────── -->
+    <HBox alignment="CENTER_LEFT"
+          style="-fx-padding: 8 24; -fx-background-color: #FAFBFC;
+                 -fx-border-color: transparent transparent #F1F5F9 transparent;
+                 -fx-border-width: 0 0 1 0;">
+        <Label fx:id="lblStatus"
+               text="Recherchez un médicament pour vérifier son stock."
+               style="-fx-font-size: 11px; -fx-text-fill: #94A3B8;"/>
+    </HBox>
+
+    <!-- ── RESULTS SCROLL AREA ────────────────────────────────────────── -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS"
+                style="-fx-background-color: #F8FAFC; -fx-background: #F8FAFC;
+                       -fx-border-color: transparent;
+                       -fx-focus-color: transparent; -fx-faint-focus-color: transparent;">
+        <VBox fx:id="resultsBox" spacing="12"
+              style="-fx-padding: 20 24; -fx-background-color: #F8FAFC;"/>
+    </ScrollPane>
+
+</VBox>

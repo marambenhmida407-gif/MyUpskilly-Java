@@ -1,0 +1,118 @@
+{% extends 'base.html.twig' %}
+{% block title %}Consultations{% endblock %}
+{% block page_title %}🩺 Gestion des Consultations{% endblock %}
+
+{% block body %}
+
+{# ── Stats ── #}
+<div class="row g-3 mb-3">
+    <div class="col-md-3"><div class="card-stat text-center"><div class="fw-bold" style="font-size:2rem;color:#0a5f7a;">{{ stats.total }}</div><div class="text-muted small">Total</div></div></div>
+    <div class="col-md-3"><div class="card-stat text-center"><div class="fw-bold" style="font-size:2rem;color:#1aaa8a;">{{ stats.en_cours }}</div><div class="text-muted small">En cours</div></div></div>
+    <div class="col-md-3"><div class="card-stat text-center"><div class="fw-bold" style="font-size:2rem;color:#3498db;">{{ stats.programmee }}</div><div class="text-muted small">Programmées</div></div></div>
+    <div class="col-md-3"><div class="card-stat text-center"><div class="fw-bold" style="font-size:2rem;color:#e74c3c;">{{ stats.annulee }}</div><div class="text-muted small">Annulées</div></div></div>
+</div>
+
+{# ── Filtres + Actions ── #}
+<div class="card-stat mb-3">
+    <form method="get" class="d-flex gap-2 flex-wrap align-items-center">
+        <input type="text" name="search" value="{{ keyword }}" class="form-control"
+               placeholder="Patient, motif..." style="max-width:250px;">
+        <select name="statut" class="form-select" style="max-width:160px;">
+            <option value="">Tous les statuts</option>
+            {% for s in ['planifiée','en_cours','terminee','annulee'] %}
+                <option value="{{ s }}" {{ statut == s ? 'selected' }}>{{ s }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">🔍</button>
+
+        {# ── Export Excel ── #}
+        <a href="{{ path('app_consultation_export') }}"
+           class="btn btn-success"
+           title="Exporter toutes les consultations en Excel">
+            📊 Export Excel
+        </a>
+
+        <a href="{{ path('app_consultation_new') }}" class="btn btn-primary ms-auto">＋ Ajouter</a>
+    </form>
+</div>
+
+{# ── Table ── #}
+<div class="card-stat">
+    <table class="table table-hover mb-0">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Patient</th>
+                <th>Date</th>
+                <th>Motif</th>
+                <th>Statut</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for c in consultations %}
+        <tr>
+            <td>{{ attribute(c, 'id') }}</td>
+            <td>
+                <div>{{ c.patientNom ?? '#' ~ c.patientId }}</div>
+                {% if c.patientEmail %}
+                    <div class="text-muted" style="font-size:11px;">{{ c.patientEmail }}</div>
+                {% endif %}
+            </td>
+            <td>{{ c.dateConsultation ? c.dateConsultation|date('d/m/Y H:i') }}</td>
+            <td class="text-truncate" style="max-width:180px;">{{ c.motif }}</td>
+            <td>
+                <span class="badge {{
+                    c.statut == 'en_cours'  ? 'badge-green'  :
+                    (c.statut == 'planifiée' ? 'badge-blue'  :
+                    (c.statut == 'annulee'   ? 'bg-danger'   : 'badge-dark'))
+                }}">{{ c.statut }}</span>
+            </td>
+            <td>
+                {# Modifier #}
+                <a href="{{ path('app_consultation_edit', {id: attribute(c, 'id')}) }}"
+                   class="btn btn-sm btn-outline-primary" title="Modifier">✏️</a>
+
+                {# Supprimer #}
+                <form method="post"
+                      action="{{ path('app_consultation_delete', {id: attribute(c, 'id')}) }}"
+                      class="d-inline"
+                      onsubmit="return confirm('Supprimer cette consultation ?')">
+                    <button type="submit" class="btn btn-sm btn-outline-danger" title="Supprimer">🗑</button>
+                </form>
+
+                {# Email confirmation #}
+                {% if c.patientEmail %}
+                <form method="post"
+                      action="{{ path('app_consultation_email', {id: attribute(c, 'id')}) }}"
+                      class="d-inline"
+                      onsubmit="return confirm('Envoyer un email de confirmation à {{ c.patientEmail }} ?')">
+                    <button type="submit" class="btn btn-sm btn-outline-info" title="Envoyer confirmation email">
+                        📧
+                    </button>
+                </form>
+
+                {# Rappel #}
+                <form method="post"
+                      action="{{ path('app_consultation_rappel', {id: attribute(c, 'id')}) }}"
+                      class="d-inline"
+                      onsubmit="return confirm('Envoyer un rappel à {{ c.patientEmail }} ?')">
+                    <button type="submit" class="btn btn-sm btn-outline-warning" title="Envoyer rappel">
+                        🔔
+                    </button>
+                </form>
+                {% else %}
+                <span class="text-muted" style="font-size:11px;" title="Pas d'email pour ce patient">📧 —</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" class="text-center text-muted py-4">Aucune consultation.</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

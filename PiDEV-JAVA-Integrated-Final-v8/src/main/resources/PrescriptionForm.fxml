@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="10"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.PrescriptionFormController"
+      stylesheets="@style.css"
+      styleClass="root">
+
+    <!-- HEADER -->
+    <HBox styleClass="header">
+        <Label text="💊 Formulaire — Prescription Médicale" styleClass="header-title"/>
+    </HBox>
+
+    <VBox spacing="10" style="-fx-padding: 25;">
+
+        <Label text="Date Prescription *"/>
+        <DatePicker fx:id="dpDatePrescription" prefWidth="420"/>
+        <Label fx:id="lblErrorDate" text=" " style="-fx-text-fill: red;"/>
+
+        <Label text="Médicaments *"/>
+        <TextField fx:id="tfMedicaments" promptText="Nom des médicaments" prefWidth="420"/>
+        <Label fx:id="lblErrorMedicaments" text=" " style="-fx-text-fill: red;"/>
+
+        <Label text="Recommandations (optionnel)"/>
+        <TextField fx:id="tfRecommandations" promptText="Recommandations" prefWidth="420"/>
+
+        <Label text="Notes de Suivi (optionnel)"/>
+        <TextField fx:id="tfSuivi" promptText="Notes optionnelles" prefWidth="420"/>
+
+        <!-- ✅ FIX 1: ComboBox instead of raw ID field -->
+        <Label text="Suivi Thérapeutique *"/>
+        <ComboBox fx:id="cbSuiviTherapeutique"
+                  promptText="Sélectionner un suivi thérapeutique..."
+                  prefWidth="420"/>
+        <Label fx:id="lblErrorSuiviId" text=" " style="-fx-text-fill: red;"/>
+
+        <Separator/>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="💾 Enregistrer"
+                    onAction="#handleSave"
+                    styleClass="button btn-primary"/>
+            <Button text="❌ Annuler"
+                    onAction="#handleCancel"
+                    styleClass="button btn-danger"/>
+        </HBox>
+
+    </VBox>
+</VBox>

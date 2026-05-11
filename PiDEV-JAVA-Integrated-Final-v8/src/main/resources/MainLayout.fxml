@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.MainLayoutController"
+      stylesheets="@style.css"
+      styleClass="root-layout">
+
+    <!-- ── SIDEBAR ──────────────────────────────────────────────────── -->
+    <VBox styleClass="sidebar" prefWidth="210" minWidth="210">
+
+        <!-- Logo -->
+        <HBox styleClass="sidebar-logo" alignment="CENTER_LEFT">
+            <Label text="🏥 Esprit Médical" styleClass="logo-text"/>
+        </HBox>
+
+        <!-- Nav section -->
+        <VBox styleClass="nav-section" VBox.vgrow="ALWAYS" spacing="4">
+
+            <Button fx:id="btnNavDashboard"
+                    text="  📊  Tableau de bord"
+                    onAction="#showDashboard"
+                    styleClass="nav-item nav-active"
+                    maxWidth="Infinity"/>
+
+            <Separator style="-fx-padding: 4 0; -fx-opacity: 0.3;"/>
+            <Label text="  VOTRE ESPACE" style="-fx-text-fill: #888; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+
+            <Button fx:id="btnNavSuivi"
+                    text="  🩺  Suivi Thérapeutique"
+                    onAction="#showSuivi"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+            <Button fx:id="btnNavPrescription"
+                    text="  💊  Prescriptions"
+                    onAction="#showPrescriptions"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+            <Button fx:id="btnNavCalendar"
+                    text="  🗓️  Calendrier"
+                    onAction="#showCalendar"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+            <Separator style="-fx-padding: 4 0; -fx-opacity: 0.3;"/>
+            <Label text="  MODULES MÉDICAUX" style="-fx-text-fill: #888; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+
+            <Button fx:id="btnNavMedical"
+                    text="  💬  Questions Patients"
+                    onAction="#showMedical"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+            <Button fx:id="btnNavQuestionsRep"
+                    text="  ✅  Questions Répondues"
+                    onAction="#showQuestionsRepondues"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+            <Button fx:id="btnNavConsultation"
+                    text="  📅  Consultations"
+                    onAction="#showConsultations"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+            <Button fx:id="btnNavPathologie"
+                    text="  🧬  Pathologies"
+                    onAction="#showPathologies"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+            <Separator style="-fx-padding: 4 0; -fx-opacity: 0.3;"/>
+            <Label text="  OUTILS" style="-fx-text-fill: #888; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+
+            <Button fx:id="btnNavMap"
+                    text="  🗺️  Pharmacies"
+                    onAction="#showMap"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+            <Button fx:id="btnNavStock"
+                    text="  🔬  Stock Médicaments"
+                    onAction="#showStockChecker"
+                    styleClass="nav-item"
+                    maxWidth="Infinity"/>
+
+        </VBox>
+
+        <!-- Footer -->
+        <VBox styleClass="sidebar-footer">
+            <Label text="PiDEV · ESPRIT" styleClass="footer-text"/>
+            <Label text="Java · JavaFX · JDBC" styleClass="footer-sub"/>
+        </VBox>
+
+    </VBox>
+
+    <!-- ── MAIN CONTENT ──────────────────────────────────────────────── -->
+    <VBox HBox.hgrow="ALWAYS">
+
+        <!-- Top bar -->
+        <HBox styleClass="topbar" alignment="CENTER_LEFT" spacing="10">
+            <Label fx:id="lblPageTitle"
+                   text="Tableau de bord"
+                   styleClass="topbar-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblUserName" styleClass="topbar-date"/>
+            <Label fx:id="lblDate" styleClass="topbar-date"/>
+            <Button fx:id="btnLogout"
+                    text="⏻  Déconnexion"
+                    onAction="#handleLogout"
+                    style="-fx-background-color: #FEE2E2; -fx-text-fill: #DC2626;
+                           -fx-font-weight: bold; -fx-font-size: 11px;
+                           -fx-background-radius: 8; -fx-border-radius: 8;
+                           -fx-padding: 6 14; -fx-cursor: hand;"/>
+        </HBox>
+
+        <!-- Content pane swapped by controller -->
+        <StackPane fx:id="contentPane" VBox.vgrow="ALWAYS"/>
+
+    </VBox>
+
+</HBox>

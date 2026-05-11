@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block title %}Gestion Questions{% endblock %}
+{% block page_title %}❓ Gestion des Questions{% endblock %}
+{% block body %}
+{% for q in questions %}
+<div class="card-stat mb-2">
+    <div class="d-flex justify-content-between align-items-start">
+        <div>
+            <div class="fw-bold" style="color:#0a5f7a;">{{ q.titre }}</div>
+            <div class="text-muted small">{{ q.description|slice(0,120) }}...</div>
+            <div class="text-muted" style="font-size:11px;">👤 {{ q.userPrenom }} {{ q.userNom }} | 📂 {{ q.categorie ?? 'Général' }}</div>
+            {% if q.statut == 'flagged' %}<span class="badge bg-danger">⚠️ Signalée</span>{% endif %}
+        </div>
+        <form method="post" action="{{ path('app_admin_question_delete', {id: attribute(q, 'id')}) }}" onsubmit="return confirm('Supprimer cette question ?')">
+            <button type="submit" class="btn btn-sm btn-outline-danger">🗑️ Supprimer</button>
+        </form>
+    </div>
+</div>
+{% else %}
+<div class="card-stat text-muted">Aucune question.</div>
+{% endfor %}
+{% endblock %}

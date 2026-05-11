@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ consultation ? 'Modifier' : 'Nouvelle' }} Consultation{% endblock %}
+{% block page_title %}{{ consultation ? 'Modifier' : 'Nouvelle' }} Consultation{% endblock %}
+{% block body %}
+<div class="card-stat" style="max-width:700px;">
+    <form method="post">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <label class="form-label fw-bold small">Patient *</label>
+                <select name="patient_id" class="form-select" required>
+                    <option value="">Sélectionner un patient...</option>
+                    {% for p in patients %}<option value="{{ attribute(p, 'id') }}" {{ consultation and consultation.patientId == attribute(p, 'id') ? 'selected' }}>{{ p.prenom }} {{ p.nom }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small">Pathologie</label>
+                <select name="patologie_id" class="form-select">
+                    <option value="">Aucune</option>
+                    {% for p in patologies %}<option value="{{ attribute(p, 'id') }}" {{ consultation and consultation.patologieId == attribute(p, 'id') ? 'selected' }}>{{ p.nom }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small">Date *</label>
+                <input type="datetime-local" name="date_consultation" class="form-control" value="{{ consultation ? consultation.dateConsultation|date('Y-m-d\\TH:i') }}" required>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label fw-bold small">Statut *</label>
+                <select name="statut" class="form-select" required>
+                    {% for s in statuts %}<option value="{{ s }}" {{ consultation and consultation.statut == s ? 'selected' }}>{{ s }}</option>{% endfor %}
+                </select>
+            </div>
+            <div class="col-12"><label class="form-label fw-bold small">Motif *</label><input type="text" name="motif" class="form-control" value="{{ consultation ? consultation.motif }}" required></div>
+            <div class="col-12"><label class="form-label fw-bold small">Diagnostic</label><textarea name="diagnostic" class="form-control" rows="3">{{ consultation ? consultation.diagnostic }}</textarea></div>
+            <div class="col-12"><label class="form-label fw-bold small">Observations</label><textarea name="observations" class="form-control" rows="2">{{ consultation ? consultation.observations }}</textarea></div>
+            <div class="col-12"><label class="form-label fw-bold small">Ordonnance</label><textarea name="ordonnance" class="form-control" rows="2">{{ consultation ? consultation.ordonnance }}</textarea></div>
+        </div>
+        <hr>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="{{ path('app_consultations') }}" class="btn btn-outline-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

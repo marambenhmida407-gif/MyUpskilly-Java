@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+{% block title %}Questions Répondues{% endblock %}
+{% block page_title %}✅ Questions Répondues{% endblock %}
+{% block body %}
+<div class="card-stat mb-3">
+    <form method="get" class="d-flex gap-2">
+        <input type="text" name="search" value="{{ keyword }}" class="form-control" placeholder="Rechercher...">
+        <select name="categorie" class="form-select" style="max-width:200px;">
+            <option value="">Toutes catégories</option>
+            {% for cat in categories %}<option value="{{ cat }}" {{ categorie == cat ? 'selected' }}>{{ cat }}</option>{% endfor %}
+        </select>
+        <button type="submit" class="btn btn-primary">🔍</button>
+    </form>
+</div>
+{% for r in reponses %}
+<div class="card-stat mb-3">
+    {% if r.categorie %}<span class="badge badge-blue mb-1">📂 {{ r.categorie }}</span>{% endif %}
+    <div class="fw-bold" style="color:#0a3d5c;">{{ r.titre }}</div>
+    <div class="text-muted small mb-2">{{ r.description|slice(0,150) }}...</div>
+    <hr>
+    <div class="bg-light rounded p-3">
+        <div class="fw-bold small" style="color:#1aaa8a;">👨‍⚕️ Dr {{ r.prenom }} {{ r.nom }}{% if r.specialite %} — {{ r.specialite }}{% endif %}</div>
+        <div>{{ r.contenu }}</div>
+        <div class="text-muted" style="font-size:11px;">{{ r.updated_at ? r.updated_at|slice(0,10) }}</div>
+    </div>
+</div>
+{% else %}
+<div class="card-stat text-muted text-center">Aucune question répondue.</div>
+{% endfor %}
+{% endblock %}

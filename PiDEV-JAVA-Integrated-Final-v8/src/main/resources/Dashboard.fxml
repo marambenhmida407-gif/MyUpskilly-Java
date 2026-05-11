@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.DashboardController"
+            style="-fx-background-color: #F8FAFC; -fx-background: #F8FAFC;
+                   -fx-border-color: transparent;">
+
+    <VBox spacing="0" style="-fx-background-color: #F8FAFC; -fx-padding: 28 32 32 32;">
+
+        <!-- WELCOME -->
+        <VBox spacing="4" style="-fx-padding: 0 0 22 0;">
+            <Label fx:id="lblWelcome"
+                   text="Bienvenue"
+                   style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1E293B;"/>
+            <Label text="Statistiques en temps réel de tous les suivis et prescriptions."
+                   style="-fx-font-size: 12px; -fx-text-fill: #94A3B8;"/>
+        </VBox>
+
+        <!-- ── ALERTS ── -->
+        <VBox fx:id="alertsBox" spacing="8" style="-fx-padding: 0 0 16 0;"/>
+
+        <!-- ── CHARTS ── -->
+        <Label text="RÉPARTITION DES STATUTS"
+               style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;
+                      -fx-padding: 0 0 10 0;"/>
+
+        <HBox spacing="12" style="-fx-padding: 0 0 24 0;">
+
+            <!-- PIE CHART -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #E2E8F0; -fx-border-width: 1; -fx-border-radius: 10;
+                         -fx-padding: 16 20;" HBox.hgrow="ALWAYS">
+                <Label text="Distribution des statuts"
+                       style="-fx-font-size: 12px; -fx-font-weight: bold;
+                              -fx-text-fill: #1E293B; -fx-padding: 0 0 10 0;"/>
+                <PieChart fx:id="pieStatut"
+                          prefHeight="260"
+                          labelsVisible="true"
+                          legendVisible="true"
+                          legendSide="BOTTOM"
+                          style="-fx-background-color: transparent;"/>
+            </VBox>
+
+            <!-- BAR CHART -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #E2E8F0; -fx-border-width: 1; -fx-border-radius: 10;
+                         -fx-padding: 16 20;" HBox.hgrow="ALWAYS">
+                <Label text="Prescriptions par suivi"
+                       style="-fx-font-size: 12px; -fx-font-weight: bold;
+                              -fx-text-fill: #1E293B; -fx-padding: 0 0 10 0;"/>
+                <BarChart fx:id="barPrescriptions"
+                          prefHeight="260"
+                          legendVisible="false"
+                          animated="true">
+                    <xAxis>
+                        <CategoryAxis fx:id="barXAxis" label="Suivi"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="barYAxis" label="Prescriptions"
+                                    minorTickVisible="false"/>
+                    </yAxis>
+                </BarChart>
+            </VBox>
+
+        </HBox>
+
+        <!-- ── MINI STAT CARDS ── -->
+        <Label text="RÉSUMÉ"
+               style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;
+                      -fx-padding: 0 0 10 0;"/>
+
+        <HBox spacing="10" style="-fx-padding: 0 0 24 0;">
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #06B6D4 #E2E8F0 #E2E8F0 #06B6D4;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="SUIVIS" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblSuiviTotal" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1E293B;"/>
+            </VBox>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #10B981 #E2E8F0 #E2E8F0 #10B981;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="EN COURS" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblSuiviEnCours" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #059669;"/>
+            </VBox>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #64748B #E2E8F0 #E2E8F0 #64748B;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="TERMINÉ" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblSuiviTermine" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #475569;"/>
+            </VBox>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #F59E0B #E2E8F0 #E2E8F0 #F59E0B;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="SUSPENDU" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblSuiviSuspendu" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #D97706;"/>
+            </VBox>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #3B82F6 #E2E8F0 #E2E8F0 #3B82F6;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="PLANIFIÉ" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblSuiviPlanifie" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2563EB;"/>
+            </VBox>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #8B5CF6 #E2E8F0 #E2E8F0 #8B5CF6;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="PRESCRIPTIONS" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblPrescTotal" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #7C3AED;"/>
+            </VBox>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #10B981 #E2E8F0 #E2E8F0 #10B981;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="AVEC REC." style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblPrescAvec" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #059669;"/>
+            </VBox>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #64748B #E2E8F0 #E2E8F0 #64748B;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="SANS REC." style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblPrescSans" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #475569;"/>
+            </VBox>
+            <VBox style="-fx-background-color: white; -fx-background-radius: 10;
+                         -fx-border-color: #3B82F6 #E2E8F0 #E2E8F0 #3B82F6;
+                         -fx-border-width: 1 1 1 4; -fx-border-radius: 10;
+                         -fx-padding: 12 16 12 16; -fx-spacing: 2;"
+                  HBox.hgrow="ALWAYS">
+                <Label text="SUIVIS CONC." style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;"/>
+                <Label fx:id="lblPrescSuivis" text="0"
+                       style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2563EB;"/>
+            </VBox>
+        </HBox>
+
+        <!-- ── QUICK ACTIONS ── -->
+        <Label text="ACCÈS RAPIDE"
+               style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #94A3B8;
+                      -fx-padding: 0 0 10 0;"/>
+
+        <GridPane hgap="12" vgap="12">
+            <columnConstraints>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+                <ColumnConstraints hgrow="ALWAYS" percentWidth="50"/>
+            </columnConstraints>
+
+            <HBox styleClass="action-card" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                  alignment="CENTER_LEFT" spacing="14" onMouseClicked="#goToSuivi"
+                  style="-fx-cursor: hand;">
+                <VBox styleClass="action-icon icon-green" alignment="CENTER"
+                      minWidth="40" minHeight="40" maxWidth="40" maxHeight="40">
+                    <Label text="🩺" style="-fx-font-size: 16px;"/>
+                </VBox>
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <Label text="Nouveau suivi" styleClass="action-title"/>
+                    <Label text="Créer un suivi thérapeutique" styleClass="action-sub"/>
+                </VBox>
+                <Label text="›" styleClass="action-arrow"/>
+            </HBox>
+
+            <HBox styleClass="action-card" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                  alignment="CENTER_LEFT" spacing="14" onMouseClicked="#goToPrescription"
+                  style="-fx-cursor: hand;">
+                <VBox styleClass="action-icon icon-blue" alignment="CENTER"
+                      minWidth="40" minHeight="40" maxWidth="40" maxHeight="40">
+                    <Label text="💊" style="-fx-font-size: 16px;"/>
+                </VBox>
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <Label text="Nouvelle prescription" styleClass="action-title"/>
+                    <Label text="Ajouter une prescription médicale" styleClass="action-sub"/>
+                </VBox>
+                <Label text="›" styleClass="action-arrow"/>
+            </HBox>
+
+            <HBox styleClass="action-card" GridPane.columnIndex="0" GridPane.rowIndex="1"
+                  alignment="CENTER_LEFT" spacing="14" onMouseClicked="#goToConsultations"
+                  style="-fx-cursor: hand;">
+                <VBox styleClass="action-icon icon-purple" alignment="CENTER"
+                      minWidth="40" minHeight="40" maxWidth="40" maxHeight="40">
+                    <Label text="📅" style="-fx-font-size: 16px;"/>
+                </VBox>
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <Label text="Consultations" styleClass="action-title"/>
+                    <Label text="Gérer les consultations patients" styleClass="action-sub"/>
+                </VBox>
+                <Label text="›" styleClass="action-arrow"/>
+            </HBox>
+
+            <HBox styleClass="action-card" GridPane.columnIndex="1" GridPane.rowIndex="1"
+                  alignment="CENTER_LEFT" spacing="14" onMouseClicked="#goToPathologies"
+                  style="-fx-cursor: hand;">
+                <VBox styleClass="action-icon icon-amber" alignment="CENTER"
+                      minWidth="40" minHeight="40" maxWidth="40" maxHeight="40">
+                    <Label text="🧬" style="-fx-font-size: 16px;"/>
+                </VBox>
+                <VBox spacing="2" HBox.hgrow="ALWAYS">
+                    <Label text="Pathologies" styleClass="action-title"/>
+                    <Label text="Consulter et gérer les pathologies" styleClass="action-sub"/>
+                </VBox>
+                <Label text="›" styleClass="action-arrow"/>
+            </HBox>
+
+        </GridPane>
+
+    </VBox>
+</ScrollPane>

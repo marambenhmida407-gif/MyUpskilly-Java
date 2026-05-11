@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}{% block title %}Prescription{% endblock %}{% block page_title %}Prescription Médicale{% endblock %}
+{% block body %}
+<div class="card-stat" style="max-width:560px;"><form method="post"><div class="row g-3">
+    <div class="col-12"><label class="form-label fw-bold small">Date de prescription *</label><input type="datetime-local" name="date_prescription" class="form-control" value="{{ prescription ? prescription.datePrescription|date('Y-m-d\\TH:i') }}" required></div>
+    <div class="col-12"><label class="form-label fw-bold small">Médicaments *</label><input type="text" name="medicaments" class="form-control" value="{{ prescription ? prescription.medicaments }}" required></div>
+    <div class="col-12"><label class="form-label fw-bold small">Recommandations</label><textarea name="recommandations" class="form-control" rows="2">{{ prescription ? prescription.recommandations }}</textarea></div>
+    <div class="col-12"><label class="form-label fw-bold small">Suivi</label><input type="text" name="suivi" class="form-control" value="{{ prescription ? prescription.suivi }}"></div>
+    <div class="col-12"><label class="form-label fw-bold small">Suivi Thérapeutique *</label><select name="suivi_therapeutique_id" class="form-select" required><option value="">Sélectionner...</option>{% for s in suivis %}<option value="{{ attribute(s, 'id') }}" {{ prescription and prescription.suiviTherapeutiqueId == attribute(s, 'id') ? 'selected' }}>Suivi #{{ attribute(s, 'id') }} — {{ s.patientNom }} — {{ s.typeSuivi }}</option>{% endfor %}</select></div>
+</div><hr><div class="d-flex gap-2"><button type="submit" class="btn btn-primary">Enregistrer</button><a href="{{ path('app_prescriptions') }}" class="btn btn-outline-secondary">Annuler</a></div></form></div>
+{% endblock %}

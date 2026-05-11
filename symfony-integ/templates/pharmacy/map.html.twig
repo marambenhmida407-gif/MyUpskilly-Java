@@ -1,0 +1,109 @@
+{% extends 'base.html.twig' %}
+{% block title %}Carte des Pharmacies{% endblock %}
+{% block page_title %}🗺️ Pharmacies à proximité{% endblock %}
+
+{% block stylesheets %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<style>
+#map { height: 70vh; border-radius: 12px; }
+.city-btn { margin: 4px; }
+</style>
+{% endblock %}
+
+{% block body %}
+<!-- Boutons villes rapides -->
+<div class="card-stat mb-3">
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+        <span class="fw-bold small" style="color:#0a5f7a;">Villes rapides :</span>
+        <button class="btn btn-sm btn-outline-primary city-btn" onclick="loadCity(36.8065, 10.1815, 'Tunis')">📍 Tunis</button>
+        <button class="btn btn-sm btn-outline-primary city-btn" onclick="loadCity(34.7406, 10.7603, 'Sfax')">📍 Sfax</button>
+        <button class="btn btn-sm btn-outline-primary city-btn" onclick="loadCity(35.8256, 10.6369, 'Sousse')">📍 Sousse</button>
+        <button class="btn btn-sm btn-outline-primary city-btn" onclick="loadCity(35.7643, 10.8113, 'Monastir')">📍 Monastir</button>
+        <div class="ms-auto d-flex gap-2">
+            <input type="text" id="cityInput" class="form-control form-control-sm" placeholder="Autre ville..." style="width:200px;">
+            <button class="btn btn-sm btn-primary" onclick="searchCity()">🔍</button>
+        </div>
+    </div>
+    <div id="status" class="text-muted small mt-2">📍 Tunis — chargement...</div>
+</div>
+
+<!-- Carte Leaflet -->
+<div id="map"></div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const map = L.map('map').setView([36.8065, 10.1815], 14);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+
+let markers = [];
+
+function clearMarkers() {
+    markers.forEach(m => map.removeLayer(m));
+    markers = [];
+}
+
+function loadCity(lat, lng, name) {
+    document.getElementById('status').textContent = `🔍 ${name} — chargement...`;
+    map.setView([lat, lng], 14);
+    clearMarkers();
+
+    fetch(`{{ path('app_pharmacies_search') }}?lat=${lat}&lng=${lng}`)
+        .then(r => r.json())
+        .then(data => {
+            const elements = data.elements || [];
+            elements.forEach(el => {
+                const elLat = el.lat ?? el.center?.lat;
+                const elLng = el.lon ?? el.center?.lon;
+                if (!elLat || !elLng) return;
+
+                const name = el.tags?.name ?? 'Pharmacie';
+                const phone = el.tags?.phone ?? '';
+                const opening = el.tags?.opening_hours ?? '';
+
+                const marker = L.marker([elLat, elLng])
+                    .addTo(map)
+                    .bindPopup(`
+                        <strong>🏥 ${name}</strong><br>
+                        ${phone ? '📞 ' + phone + '<br>' : ''}
+                        ${opening ? '🕐 ' + opening : ''}
+                    `);
+                markers.push(marker);
+            });
+            document.getElementById('status').textContent =
+                `📍 ${name} — ${elements.length} pharmacie(s) trouvée(s)`;
+        })
+        .catch(() => {
+            document.getElementById('status').textContent = '❌ Erreur réseau';
+        });
+}
+
+function searchCity() {
+    const city = document.getElementById('cityInput').value.trim();
+    if (!city) return;
+    document.getElementById('status').textContent = `🔍 Recherche de ${city}...`;
+
+    fetch(`{{ path('app_pharmacies_geocode') }}?city=${encodeURIComponent(city)}`)
+        .then(r => r.json())
+        .then(data => {
+            if (data.error) {
+                document.getElementById('status').textContent = '❌ ' + data.error;
+                return;
+            }
+            document.getElementById('cityInput').value = '';
+            loadCity(data.lat, data.lng, city);
+        });
+}
+
+document.getElementById('cityInput').addEventListener('keypress', e => {
+    if (e.key === 'Enter') searchCity();
+});
+
+// Charger Tunis au démarrage
+loadCity(36.8065, 10.1815, 'Tunis');
+</script>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}{% block title %}Prescriptions{% endblock %}{% block page_title %}💊 Prescriptions Médicales{% endblock %}
+{% block body %}
+<div class="card-stat mb-3">
+    <form method="get" class="d-flex gap-2">
+        <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Médicaments...">
+        <select name="rec" class="form-select" style="max-width:200px;"><option value="">Toutes</option><option value="avec" {{ rec == 'avec' ? 'selected' }}>Avec recommandations</option><option value="sans" {{ rec == 'sans' ? 'selected' }}>Sans recommandations</option></select>
+        <button type="submit" class="btn btn-primary">🔍</button>
+        <a href="{{ path('app_prescription_new') }}" class="btn btn-success ms-auto">＋ Ajouter</a>
+    </form>
+</div>
+<div class="card-stat">
+    <table class="table table-hover mb-0">
+        <thead class="table-light"><tr><th>#</th><th>Date</th><th>Médicaments</th><th>Recommandations</th><th>Suivi ID</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for p in prescriptions %}
+        <tr>
+            <td>{{ attribute(p, 'id') }}</td>
+            <td>{{ p.datePrescription|date('d/m/Y') }}</td>
+            <td class="text-truncate" style="max-width:200px;">{{ p.medicaments }}</td>
+            <td class="text-truncate" style="max-width:160px;">{{ p.recommandations ?? '—' }}</td>
+            <td>{{ p.suiviTherapeutiqueId }}</td>
+            <td>
+                <a href="{{ path('app_prescription_edit', {id: attribute(p, 'id')}) }}" class="btn btn-sm btn-outline-primary">✏️</a>
+                <form method="post" action="{{ path('app_prescription_delete', {id: attribute(p, 'id')}) }}" class="d-inline" onsubmit="return confirm('Supprimer ?')"><button type="submit" class="btn btn-sm btn-outline-danger">🗑</button></form>
+            </td>
+        </tr>
+        {% else %}<tr><td colspan="6" class="text-center text-muted">Aucune prescription.</td></tr>{% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

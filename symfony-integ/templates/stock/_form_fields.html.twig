@@ -1,0 +1,23 @@
+<div class="row g-3">
+    <div class="col-8"><label class="form-label small fw-bold">Nom *</label>
+        <input type="text" name="nom" class="form-control" required></div>
+    <div class="col-4"><label class="form-label small fw-bold">Forme</label>
+        <select name="forme" class="form-select">
+            <option>comprimé</option><option>gélule</option><option>sirop</option>
+            <option>injection</option><option>crème</option><option>autre</option>
+        </select></div>
+    <div class="col-6"><label class="form-label small fw-bold">Dosage</label>
+        <input type="text" name="dosage" class="form-control" placeholder="Ex: 500mg"></div>
+    <div class="col-3"><label class="form-label small fw-bold">Quantité *</label>
+        <input type="number" name="quantite" class="form-control" min="0" required></div>
+    <div class="col-3"><label class="form-label small fw-bold">Unité</label>
+        <input type="text" name="unite" class="form-control" value="comprimé"></div>
+    <div class="col-4"><label class="form-label small fw-bold">Seuil alerte</label>
+        <input type="number" name="seuil_alerte" class="form-control" value="10"></div>
+    <div class="col-4"><label class="form-label small fw-bold">Prix (TND)</label>
+        <input type="number" name="prix" class="form-control" step="0.001" value="0"></div>
+    <div class="col-4"><label class="form-label small fw-bold">Expiration</label>
+        <input type="date" name="date_expiry" class="form-control"></div>
+    <div class="col-12"><label class="form-label small fw-bold">Fournisseur</label>
+        <input type="text" name="fournisseur" class="form-control"></div>
+</div>

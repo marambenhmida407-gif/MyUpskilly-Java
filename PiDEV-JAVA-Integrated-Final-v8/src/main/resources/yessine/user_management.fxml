@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.yessine.UserManagementController"
+      spacing="16"
+      style="-fx-background-color: #f4f8fa; -fx-padding: 20;">
+
+    <!-- Header -->
+    <HBox spacing="12" alignment="CENTER_LEFT">
+        <Label text="👥  Gestion des Utilisateurs"
+               style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0a5f7a;"/>
+        <HBox HBox.hgrow="ALWAYS"/>
+        <Button text="＋  Ajouter" onAction="#handleAdd"
+                style="-fx-background-color: #1aaa8a; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-background-radius: 8;
+                       -fx-pref-height: 36; -fx-pref-width: 110;"/>
+        <Button text="🗑  Supprimer" onAction="#handleDelete"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-background-radius: 8;
+                       -fx-pref-height: 36; -fx-pref-width: 120;"/>
+        <Button text="⊘  Actif/Inactif" onAction="#handleToggleEtat"
+                style="-fx-background-color: #f39c12; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-background-radius: 8;
+                       -fx-pref-height: 36; -fx-pref-width: 130;"/>
+        <Button text="↻  Actualiser" onAction="#handleRefresh"
+                style="-fx-background-color: #0a5f7a; -fx-text-fill: white;
+                       -fx-font-weight: bold; -fx-background-radius: 8;
+                       -fx-pref-height: 36; -fx-pref-width: 120;"/>
+    </HBox>
+
+    <!-- Stats cards -->
+    <HBox spacing="16">
+        <VBox alignment="CENTER" spacing="4"
+              style="-fx-background-color: #0a5f7a; -fx-padding: 16 24 16 24;
+                     -fx-background-radius: 12; -fx-pref-width: 160;">
+            <Label text="Total" style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;"/>
+            <Label fx:id="lblTotal" text="—"
+                   style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+        </VBox>
+        <VBox alignment="CENTER" spacing="4"
+              style="-fx-background-color: #1aaa8a; -fx-padding: 16 24 16 24;
+                     -fx-background-radius: 12; -fx-pref-width: 160;">
+            <Label text="Vérifiés" style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;"/>
+            <Label fx:id="lblVerifies" text="—"
+                   style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+        </VBox>
+        <VBox alignment="CENTER" spacing="4"
+              style="-fx-background-color: #2ecc71; -fx-padding: 16 24 16 24;
+                     -fx-background-radius: 12; -fx-pref-width: 160;">
+            <Label text="Actifs" style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;"/>
+            <Label fx:id="lblActifs" text="—"
+                   style="-fx-text-fill: white; -fx-font-size: 28px; -fx-font-weight: bold;"/>
+        </VBox>
+        <!-- Charts -->
+        <PieChart fx:id="pieRoles" title="Rôles" prefWidth="200" prefHeight="120"
+                  style="-fx-background-color: white; -fx-background-radius: 12;
+                         -fx-padding: 8;"/>
+        <BarChart fx:id="barSpecialites" HBox.hgrow="ALWAYS"
+                  prefHeight="140"
+                  style="-fx-background-color: white; -fx-background-radius: 12;">
+            <xAxis><CategoryAxis label="Spécialités"/></xAxis>
+            <yAxis><NumberAxis label="Nb"/></yAxis>
+        </BarChart>
+    </HBox>
+
+    <!-- Filtres -->
+    <HBox spacing="12" alignment="CENTER_LEFT"
+          style="-fx-background-color: white; -fx-padding: 12 16 12 16;
+                 -fx-background-radius: 10;
+                 -fx-effect: dropshadow(gaussian, #ccc, 4, 0, 0, 2);">
+        <Label text="🔍" style="-fx-font-size: 16px;"/>
+        <TextField fx:id="tfRecherche"
+                   promptText="Rechercher nom ou email..."
+                   prefWidth="260"
+                   style="-fx-pref-height: 34; -fx-background-radius: 8;
+                          -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+        <Label text="Rôle :" style="-fx-text-fill: #555;"/>
+        <ComboBox fx:id="cbFiltreRole" prefWidth="130"
+                  style="-fx-pref-height: 34;"/>
+        <Label text="État :" style="-fx-text-fill: #555;"/>
+        <ComboBox fx:id="cbFiltreEtat" prefWidth="110"
+                  style="-fx-pref-height: 34;"/>
+    </HBox>
+
+    <!-- Table -->
+    <TableView fx:id="tableUsers" VBox.vgrow="ALWAYS"
+               style="-fx-background-color: white; -fx-background-radius: 10;">
+        <columns>
+            <TableColumn fx:id="colId"         text="ID"          prefWidth="50"/>
+            <TableColumn fx:id="colNom"        text="Nom"         prefWidth="120"/>
+            <TableColumn fx:id="colPrenom"     text="Prénom"      prefWidth="120"/>
+            <TableColumn fx:id="colEmail"      text="Email"       prefWidth="220"/>
+            <TableColumn fx:id="colRole"       text="Rôle"        prefWidth="90"/>
+            <TableColumn fx:id="colSpecialite" text="Spécialité"  prefWidth="160"/>
+            <TableColumn fx:id="colVerifie"    text="Vérifié"     prefWidth="80"/>
+            <TableColumn fx:id="colEtat"       text="État"        prefWidth="100"/>
+        </columns>
+        <placeholder>
+            <Label text="Aucun utilisateur trouvé." style="-fx-text-fill: #aaa;"/>
+        </placeholder>
+    </TableView>
+
+    <Label text="Double-clic sur une ligne pour modifier · Les suppressions sont définitives"
+           style="-fx-text-fill: #aaa; -fx-font-size: 11px;"/>
+
+</VBox>

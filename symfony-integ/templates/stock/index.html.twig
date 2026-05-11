@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+{% block title %}Stock Médicaments{% endblock %}
+{% block page_title %}💊 Stock Médicaments{% endblock %}
+
+{% block body %}
+<!-- Vérificateur RxNorm -->
+<div class="card-stat mb-4">
+    <h6 class="fw-bold mb-3" style="color:#0a5f7a;">🔬 Vérifier un médicament (Stock local + RxNorm)</h6>
+    <div class="d-flex gap-2 mb-3">
+        <input type="text" id="searchInput" class="form-control" placeholder="Ex: paracetamol, doliprane, amoxicillin..."
+               onkeypress="if(event.key==='Enter') checkMed()">
+        <button class="btn btn-primary px-4" onclick="checkMed()">🔍 Vérifier</button>
+    </div>
+    <div id="rx-result" style="display:none;"></div>
+</div>
+
+<!-- Stock local -->
+<div class="card-stat">
+    <div class="d-flex align-items-center mb-3">
+        <h6 class="fw-bold mb-0" style="color:#0a5f7a;">📦 Stock Local ({{ medicaments|length }})</h6>
+        <button class="btn btn-sm btn-success ms-auto" data-bs-toggle="modal" data-bs-target="#addModal">
+            ＋ Ajouter
+        </button>
+    </div>
+
+    <table class="table table-hover">
+        <thead class="table-light">
+            <tr><th>Nom</th><th>Forme</th><th>Dosage</th><th>Quantité</th><th>Seuil</th><th>Prix</th><th>Expiration</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+        {% for m in medicaments %}
+        <tr>
+            <td class="fw-bold">{{ m.nom }}</td>
+            <td>{{ m.forme ?? '—' }}</td>
+            <td>{{ m.dosage ?? '—' }}</td>
+            <td>
+                <span class="badge {{ m.quantite == 0 ? 'bg-danger' : (m.quantite <= m.seuil_alerte ? 'bg-warning text-dark' : 'badge-green') }}">
+                    {{ m.quantite }} {{ m.unite }}s
+                    {% if m.quantite == 0 %} ⛔{% elseif m.quantite <= m.seuil_alerte %} ⚠️{% endif %}
+                </span>
+            </td>
+            <td>{{ m.seuil_alerte }}</td>
+            <td>{{ m.prix ? m.prix ~ ' TND' : '—' }}</td>
+            <td>{{ m.date_expiry ?? '—' }}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-primary"
+                        onclick="editMed({{ m.id }}, '{{ m.nom }}', '{{ m.forme }}', '{{ m.dosage }}', {{ m.quantite }}, '{{ m.unite }}', {{ m.seuil_alerte }}, {{ m.prix }}, '{{ m.fournisseur }}', '{{ m.date_expiry }}')">
+                    ✏️
+                </button>
+                <form method="post" action="{{ path('app_stock_delete', {id: m.id}) }}" class="d-inline"
+                      onsubmit="return confirm('Supprimer ?')">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">🗑</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="8" class="text-center text-muted">Aucun médicament en stock.</td></tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal Ajouter -->
+<div class="modal fade" id="addModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#0a5f7a; color:white;">
+                <h5 class="modal-title">Ajouter un médicament</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" action="{{ path('app_stock_new') }}">
+                <div class="modal-body">
+                    {% include 'stock/_form_fields.html.twig' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Modifier -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background:#0a5f7a; color:white;">
+                <h5 class="modal-title">Modifier le stock</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" id="editForm" action="">
+                <div class="modal-body">
+                    {% include 'stock/_form_fields.html.twig' %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+function checkMed() {
+    const q = document.getElementById('searchInput').value.trim();
+    if (!q) return;
+    const box = document.getElementById('rx-result');
+    box.style.display = 'block';
+    box.innerHTML = '<div class="text-muted">⏳ Vérification en cours...</div>';
+
+    fetch(`{{ path('app_stock_check') }}?q=${encodeURIComponent(q)}`)
+        .then(r => r.json())
+        .then(data => {
+            const rx = data.rx;
+            let html = `<div class="rounded p-3 mb-3" style="background:#f0f8ff; border-left:4px solid ${rx.found ? '#3B82F6' : '#E2E8F0'};">
+                <div class="fw-bold">🔬 RxNorm — ${q}</div>
+                <div class="small text-muted mb-2">${rx.found ? 'Médicament reconnu · Base NLM / RxNorm' : 'Non trouvé dans RxNorm'}</div>`;
+            if (rx.found) {
+                html += `<div class="small"><strong>Nom officiel :</strong> ${rx.name}</div>
+                         <div class="small"><strong>RxCUI :</strong> ${rx.rxcui}</div>
+                         <div class="small"><strong>Type :</strong> ${data.ttyLabel}</div>`;
+            } else {
+                html += `<div class="small text-muted">💡 Essayez le nom générique : paracetamol, amoxicillin, ibuprofen...</div>`;
+            }
+            html += '</div>';
+
+            if (data.local.length === 0) {
+                html += `<div class="text-muted small">📦 Aucun résultat dans le stock local pour « ${q} »</div>`;
+            } else {
+                data.local.forEach(m => {
+                    const color = m.quantite == 0 ? '#EF4444' : (m.quantite <= m.seuil_alerte ? '#F59E0B' : '#10B981');
+                    const badge = m.quantite == 0 ? '⛔ Rupture' : (m.quantite <= m.seuil_alerte ? '⚠️ Stock faible' : '✅ Disponible');
+                    html += `<div class="rounded p-3 mb-2" style="border-left:4px solid ${color}; background:white;">
+                        <div class="d-flex justify-content-between">
+                            <div class="fw-bold">${m.nom} <span class="text-muted small">${m.forme ?? ''} ${m.dosage ?? ''}</span></div>
+                            <span class="badge" style="background:${color}20; color:${color};">${badge}</span>
+                        </div>
+                        <div class="fw-bold mt-1" style="font-size:1.5rem; color:${color};">${m.quantite} ${m.unite}s</div>
+                        ${m.prix > 0 ? `<div class="small text-muted">Prix : ${m.prix} TND</div>` : ''}
+                        ${m.fournisseur ? `<div class="small text-muted">Fournisseur : ${m.fournisseur}</div>` : ''}
+                    </div>`;
+                });
+            }
+            box.innerHTML = html;
+        })
+        .catch(() => { box.innerHTML = '<div class="text-danger">❌ Erreur réseau</div>'; });
+}
+
+function editMed(id, nom, forme, dosage, quantite, unite, seuil, prix, fournisseur, expiry) {
+    document.getElementById('editForm').action = `/stock/${id}/edit`;
+    const f = document.getElementById('editForm');
+    f.querySelector('[name="nom"]').value = nom;
+    f.querySelector('[name="forme"]').value = forme;
+    f.querySelector('[name="dosage"]').value = dosage;
+    f.querySelector('[name="quantite"]').value = quantite;
+    f.querySelector('[name="unite"]').value = unite;
+    f.querySelector('[name="seuil_alerte"]').value = seuil;
+    f.querySelector('[name="prix"]').value = prix;
+    f.querySelector('[name="fournisseur"]').value = fournisseur;
+    f.querySelector('[name="date_expiry"]').value = expiry;
+    new bootstrap.Modal(document.getElementById('editModal')).show();
+}
+</script>
+{% endblock %}

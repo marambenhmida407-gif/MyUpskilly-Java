@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllers.yessine.Verify2FAController"
+           style="-fx-background-color: #0a5f7a;">
+
+    <VBox alignment="CENTER" spacing="0"
+          style="-fx-max-width: 420; -fx-max-height: 500;">
+
+        <!-- Header -->
+        <VBox alignment="CENTER" spacing="8"
+              style="-fx-background-color: #0a5f7a; -fx-padding: 40 40 25 40;">
+            <Label text="🔐" style="-fx-font-size: 48px;"/>
+            <Label text="Vérification 2FA"
+                   style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label fx:id="lblEmail"
+                   style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <!-- Form Card -->
+        <VBox spacing="18"
+              style="-fx-background-color: white; -fx-padding: 35 40 35 40;
+                     -fx-background-radius: 0 0 16 16;
+                     -fx-effect: dropshadow(gaussian, #073d4f, 15, 0, 0, 5);">
+
+            <Label text="Entrez le code à 6 chiffres affiché dans votre application d'authentification."
+                   style="-fx-text-fill: #555; -fx-font-size: 12px; -fx-wrap-text: true;"/>
+
+            <!-- Code input -->
+            <VBox spacing="8" alignment="CENTER">
+                <TextField fx:id="tfCode"
+                           promptText="000000"
+                           style="-fx-pref-height: 56; -fx-background-radius: 12;
+                                  -fx-border-color: #c8eaed; -fx-border-radius: 12;
+                                  -fx-font-size: 28px; -fx-font-family: 'Courier New';
+                                  -fx-alignment: CENTER; -fx-pref-width: 200;
+                                  -fx-font-weight: bold; -fx-text-fill: #0a5f7a;"/>
+                <Label fx:id="lblError"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;"/>
+            </VBox>
+
+            <!-- Vérifier -->
+            <Button text="Vérifier le code" onAction="#handleVerify"
+                    style="-fx-background-color: #1aaa8a; -fx-text-fill: white;
+                           -fx-font-weight: bold; -fx-pref-height: 44;
+                           -fx-pref-width: 340; -fx-background-radius: 10;
+                           -fx-font-size: 14px;
+                           -fx-effect: dropshadow(gaussian, #0a7a60, 6, 0, 0, 2);"/>
+
+            <Separator/>
+
+            <!-- Retour -->
+            <HBox alignment="CENTER">
+                <Button text="← Retour au login" onAction="#handleBack"
+                        style="-fx-background-color: transparent; -fx-text-fill: #0a5f7a;
+                               -fx-font-size: 12px; -fx-cursor: hand; -fx-underline: true;
+                               -fx-border-color: transparent;"/>
+            </HBox>
+
+        </VBox>
+    </VBox>
+</StackPane>

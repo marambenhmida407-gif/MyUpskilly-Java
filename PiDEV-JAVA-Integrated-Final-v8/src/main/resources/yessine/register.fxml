@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllers.yessine.RegisterController"
+           style="-fx-background-color: #0a5f7a;">
+
+    <HBox alignment="CENTER" spacing="0">
+
+        <!-- Panneau gauche (branding) -->
+        <VBox alignment="CENTER" spacing="16"
+              style="-fx-background-color: #073d4f; -fx-padding: 60 50 60 50;
+                     -fx-pref-width: 320; -fx-min-height: 680;">
+            <Label text="🏥" style="-fx-font-size: 64px;"/>
+            <Label text="EspritMédical"
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Rejoignez la plateforme médicale intégrée de gestion des soins"
+                   style="-fx-text-fill: #c8eaed; -fx-font-size: 13px;
+                          -fx-wrap-text: true; -fx-text-alignment: center;"/>
+            <Separator style="-fx-background-color: #1aaa8a;"/>
+            <Label text="✓  Questions patients en temps réel"
+                   style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;"/>
+            <Label text="✓  Suivi thérapeutique intégré"
+                   style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;"/>
+            <Label text="✓  Assistance IA médicale"
+                   style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <!-- Formulaire d'inscription -->
+        <VBox spacing="14"
+              style="-fx-background-color: white; -fx-padding: 40 50 40 50;
+                     -fx-pref-width: 680; -fx-min-height: 680;">
+
+            <Label text="Créer un compte"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0a5f7a;"/>
+            <Label text="Tous les champs marqués * sont obligatoires."
+                   style="-fx-font-size: 11px; -fx-text-fill: #999;"/>
+
+            <!-- Erreur / Succès -->
+            <Label fx:id="lblError"
+                   style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;
+                          -fx-wrap-text: true; -fx-max-width: 560;"/>
+            <Label fx:id="lblSuccess"
+                   style="-fx-text-fill: #1aaa8a; -fx-font-size: 12px;
+                          -fx-font-weight: bold;"/>
+
+            <!-- Nom / Prénom -->
+            <GridPane hgap="16" vgap="8">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Nom *" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                    <TextField fx:id="tfNom" promptText="Ben Ali"
+                               style="-fx-pref-height: 38; -fx-background-radius: 8;
+                                      -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Prénom *" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                    <TextField fx:id="tfPrenom" promptText="Mohamed"
+                               style="-fx-pref-height: 38; -fx-background-radius: 8;
+                                      -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+                </VBox>
+            </GridPane>
+
+            <!-- Email / Username -->
+            <GridPane hgap="16" vgap="8">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="60"/>
+                    <ColumnConstraints percentWidth="40"/>
+                </columnConstraints>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Email *" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                    <TextField fx:id="tfEmail" promptText="votre@email.com"
+                               style="-fx-pref-height: 38; -fx-background-radius: 8;
+                                      -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Username" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                    <TextField fx:id="tfUsername" promptText="votre@nom"
+                               style="-fx-pref-height: 38; -fx-background-radius: 8;
+                                      -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+                </VBox>
+            </GridPane>
+
+            <!-- Mot de passe / Confirmation -->
+            <GridPane hgap="16" vgap="8">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="50"/>
+                    <ColumnConstraints percentWidth="50"/>
+                </columnConstraints>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Mot de passe *" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                    <PasswordField fx:id="pfPassword" promptText="Min. 6 caractères"
+                               style="-fx-pref-height: 38; -fx-background-radius: 8;
+                                      -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Confirmer *" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                    <PasswordField fx:id="pfConfirm" promptText="Répéter le mot de passe"
+                               style="-fx-pref-height: 38; -fx-background-radius: 8;
+                                      -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+                </VBox>
+            </GridPane>
+
+            <!-- Rôle / Spécialité -->
+            <GridPane hgap="16" vgap="8">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="35"/>
+                    <ColumnConstraints percentWidth="65"/>
+                </columnConstraints>
+                <VBox spacing="4" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                    <Label text="Rôle *" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                    <ComboBox fx:id="cbRole"
+                              style="-fx-pref-height: 38; -fx-pref-width: 160;"/>
+                </VBox>
+                <VBox spacing="4" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                    <Label text="Spécialité (médecins)" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                    <TextField fx:id="tfSpecialite" promptText="Ex: Cardiologie, Médecine générale..."
+                               style="-fx-pref-height: 38; -fx-background-radius: 8;
+                                      -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+                </VBox>
+            </GridPane>
+
+            <!-- Adresse -->
+            <VBox spacing="4">
+                <Label text="Adresse" style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                <TextField fx:id="tfAdresse" promptText="Ville, Gouvernorat..."
+                           style="-fx-pref-height: 38; -fx-background-radius: 8;
+                                  -fx-border-color: #c8eaed; -fx-border-radius: 8;"/>
+            </VBox>
+
+            <Separator/>
+
+            <!-- Boutons -->
+            <HBox spacing="16" alignment="CENTER_LEFT">
+                <Button text="Créer mon compte" onAction="#handleRegister"
+                        style="-fx-background-color: #1aaa8a; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-pref-height: 44;
+                               -fx-pref-width: 220; -fx-background-radius: 10;
+                               -fx-font-size: 14px;
+                               -fx-effect: dropshadow(gaussian, #0a7a60, 6, 0, 0, 2);"/>
+                <Button text="← Retour connexion" onAction="#handleGoToLogin"
+                        style="-fx-background-color: transparent; -fx-text-fill: #0a5f7a;
+                               -fx-font-size: 13px; -fx-cursor: hand;
+                               -fx-border-color: #0a5f7a; -fx-border-radius: 8;
+                               -fx-background-radius: 8; -fx-pref-height: 44;
+                               -fx-pref-width: 180;"/>
+            </HBox>
+
+        </VBox>
+    </HBox>
+</StackPane>

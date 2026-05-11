@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block title %}Administration{% endblock %}
+{% block page_title %}Dashboard Admin{% endblock %}
+
+{% block body %}
+<div class="row g-3 mb-4">
+    <div class="col-md-3"><div class="card-stat text-center"><div class="fw-bold" style="font-size:2rem;color:#0a5f7a;">{{ stats.users }}</div><div class="text-muted small">Utilisateurs</div></div></div>
+    <div class="col-md-3"><div class="card-stat text-center"><div class="fw-bold" style="font-size:2rem;color:#1aaa8a;">{{ stats.questions }}</div><div class="text-muted small">Questions</div></div></div>
+    <div class="col-md-3"><div class="card-stat text-center"><div class="fw-bold" style="font-size:2rem;color:#3498db;">{{ stats.reponses }}</div><div class="text-muted small">Réponses</div></div></div>
+    <div class="col-md-3"><div class="card-stat text-center"><div class="fw-bold" style="font-size:2rem;color:#e74c3c;">{{ stats.reports }}</div><div class="text-muted small">Signalements</div></div></div>
+</div>
+<div class="card-stat"><p class="text-muted">Bienvenue dans le panneau d'administration. Utilisez le menu à gauche pour gérer la plateforme.</p></div>
+{% endblock %}

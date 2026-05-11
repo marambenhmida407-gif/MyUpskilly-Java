@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block title %}Inscription — Esprit Médical{% endblock %}
+
+{% block body_noauth %}
+<div class="min-vh-100 d-flex" style="background:#0a5f7a;">
+    <!-- Left branding -->
+    <div class="d-flex flex-column align-items-center justify-content-center text-center p-5" style="width:320px; background:#073d4f; min-height:100vh;">
+        <div style="font-size:64px;">🏥</div>
+        <h3 class="text-white mb-2">EspritMédical</h3>
+        <p class="text-white-50 small">Rejoignez la plateforme médicale intégrée de gestion des soins</p>
+        <hr class="w-75" style="border-color:#1aaa8a;">
+        <p class="text-white-50 small">✓ Questions patients en temps réel</p>
+        <p class="text-white-50 small">✓ Suivi thérapeutique intégré</p>
+        <p class="text-white-50 small">✓ Assistance IA médicale</p>
+    </div>
+
+    <!-- Form -->
+    <div class="flex-grow-1 d-flex align-items-center justify-content-center p-5">
+        <div class="card shadow-lg" style="width:100%; max-width:620px; border-radius:16px; border:none;">
+            <div class="card-body p-5">
+                <h4 class="mb-1" style="color:#0a5f7a;">Créer un compte</h4>
+                <p class="text-muted small mb-3">Tous les champs marqués * sont obligatoires.</p>
+
+                {% if error %}
+                    <div class="alert alert-danger">{{ error|raw }}</div>
+                {% endif %}
+                {% if success %}
+                    <div class="alert alert-success">{{ success }}</div>
+                {% endif %}
+
+                <form method="post">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label class="form-label fw-bold small" style="color:#0a5f7a;">Nom *</label>
+                            <input type="text" name="nom" class="form-control" placeholder="Ben Ali" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small" style="color:#0a5f7a;">Prénom *</label>
+                            <input type="text" name="prenom" class="form-control" placeholder="Mohamed" required>
+                        </div>
+                        <div class="col-8">
+                            <label class="form-label fw-bold small" style="color:#0a5f7a;">Email *</label>
+                            <input type="email" name="email" class="form-control" placeholder="votre@email.com" required>
+                        </div>
+                        <div class="col-4">
+                            <label class="form-label fw-bold small" style="color:#0a5f7a;">Rôle *</label>
+                            <select name="role" class="form-select" required>
+                                <option value="patient">Patient</option>
+                                <option value="doctor">Médecin</option>
+                            </select>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small" style="color:#0a5f7a;">Mot de passe *</label>
+                            <input type="password" name="password" class="form-control" placeholder="Min. 6 caractères" required>
+                        </div>
+                        <div class="col-6">
+                            <label class="form-label fw-bold small" style="color:#0a5f7a;">Confirmer *</label>
+                            <input type="password" name="confirm" class="form-control" placeholder="Répéter le mot de passe" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold small" style="color:#0a5f7a;">Spécialité (médecins)</label>
+                            <input type="text" name="specialite" class="form-control" placeholder="Ex: Cardiologie, Médecine générale...">
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label fw-bold small" style="color:#0a5f7a;">Adresse</label>
+                            <input type="text" name="adresse" class="form-control" placeholder="Ville, Gouvernorat...">
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="d-flex gap-3 mt-2">
+                        <button type="submit" class="btn text-white fw-bold px-4 py-2" style="background:#1aaa8a; border-radius:10px;">
+                            Créer mon compte
+                        </button>
+                        <a href="{{ path('app_login') }}" class="btn btn-outline-secondary px-4 py-2" style="border-radius:10px;">
+                            ← Retour connexion
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

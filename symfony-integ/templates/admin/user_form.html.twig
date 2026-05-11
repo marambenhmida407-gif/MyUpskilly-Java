@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ user ? 'Modifier' : 'Nouvel' }} Utilisateur{% endblock %}
+{% block page_title %}{{ user ? 'Modifier' : 'Nouvel' }} Utilisateur{% endblock %}
+{% block body %}
+<div class="card-stat" style="max-width:600px;">
+    <form method="post">
+        <div class="row g-3">
+            <div class="col-6"><label class="form-label fw-bold small">Nom *</label><input type="text" name="nom" class="form-control" value="{{ user ? user.nom }}" required></div>
+            <div class="col-6"><label class="form-label fw-bold small">Prénom *</label><input type="text" name="prenom" class="form-control" value="{{ user ? user.prenom }}" required></div>
+            <div class="col-12"><label class="form-label fw-bold small">Email *</label><input type="email" name="email" class="form-control" value="{{ user ? user.email }}" required></div>
+            <div class="col-12"><label class="form-label fw-bold small">Mot de passe {{ user ? '(laisser vide = inchangé)' }}</label><input type="password" name="password" class="form-control"></div>
+            <div class="col-6">
+                <label class="form-label fw-bold small">Rôle *</label>
+                <select name="role" class="form-select" required>
+                    <option value="patient" {{ user and user.role == 'patient' ? 'selected' }}>Patient</option>
+                    <option value="doctor"  {{ user and user.role == 'doctor'  ? 'selected' }}>Médecin</option>
+                    <option value="admin"   {{ user and user.role == 'admin'   ? 'selected' }}>Admin</option>
+                </select>
+            </div>
+            <div class="col-6"><label class="form-label fw-bold small">Spécialité</label><input type="text" name="specialite" class="form-control" value="{{ user ? user.specialite }}"></div>
+            <div class="col-6"><div class="form-check mt-3"><input type="checkbox" name="etat" id="etat" class="form-check-input" value="1" {{ not user or user.isActif() ? 'checked' }}><label for="etat" class="form-check-label">Compte actif</label></div></div>
+            <div class="col-6"><div class="form-check mt-3"><input type="checkbox" name="is_verified" id="verif" class="form-check-input" value="1" {{ user and user.isVerified() ? 'checked' }}><label for="verif" class="form-check-label">Compte vérifié</label></div></div>
+        </div>
+        <hr>
+        <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="{{ path('app_admin_users') }}" class="btn btn-outline-secondary">Annuler</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

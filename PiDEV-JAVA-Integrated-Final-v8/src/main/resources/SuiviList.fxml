@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="0"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.SuiviController">
+
+    <!-- TOOLBAR -->
+    <HBox spacing="8" alignment="CENTER_LEFT"
+          style="-fx-padding: 20 24 10 24;">
+        <TextField fx:id="tfSearch"
+                   promptText="🔍  Rechercher..."
+                   prefWidth="240"
+                   styleClass="search-field"/>
+        <Button text="⚙ Filtres" onAction="#toggleFilters"
+                styleClass="btn btn-filter" fx:id="btnToggleFilters"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ Ajouter"    onAction="#handleAjouter"    styleClass="btn btn-add"/>
+        <Button text="✏️ Modifier"   onAction="#handleModifier"   styleClass="btn btn-edit"/>
+        <Button text="🗑 Supprimer"  onAction="#handleSupprimer"  styleClass="btn btn-del"/>
+        <Button text="📄 Exporter PDF" onAction="#handleExportPdf" styleClass="btn btn-pdf"/>
+    </HBox>
+
+    <!-- FILTER PANEL (hidden by default) -->
+    <VBox fx:id="filterPanel"
+          spacing="10"
+          managed="false" visible="false"
+          style="-fx-background-color: white;
+                 -fx-border-color: #E2E8F0;
+                 -fx-border-width: 0 0 1 0;
+                 -fx-padding: 14 24;">
+
+        <HBox spacing="12" alignment="CENTER_LEFT">
+
+            <!-- Statut filter -->
+            <VBox spacing="4">
+                <Label text="Statut" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;"/>
+                <ComboBox fx:id="cbFilterStatut"
+                          promptText="Tous les statuts"
+                          prefWidth="160"
+                          styleClass="filter-combo"/>
+            </VBox>
+
+            <!-- Type de suivi filter -->
+            <VBox spacing="4">
+                <Label text="Type de suivi" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;"/>
+                <TextField fx:id="tfFilterType"
+                           promptText="Ex: Psychiatrique..."
+                           prefWidth="180"
+                           styleClass="search-field"/>
+            </VBox>
+
+            <!-- Date début from -->
+            <VBox spacing="4">
+                <Label text="Date début — de" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;"/>
+                <DatePicker fx:id="dpFilterDebutFrom"
+                            prefWidth="150"
+                            styleClass="filter-date"/>
+            </VBox>
+
+            <!-- Date début to -->
+            <VBox spacing="4">
+                <Label text="Date début — à" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;"/>
+                <DatePicker fx:id="dpFilterDebutTo"
+                            prefWidth="150"
+                            styleClass="filter-date"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Reset button -->
+            <VBox spacing="4">
+                <Label text=" " style="-fx-font-size: 11px;"/>
+                <Button text="↺ Réinitialiser"
+                        onAction="#resetFilters"
+                        styleClass="btn btn-reset"/>
+            </VBox>
+
+        </HBox>
+
+        <!-- Active filter count -->
+        <HBox spacing="6" alignment="CENTER_LEFT">
+            <Label fx:id="lblActiveFilters" text=""
+                   style="-fx-font-size: 11px; -fx-text-fill: #10B981; -fx-font-weight: bold;"/>
+        </HBox>
+
+    </VBox>
+
+    <!-- TABLE -->
+    <TableView fx:id="tableView"
+               VBox.vgrow="ALWAYS"
+               styleClass="main-table">
+        <columns>
+            <TableColumn fx:id="colId"        text="#"             prefWidth="50"/>
+            <TableColumn fx:id="colPatient"   text="Patient"       prefWidth="160"/>
+            <TableColumn fx:id="colTypeSuivi" text="Type de Suivi" prefWidth="160"/>
+            <TableColumn fx:id="colObjectif"  text="Objectif"      prefWidth="200"/>
+            <TableColumn fx:id="colStatut"    text="Statut"        prefWidth="120"/>
+            <TableColumn fx:id="colDateDebut" text="Date début"    prefWidth="120"/>
+            <TableColumn fx:id="colDateFin"   text="Date fin"      prefWidth="120"/>
+        </columns>
+        <placeholder>
+            <Label text="Aucun enregistrement trouvé." style="-fx-text-fill:#94A3B8;"/>
+        </placeholder>
+    </TableView>
+
+</VBox>

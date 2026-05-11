@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+{% block title %}Vérification 2FA{% endblock %}
+
+{% block body_noauth %}
+<div class="min-vh-100 d-flex align-items-center justify-content-center"
+     style="background:#0a5f7a;">
+    <div class="card shadow-lg" style="width:420px; border-radius:16px; overflow:hidden; border:none;">
+
+        <!-- Header -->
+        <div class="text-center p-4" style="background:#0a5f7a;">
+            <div style="font-size:48px;">🔐</div>
+            <h4 class="text-white mb-1">Vérification 2FA</h4>
+            <p class="text-white-50 small">Code pour : {{ email }}</p>
+        </div>
+
+        <!-- Form -->
+        <div class="card-body p-4">
+            <p class="text-muted small text-center mb-3">
+                Entrez le code à 6 chiffres affiché dans votre application d'authentification.
+            </p>
+
+            {% if error %}
+                <div class="alert alert-danger py-2 small">{{ error }}</div>
+            {% endif %}
+
+            <form method="post">
+                <div class="mb-3 text-center">
+                    <input type="text" name="code" class="form-control form-control-lg text-center"
+                           placeholder="000000" maxlength="6" inputmode="numeric"
+                           autocomplete="one-time-code" autofocus
+                           style="font-size:2rem; font-family:'Courier New'; letter-spacing:8px;
+                                  border:2px solid #c8eaed; border-radius:12px;">
+                </div>
+
+                <button type="submit" class="btn w-100 text-white fw-bold py-2"
+                        style="background:#1aaa8a; border-radius:10px; font-size:1rem;">
+                    ✅ Vérifier le code
+                </button>
+            </form>
+
+            <hr>
+
+            <div class="text-center">
+                <a href="{{ path('app_2fa_back') }}"
+                   class="text-muted small text-decoration-none">
+                    ← Retour au login
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

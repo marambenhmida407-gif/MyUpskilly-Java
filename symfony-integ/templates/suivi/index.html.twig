@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}{% block title %}Suivi Thérapeutique{% endblock %}{% block page_title %}💊 Suivi Thérapeutique{% endblock %}
+{% block body %}
+<div class="row g-3 mb-3">
+    <div class="col-2"><div class="card-stat text-center"><div class="fw-bold" style="font-size:1.5rem;color:#0a5f7a;">{{ stats.total }}</div><div class="text-muted small">Total</div></div></div>
+    <div class="col-2"><div class="card-stat text-center"><div class="fw-bold" style="font-size:1.5rem;color:#1aaa8a;">{{ stats.en_cours }}</div><div class="text-muted small">En cours</div></div></div>
+    <div class="col-2"><div class="card-stat text-center"><div class="fw-bold" style="font-size:1.5rem;color:#6c757d;">{{ stats.termine }}</div><div class="text-muted small">Terminé</div></div></div>
+    <div class="col-2"><div class="card-stat text-center"><div class="fw-bold" style="font-size:1.5rem;color:#f39c12;">{{ stats.suspendu }}</div><div class="text-muted small">Suspendu</div></div></div>
+    <div class="col-2"><div class="card-stat text-center"><div class="fw-bold" style="font-size:1.5rem;color:#3498db;">{{ stats.planifie }}</div><div class="text-muted small">Planifié</div></div></div>
+    <div class="col-2"><a href="{{ path('app_suivi_new') }}" class="btn btn-success w-100 h-100 d-flex align-items-center justify-content-center">＋ Ajouter</a></div>
+</div>
+<div class="card-stat mb-3">
+    <form method="get" class="d-flex gap-2">
+        <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Type, objectif...">
+        <select name="statut" class="form-select" style="max-width:160px;"><option value="">Tous</option>{% for s in ['En cours','Terminé','Suspendu','Planifié'] %}<option {{ statut == s ? 'selected' }}>{{ s }}</option>{% endfor %}</select>
+        <button type="submit" class="btn btn-primary">🔍</button>
+    </form>
+</div>
+<div class="card-stat">
+    <table class="table table-hover mb-0">
+        <thead class="table-light"><tr><th>Patient</th><th>Type</th><th>Objectif</th><th>Statut</th><th>Début</th><th>Fin</th><th>Actions</th></tr></thead>
+        <tbody>
+        {% for s in suivis %}
+        <tr>
+            <td>{{ s.patientNom ?? '#' ~ s.patientId }}</td>
+            <td>{{ s.typeSuivi }}</td>
+            <td class="text-truncate" style="max-width:180px;">{{ s.objectifTherapeutique }}</td>
+            <td><span class="badge {{ s.statut == 'En cours' ? 'badge-green' : (s.statut == 'Planifié' ? 'badge-blue' : (s.statut == 'Suspendu' ? 'badge-orange' : 'badge-dark')) }}">{{ s.statut }}</span></td>
+            <td>{{ s.dateDebut|date('d/m/Y') }}</td>
+            <td>{{ s.dateFin ? s.dateFin|date('d/m/Y') : '—' }}</td>
+            <td>
+                <a href="{{ path('app_suivi_edit', {id: attribute(s, 'id')}) }}" class="btn btn-sm btn-outline-primary">✏️</a>
+                <form method="post" action="{{ path('app_suivi_delete', {id: attribute(s, 'id')}) }}" class="d-inline" onsubmit="return confirm('Supprimer ?')"><button type="submit" class="btn btn-sm btn-outline-danger">🗑</button></form>
+            </td>
+        </tr>
+        {% else %}<tr><td colspan="7" class="text-center text-muted">Aucun suivi.</td></tr>{% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

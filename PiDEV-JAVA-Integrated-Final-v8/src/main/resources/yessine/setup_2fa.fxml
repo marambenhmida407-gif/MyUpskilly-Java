@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="controllers.yessine.Setup2FAController"
+           style="-fx-background-color: #0a5f7a;">
+
+    <VBox alignment="CENTER" spacing="0"
+          style="-fx-max-width: 480; -fx-max-height: 680;">
+
+        <!-- Header -->
+        <VBox alignment="CENTER" spacing="8"
+              style="-fx-background-color: #0a5f7a; -fx-padding: 30 40 20 40;">
+            <Label text="🔐" style="-fx-font-size: 42px;"/>
+            <Label text="Configuration 2FA"
+                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Sécurisez votre compte médical"
+                   style="-fx-text-fill: #c8eaed; -fx-font-size: 12px;"/>
+        </VBox>
+
+        <!-- Form Card -->
+        <VBox spacing="14"
+              style="-fx-background-color: white; -fx-padding: 30 40 30 40;
+                     -fx-background-radius: 0 0 16 16;
+                     -fx-effect: dropshadow(gaussian, #073d4f, 15, 0, 0, 5);">
+
+            <Label fx:id="lblInfo"
+                   style="-fx-text-fill: #555; -fx-font-size: 12px;
+                          -fx-wrap-text: true; -fx-max-width: 400;"/>
+
+            <!-- QR Code -->
+            <HBox alignment="CENTER">
+                <ImageView fx:id="qrImageView"
+                           fitWidth="200" fitHeight="200"
+                           preserveRatio="true"/>
+            </HBox>
+
+            <!-- Clé manuelle -->
+            <VBox spacing="4">
+                <Label text="Email du compte :"
+                       style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                <Label fx:id="lblEmail"
+                       style="-fx-text-fill: #333; -fx-font-size: 13px;"/>
+            </VBox>
+            <VBox spacing="4">
+                <Label text="Clé manuelle (si QR non disponible) :"
+                       style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                <Label fx:id="lblSecretKey"
+                       style="-fx-text-fill: #073d4f; -fx-font-size: 13px;
+                              -fx-font-family: 'Courier New'; -fx-font-weight: bold;
+                              -fx-background-color: #f0f8ff; -fx-padding: 6 10 6 10;
+                              -fx-background-radius: 6;"/>
+            </VBox>
+
+            <!-- Code de confirmation -->
+            <VBox spacing="6">
+                <Label text="Entrez le code affiché sur votre application :"
+                       style="-fx-font-weight: bold; -fx-text-fill: #0a5f7a; -fx-font-size: 12px;"/>
+                <TextField fx:id="tfCode"
+                           promptText="000000"
+                           style="-fx-pref-height: 42; -fx-background-radius: 8;
+                  -fx-border-color: #c8eaed; -fx-border-radius: 8;
+                  -fx-font-size: 20px; -fx-font-family: 'Courier New';
+                  -fx-alignment: CENTER; -fx-max-width: 160;"/>
+                <Label fx:id="lblError"
+                       style="-fx-text-fill: #e74c3c; -fx-font-size: 12px;"/>
+            </VBox>
+
+            <Separator/>
+
+            <!-- Boutons -->
+            <HBox spacing="16" alignment="CENTER">
+                <Button text="✅  Confirmer et activer"
+                        onAction="#handleConfirm"
+                        style="-fx-background-color: #1aaa8a; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-pref-height: 42;
+                               -fx-pref-width: 220; -fx-background-radius: 10;
+                               -fx-font-size: 13px;"/>
+                <Button text="Passer pour l'instant"
+                        onAction="#handleSkip"
+                        style="-fx-background-color: transparent; -fx-text-fill: #999;
+                               -fx-font-size: 12px; -fx-cursor: hand;
+                               -fx-border-color: #ddd; -fx-border-radius: 8;
+                               -fx-background-radius: 8; -fx-pref-height: 42;
+                               -fx-pref-width: 160;"/>
+            </HBox>
+
+        </VBox>
+    </VBox>
+</StackPane>

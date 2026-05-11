@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="10"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.SuiviFormController"
+      stylesheets="@style.css"
+      styleClass="root">
+
+    <!-- HEADER -->
+    <HBox styleClass="header">
+        <Label text="🏥 Formulaire — Suivi Thérapeutique" styleClass="header-title"/>
+    </HBox>
+
+    <VBox spacing="10" style="-fx-padding: 25;">
+
+        <Label text="Patient *"/>
+        <ComboBox fx:id="cbPatient" promptText="Sélectionner un patient" prefWidth="380"/>
+        <Label fx:id="lblErrorPatient" text=" " style="-fx-text-fill: red;"/>
+
+        <Label text="Date Début *"/>
+        <DatePicker fx:id="dpDateDebut" prefWidth="380"/>
+
+        <Label fx:id="lblErrorDateDebut" text=" " style="-fx-text-fill: red;"/>
+
+        <Label text="Date Fin"/>
+        <DatePicker fx:id="dpDateFin" prefWidth="380"/>
+
+        <Label fx:id="lblErrorDateFin" text=" " style="-fx-text-fill: red;"/>
+
+        <Label text="Type de Suivi *"/>
+        <TextField fx:id="tfTypeSuivi" promptText="Ex: Psychiatrique..."/>
+
+        <Label fx:id="lblErrorTypeSuivi" text=" " style="-fx-text-fill: red;"/>
+
+        <Label text="Objectif Thérapeutique *"/>
+        <TextField fx:id="tfObjectif" promptText="Objectif du suivi"/>
+
+        <Label fx:id="lblErrorObjectif" text=" " style="-fx-text-fill: red;"/>
+
+        <Label text="Statut *"/>
+        <ComboBox fx:id="cbStatut" promptText="Sélectionner un statut"/>
+
+        <Label fx:id="lblErrorStatut" text=" " style="-fx-text-fill: red;"/>
+
+        <Separator/>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+
+            <Button text="💾 Enregistrer"
+                    onAction="#handleSave"
+                    styleClass="button btn-primary"/>
+
+            <Button text="❌ Annuler"
+                    onAction="#handleCancel"
+                    styleClass="button btn-danger"/>
+
+        </HBox>
+
+    </VBox>
+</VBox>

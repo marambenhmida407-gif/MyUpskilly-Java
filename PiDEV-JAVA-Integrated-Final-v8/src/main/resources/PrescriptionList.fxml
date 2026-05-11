@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox spacing="0"
+      xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="controllers.PrescriptionController">
+
+    <!-- TOOLBAR -->
+    <HBox spacing="8" alignment="CENTER_LEFT"
+          style="-fx-padding: 20 24 10 24;">
+        <TextField fx:id="tfSearch"
+                   promptText="🔍  Rechercher..."
+                   prefWidth="240"
+                   styleClass="search-field"/>
+        <Button text="⚙ Filtres" onAction="#toggleFilters"
+                styleClass="btn btn-filter" fx:id="btnToggleFilters"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ Ajouter"   onAction="#handleAjouter"   styleClass="btn btn-add"/>
+        <Button text="✏️ Modifier"  onAction="#handleModifier"  styleClass="btn btn-edit"/>
+        <Button text="🗑 Supprimer" onAction="#handleSupprimer" styleClass="btn btn-del"/>
+    </HBox>
+
+    <!-- FILTER PANEL -->
+    <VBox fx:id="filterPanel"
+          spacing="10"
+          managed="false" visible="false"
+          style="-fx-background-color: white;
+                 -fx-border-color: #E2E8F0;
+                 -fx-border-width: 0 0 1 0;
+                 -fx-padding: 14 24;">
+
+        <HBox spacing="12" alignment="CENTER_LEFT">
+
+            <!-- Date from -->
+            <VBox spacing="4">
+                <Label text="Date prescription — de" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;"/>
+                <DatePicker fx:id="dpFilterFrom" prefWidth="160" styleClass="filter-date"/>
+            </VBox>
+
+            <!-- Date to -->
+            <VBox spacing="4">
+                <Label text="Date prescription — à" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;"/>
+                <DatePicker fx:id="dpFilterTo" prefWidth="160" styleClass="filter-date"/>
+            </VBox>
+
+            <!-- Has recommandations -->
+            <VBox spacing="4">
+                <Label text="Recommandations" style="-fx-font-size: 11px; -fx-font-weight: bold; -fx-text-fill: #64748B;"/>
+                <ComboBox fx:id="cbFilterRec"
+                          prefWidth="160"
+                          styleClass="filter-combo"/>
+            </VBox>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <VBox spacing="4">
+                <Label text=" " style="-fx-font-size: 11px;"/>
+                <Button text="↺ Réinitialiser"
+                        onAction="#resetFilters"
+                        styleClass="btn btn-reset"/>
+            </VBox>
+
+        </HBox>
+
+        <HBox spacing="6" alignment="CENTER_LEFT">
+            <Label fx:id="lblActiveFilters" text=""
+                   style="-fx-font-size: 11px; -fx-text-fill: #10B981; -fx-font-weight: bold;"/>
+        </HBox>
+
+    </VBox>
+
+    <!-- TABLE -->
+    <TableView fx:id="tableView"
+               VBox.vgrow="ALWAYS"
+               styleClass="main-table">
+        <columns>
+            <TableColumn fx:id="colId"               text="#"               prefWidth="50"/>
+            <TableColumn fx:id="colDatePrescription" text="Date"            prefWidth="110"/>
+            <TableColumn fx:id="colMedicaments"      text="Médicaments"     prefWidth="200"/>
+            <TableColumn fx:id="colRecommandations"  text="Recommandations" prefWidth="200"/>
+            <TableColumn fx:id="colSuivi"            text="Suivi"           prefWidth="140"/>
+            <TableColumn fx:id="colSuiviId"          text="ID Suivi"        prefWidth="80"/>
+        </columns>
+        <placeholder>
+            <Label text="Aucune prescription trouvée." style="-fx-text-fill:#94A3B8;"/>
+        </placeholder>
+    </TableView>
+
+</VBox>
